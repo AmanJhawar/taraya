@@ -59,9 +59,9 @@ export default function NetworkHero() {
           animate={{ clipPath: 'inset(0 0 0% 0)' }}
           transition={{ duration: 0.8, ease: EASE_OUT }}
         >
-          We partner with{' '}
+          Premium collections of{' '}
           <span className="relative inline-block">
-            visionaries
+            bullions & silver
             <motion.span
               className="absolute bottom-1 left-0 right-0 h-0.5 bg-white"
               initial={{ scaleX: 0 }}
@@ -70,7 +70,7 @@ export default function NetworkHero() {
               transition={{ duration: 0.6, ease: EASE_OUT, delay: 0.8 }}
             />
           </span>
-          &nbsp;to build tomorrow&apos;s defining companies.
+          <br/>and semi-precious frames.
         </motion.h1>
 
         {/* Action Buttons */}
@@ -80,13 +80,7 @@ export default function NetworkHero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: EASE_OUT, delay: 0.6 }}
         >
-          <Link
-            href="/portfolio"
-            className="btn-primary"
-            style={{ backgroundColor: 'transparent', borderColor: 'white' }}
-          >
-            View Portfolio
-          </Link>
+
           <Link
             href="/catalog"
             className="btn-secondary shadow-sm"

@@ -14,21 +14,12 @@ export default function Footer() {
               <li>
                 <Link href="/about" className="text-sm text-gray-500 hover:text-black transition-[color,transform] duration-200 ease-[var(--ease-out)] active:scale-[0.97] inline-block">About Us</Link>
               </li>
-              <li>
-                <Link href="/team" className="text-sm text-gray-500 hover:text-black transition-[color,transform] duration-200 ease-[var(--ease-out)] active:scale-[0.97] inline-block">Our Team</Link>
-              </li>
             </ul>
           </div>
 
           <div>
-            <h3 className="text-sm font-semibold tracking-widest text-black mb-6 uppercase">Portfolio</h3>
+            <h3 className="text-sm font-semibold tracking-widest text-black mb-6 uppercase">Store</h3>
             <ul className="space-y-3">
-              <li>
-                <Link href="/portfolio" className="text-sm text-gray-500 hover:text-black transition-[color,transform] duration-200 ease-[var(--ease-out)] active:scale-[0.97] inline-block">Companies</Link>
-              </li>
-              <li>
-                <Link href="/brands" className="text-sm text-gray-500 hover:text-black transition-[color,transform] duration-200 ease-[var(--ease-out)] active:scale-[0.97] inline-block">Our Brands</Link>
-              </li>
               <li>
                 <Link href="/catalog" className="text-sm text-gray-500 hover:text-black transition-[color,transform] duration-200 ease-[var(--ease-out)] active:scale-[0.97] inline-block">Catalog</Link>
               </li>

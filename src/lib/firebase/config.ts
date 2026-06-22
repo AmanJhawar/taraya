@@ -3,13 +3,13 @@ import { getFirestore } from "firebase/firestore/lite";
 import { getAuth } from "firebase/auth";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyC9u17jg46lvVUsZwjgbDzqe_Ot6ZkXB-w",
-  authDomain: "taraya-882ec.firebaseapp.com",
-  projectId: "taraya-882ec",
-  storageBucket: "taraya-882ec.firebasestorage.app",
-  messagingSenderId: "579157315760",
-  appId: "1:579157315760:web:56a93fc80c4372c51bab75",
-  measurementId: "G-E2VBCYP5YX"
+  apiKey: "AIzaSyAbNuJYBPTS3sqO8WyraAbrinzowQlX9oI",
+  authDomain: "taraya-cea31.firebaseapp.com",
+  projectId: "taraya-cea31",
+  storageBucket: "taraya-cea31.firebasestorage.app",
+  messagingSenderId: "116361129530",
+  appId: "1:116361129530:web:b6a0554060558b754f4f03",
+  measurementId: "G-9T01BWYGM3"
 };
 
 // Initialize Firebase securely (avoiding double initialization in dev)

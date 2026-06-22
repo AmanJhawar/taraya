@@ -4,7 +4,7 @@ import { useRef, useEffect, useState } from 'react'
 import Image from 'next/image'
 import { Trash2, Plus, Box, Edit2, X, ChevronDown, RefreshCw } from 'lucide-react'
 import { ImageDropzone } from '@/components/image-dropzone'
-import { Switch } from '@/components/ui/switch'
+
 import { getOptimizedUrl } from '@/lib/utils'
 import { ConfirmModal } from '@/components/confirm-modal'
 import { useInventoryForm } from '@/hooks/use-inventory-form'
