@@ -1,0 +1,71 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Function to check if the user is the authorized admin
+    function isAdmin() {
+      return request.auth != null && exists(/databases/$(database)/documents/admins/$(request.auth.uid));
+    }
+
+    // Function to validate inquiry submissions and block bloated payloads
+    function isValidInquiry() {
+      let data = request.resource.data;
+      return data.keys().hasAll(['firstName', 'lastName', 'countryCode', 'mobile', 'message', 'inquiryType', 'status', 'createdAt'])
+        && data.firstName is string && data.firstName.size() > 0 && data.firstName.size() < 100
+        && data.lastName is string && data.lastName.size() > 0 && data.lastName.size() < 100
+        && data.countryCode is string && data.countryCode.size() > 0 && data.countryCode.size() < 10
+        && data.mobile is string && data.mobile.size() >= 7 && data.mobile.size() <= 15
+        && data.message is string && data.message.size() > 0 && data.message.size() < 5000
+        && data.inquiryType is string
+        && data.status == 'unread'
+        && data.createdAt == request.time
+        && (!('middleName' in data) || (data.middleName is string && data.middleName.size() < 100))
+        && (!('email' in data) || (data.email is string && data.email.size() < 200))
+        && (!('company' in data) || (data.company is string && data.company.size() < 200))
+        && (!('gstinPan' in data) || (data.gstinPan is string && data.gstinPan.size() < 20));
+    }
+
+    // Admins Collection
+    match /admins/{uid} {
+      allow read: if request.auth != null && request.auth.uid == uid;
+      allow write: if false; // Only admin SDK or console can write to admins
+    }
+
+    // Publicly readable collections (Admin write only)
+    match /catalog/{document=**} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    match /team/{document=**} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    match /brands/{document=**} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    match /portfolio/{document=**} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    match /insights/{document=**} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    match /settings/{document=**} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // Secure PII Collection (Public create only with validation, Admin read/write)
+    match /inquiries/{inquiryId} {
+      allow create: if isValidInquiry();
+      allow read, update, delete: if isAdmin();
+    }
+
+    // Default deny for anything else
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
