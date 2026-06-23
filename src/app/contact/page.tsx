@@ -24,11 +24,10 @@ function ContactForm() {
               onChange={field.onChange}
               options={[
                 { value: "general", label: "General Inquiry" },
-                { value: "product", label: "Product & Order Inquiry" },
-                { value: "pitch", label: "Startup Pitch" },
-                { value: "lp", label: "Limited Partner" },
-                { value: "press", label: "Press & Media" },
-                { value: "partnership", label: "Partnership" }
+                { value: "support", label: "Order Support" },
+                { value: "corporate", label: "Corporate Gifting" },
+                { value: "bullion", label: "Wholesale & Bullion" },
+                { value: "press", label: "Press & Media" }
               ]}
             />
           )}
@@ -159,7 +158,7 @@ function ContactForm() {
 
       {error && <p className="text-ink text-sm font-semibold bg-band border border-line p-4 rounded-lg">{error}</p>}
       {success && (
-        <div className="bg-ink text-white text-sm font-medium p-4 rounded-lg flex items-center gap-3">
+        <div className="bg-ink text-field text-sm font-medium p-4 rounded-lg flex items-center gap-3">
           <svg className="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
           </svg>
@@ -194,18 +193,18 @@ export default function Contact() {
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.5fr] gap-12 lg:gap-20 max-w-[1200px] mx-auto">
           <div className="flex flex-col gap-10">
             <div>
-              <h3 className="text-xl font-semibold text-ink mb-4">For Entrepreneurs</h3>
-              <p className="text-muted leading-relaxed mb-4">Ready to pitch your startup? We&apos;d love to hear from exceptional founders building transformative companies.</p>
+              <h3 className="text-xl font-semibold text-ink mb-4">Corporate Gifting</h3>
+              <p className="text-muted leading-relaxed mb-4">Looking for personalized silver frames or bulk orders for your organization? Reach out to our specialized gifting team.</p>
               <div className="text-muted leading-relaxed">
-                <strong className="text-ink">Email:</strong> founders@taraya.com
+                <strong className="text-ink">Email:</strong> corporate@taraya.com
               </div>
             </div>
 
             <div>
-              <h3 className="text-xl font-semibold text-ink mb-4">Press &amp; Media</h3>
-              <p className="text-muted leading-relaxed mb-4">For press inquiries and media requests.</p>
+              <h3 className="text-xl font-semibold text-ink mb-4">Wholesale & Bullion</h3>
+              <p className="text-muted leading-relaxed mb-4">For B2B pricing, wholesale partnerships, and silver bullion investments.</p>
               <div className="text-muted leading-relaxed">
-                <strong className="text-ink">Email:</strong> press@taraya.com
+                <strong className="text-ink">Email:</strong> bullion@taraya.com
               </div>
             </div>
 
@@ -213,15 +212,15 @@ export default function Contact() {
               <h3 className="text-xl font-semibold text-ink mb-4">Office Location</h3>
               <div className="text-muted leading-relaxed">
                 <strong className="text-ink">Address:</strong><br />
-                Taraya Private Limited<br />
+                A96 Ventures Private Limited<br />
                 Kolkata, WB<br />
                 India
               </div>
             </div>
           </div>
 
-          <div className="bg-[#f5f5f7] p-6 md:p-10 rounded-xl">
-            <Suspense fallback={<div className="h-[500px] flex items-center justify-center">Loading form...</div>}>
+          <div className="bg-band/50 p-6 md:p-10 rounded-xl border border-line">
+            <Suspense fallback={<div className="h-[500px] flex items-center justify-center text-muted">Loading form...</div>}>
               <ContactForm />
             </Suspense>
           </div>

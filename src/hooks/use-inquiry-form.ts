@@ -6,7 +6,7 @@ import { z } from 'zod'
 import { submitInquiry } from '@/lib/services/inquiry.service'
 import { useCart } from '@/components/cart-provider'
 
-export const contactSchema = z.object({
+const contactSchema = z.object({
   inquiryType: z.string().min(1, 'Please select an inquiry type'),
   firstName: z.string().min(1, 'First name is required'),
   middleName: z.string().optional(),

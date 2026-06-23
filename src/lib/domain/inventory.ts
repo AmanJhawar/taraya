@@ -31,7 +31,7 @@ export const hasStonesCategory = (category?: string) => {
   return c.includes('marble') || c.includes('photoframe')
 }
 
-export const isBullionCategory = (category?: string) => {
+const isBullionCategory = (category?: string) => {
   if (!category) return false
   return category.toLowerCase().includes('bullion')
 }

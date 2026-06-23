@@ -42,7 +42,7 @@ export default function Footer() {
             <Image src="/assets/logo.png" alt="Taraya" width={100} height={30} className="w-auto h-4 object-contain grayscale opacity-50" />
           </div>
           <div className="text-sm text-muted">
-            © {currentYear} Taraya. All rights reserved.
+            © {currentYear} Taraya, a brand by A96 Ventures Private Limited. All rights reserved.
           </div>
         </div>
       </div>

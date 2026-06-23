@@ -110,9 +110,7 @@ export async function getCatalogItemById(id: string): Promise<CatalogItem | null
   return null;
 }
 
-export async function setStoreCategories(categories: string[]): Promise<void> {
-  await setDoc(doc(db, 'settings', 'categories'), { list: categories });
-}
+
 
 export async function saveInventoryItem(id: string, payload: Partial<CatalogItem>): Promise<void> {
   await setDoc(doc(db, CATALOG_COLLECTION, id), payload);

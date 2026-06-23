@@ -193,7 +193,7 @@ export default function AdminInventory() {
                     <ChevronDown size={16} className={`text-muted transition-transform ${categoryOpen ? 'rotate-180' : ''}`} />
                   </button>
                   {categoryOpen && (
-                    <div className="absolute z-10 mt-1 w-full bg-field border border-line rounded-lg shadow-lg overflow-hidden origin-top animate-[fadeInUp_150ms_var(--ease-out)_forwards]">
+                    <div className="absolute z-10 mt-1 w-full bg-field border border-line rounded-lg shadow-lg overflow-hidden origin-top transition-[opacity,transform] duration-150 ease-[var(--ease-out)] opacity-100 scale-100 starting:opacity-0 starting:scale-[0.97]">
                       <ul id="admin-category-listbox" role="listbox" className="m-0 p-0 list-none max-h-60 overflow-y-auto">
                         {categories.map((cat, idx) => (
                           <li key={cat} role="option" aria-selected={formData.category === cat}>
@@ -237,7 +237,7 @@ export default function AdminInventory() {
                     setFormData(newFormData)
                     if (!newFormData.hasVariants) cleanupOrphanedInputs(newFormData)
                   }}
-                  className={`relative inline-flex h-[22px] w-[42px] shrink-0 cursor-pointer items-center rounded-full transition-colors duration-[160ms] ease-[var(--ease-in-out)] ${formData.hasVariants ? 'bg-ink' : 'bg-gray-200'}`}
+                  className={`relative inline-flex h-[22px] w-[42px] shrink-0 cursor-pointer items-center rounded-full transition-colors duration-[160ms] ease-[var(--ease-out)] ${formData.hasVariants ? 'bg-ink' : 'bg-gray-200'}`}
                 >
                   <span className={`pointer-events-none inline-block h-[18px] w-[18px] transform rounded-full bg-field shadow-sm ring-0 transition-transform duration-[160ms] ease-[var(--ease-in-out)] ${formData.hasVariants ? 'translate-x-[22px]' : 'translate-x-[2px]'}`} />
                 </button>
