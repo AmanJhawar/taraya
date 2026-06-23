@@ -4,13 +4,20 @@ import './globals.css'
 import Header from '@/components/header'
 import Footer from '@/components/footer'
 
-import { Inter } from 'next/font/google'
+import { Inter, Cormorant } from 'next/font/google'
 
 const inter = Inter({
   subsets: ['latin'],
   display: 'swap',
   variable: '--font-inter',
   fallback: ['system-ui', 'arial', 'sans-serif'],
+})
+
+const cormorant = Cormorant({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-cormorant',
+  weight: ['400', '500', '600', '700'],
 })
 
 import { CartProvider } from '@/components/cart-provider'
@@ -43,7 +50,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" data-scroll-behavior="smooth">
-      <body className={`${inter.className} min-h-screen flex flex-col text-black bg-white antialiased`}>
+      <body className={`${inter.variable} ${cormorant.variable} min-h-screen flex flex-col text-black bg-off-white antialiased`}>
         <CartProvider>
           <Header />
           <CartDrawer />

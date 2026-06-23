@@ -18,7 +18,7 @@ export default async function Home() {
 
 
       {/* Stats Section */}
-      <section className="py-20 md:py-32 bg-white">
+      <section className="py-20 md:py-32 bg-transparent">
         <div className="max-w-8xl mx-auto px-6">
           <div className="grid grid-cols-1 md:grid-cols-1 gap-8 md:gap-12">
 

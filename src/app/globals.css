@@ -3,6 +3,7 @@
 @theme {
   --color-black: #000000;
   --color-white: #ffffff;
+  --color-off-white: #f4f1ea;
 
   /* Overriding Tailwind's default easings with our custom curves */
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
@@ -15,6 +16,10 @@
   body {
     min-width: 320px;
     font-family: var(--font-inter), sans-serif;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-cormorant), serif;
   }
 
   /* Focus Styles for Accessibility */

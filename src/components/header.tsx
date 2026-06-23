@@ -120,7 +120,7 @@ export default function Header() {
   return (
     <header className={`fixed top-0 left-0 right-0 z-50 transition-[background-color,border-color,backdrop-filter,color] duration-200 ease-[var(--ease-out)] ${
       isSolid
-        ? 'bg-white/95 backdrop-blur-md'
+        ? 'bg-off-white/95 backdrop-blur-md'
         : 'bg-transparent border-transparent'
     }`}>
       <div 
@@ -220,7 +220,7 @@ export default function Header() {
         <nav 
           id="mobile-nav"
           ref={menuRef}
-          className={`md:hidden flex flex-col gap-6 absolute top-full left-0 right-0 bg-white border-b border-gray-200 px-6 py-6 z-50 max-h-[calc(100vh-5rem)] overflow-y-auto motion-safe:transition-[opacity,visibility] motion-reduce:transition-none duration-200 ease-[var(--ease-out)] ${isMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible'}`}
+          className={`md:hidden flex flex-col gap-6 absolute top-full left-0 right-0 bg-off-white border-b border-gray-200 px-6 py-6 z-50 max-h-[calc(100vh-5rem)] overflow-y-auto motion-safe:transition-[opacity,visibility] motion-reduce:transition-none duration-200 ease-[var(--ease-out)] ${isMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible'}`}
         >
           <NavLink href="/catalog" isActive={pathname.startsWith('/catalog')} isSolid={true} onClick={closeMenu}>CATALOG</NavLink>
           <NavLink href="/about" isActive={pathname === '/about'} isSolid={true} onClick={closeMenu}>ABOUT</NavLink>
