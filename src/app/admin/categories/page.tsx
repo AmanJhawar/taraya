@@ -142,7 +142,7 @@ export default function AdminCategories() {
     <div>
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-black mb-2 tracking-tight flex items-center gap-3">
+          <h1 className="text-3xl font-bold text-black mb-2 tracking-tight flex items-center gap-3 font-serif">
             <Tags size={28} />
             Categories
           </h1>
@@ -150,7 +150,7 @@ export default function AdminCategories() {
         </div>
       </div>
 
-      <div className="bg-white p-6 md:p-8 rounded-xl border border-gray-200 shadow-sm w-full">
+      <div className="bg-off-white p-6 md:p-8 rounded-xl border border-gray-200 shadow-sm w-full">
         <div className="mb-8">
           <form onSubmit={handleSubmit(onAddCategory)} className="flex gap-4 items-start">
             <div className="flex-1">

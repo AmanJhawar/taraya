@@ -23,7 +23,7 @@ export default async function Home() {
           <div className="grid grid-cols-1 md:grid-cols-1 gap-8 md:gap-12">
 
             <div className="block text-center p-8">
-              <div className="text-4xl md:text-5xl font-bold leading-none text-black py-8">{yearsExp}+</div>
+              <div className="text-4xl md:text-5xl font-bold leading-none text-black py-8 font-serif">{yearsExp}+</div>
               <div className="text-base text-gray-500">Years of Experience</div>
             </div>
           </div>

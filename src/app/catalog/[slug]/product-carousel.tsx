@@ -86,7 +86,7 @@ export function ProductCarousel({ images, productName }: ProductCarouselProps) {
             <button 
               onClick={() => setActiveIndex(Math.max(0, clampedIndex - 1))}
               disabled={clampedIndex === 0}
-              className={`absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/80 backdrop-blur-md rounded-full flex items-center justify-center shadow-sm transition-[opacity,background-color,transform] duration-200 ease-[var(--ease-out)] hover:bg-white active:scale-[0.95] z-20 ${
+              className={`absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-off-white/80 backdrop-blur-md rounded-full flex items-center justify-center shadow-sm transition-[opacity,background-color,transform] duration-200 ease-[var(--ease-out)] hover:bg-off-white active:scale-[0.95] z-20 ${
                 clampedIndex === 0 
                   ? 'opacity-0 pointer-events-none' 
                   : 'opacity-100'
@@ -97,7 +97,7 @@ export function ProductCarousel({ images, productName }: ProductCarouselProps) {
             <button 
               onClick={() => setActiveIndex(Math.min(safeImages.length - 1, clampedIndex + 1))}
               disabled={clampedIndex === safeImages.length - 1}
-              className={`absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/80 backdrop-blur-md rounded-full flex items-center justify-center shadow-sm transition-[opacity,background-color,transform] duration-200 ease-[var(--ease-out)] hover:bg-white active:scale-[0.95] z-20 ${
+              className={`absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-off-white/80 backdrop-blur-md rounded-full flex items-center justify-center shadow-sm transition-[opacity,background-color,transform] duration-200 ease-[var(--ease-out)] hover:bg-off-white active:scale-[0.95] z-20 ${
                 clampedIndex === safeImages.length - 1 
                   ? 'opacity-0 pointer-events-none' 
                   : 'opacity-100'

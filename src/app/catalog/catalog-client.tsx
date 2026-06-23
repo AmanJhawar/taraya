@@ -105,8 +105,8 @@ export function CatalogClient({ initialItems, initialCategories, initialNextCurs
                 onClick={() => handleCategoryChange(cat)}
                 className={`px-6 py-2 rounded-lg text-sm font-medium transition-[background-color,border-color,color,box-shadow,transform] duration-150 ease-[var(--ease-out)] active:scale-[0.97] border ${
                   activeFilter === cat 
-                    ? 'bg-white text-black border-black shadow-[0_0_0_1px_black]' 
-                    : 'bg-white text-gray-500 border-gray-200 hover:border-black/30'
+                    ? 'bg-off-white text-black border-black shadow-[0_0_0_1px_black]' 
+                    : 'bg-off-white text-gray-500 border-gray-200 hover:border-black/30'
                 }`}
               >
                 {cat}
@@ -120,7 +120,7 @@ export function CatalogClient({ initialItems, initialCategories, initialNextCurs
           {/* Search Input */}
           <div className="relative flex items-center justify-end h-[38px] w-full sm:w-[38px]">
             <div 
-              className={`absolute right-0 top-0 h-[38px] w-full sm:w-64 flex items-center bg-white transition-[clip-path,border-color,background-color,box-shadow,transform] duration-[250ms] ease-[var(--ease-out)] rounded-lg border ${
+              className={`absolute right-0 top-0 h-[38px] w-full sm:w-64 flex items-center bg-off-white transition-[clip-path,border-color,background-color,box-shadow,transform] duration-[250ms] ease-[var(--ease-out)] rounded-lg border ${
                 isSearchExpanded || searchInput 
                   ? 'border-black shadow-[0_4px_12px_rgba(0,0,0,0.05)] z-30'
                   : 'border-transparent hover:bg-gray-100 z-10'
@@ -175,7 +175,7 @@ export function CatalogClient({ initialItems, initialCategories, initialNextCurs
             <button
               onClick={() => setIsSortOpen(!isSortOpen)}
               onKeyDown={handleDropdownKeyDown}
-              className="flex items-center justify-between sm:justify-start gap-1.5 w-full sm:w-auto px-4 py-2 bg-white border border-gray-200 rounded-lg text-sm font-medium text-gray-700 hover:text-black hover:bg-gray-50 active:scale-[0.97] transition-[color,background-color,border-color,transform] duration-150 ease-[var(--ease-out)]"
+              className="flex items-center justify-between sm:justify-start gap-1.5 w-full sm:w-auto px-4 py-2 bg-off-white border border-gray-200 rounded-lg text-sm font-medium text-gray-700 hover:text-black hover:bg-gray-50 active:scale-[0.97] transition-[color,background-color,border-color,transform] duration-150 ease-[var(--ease-out)]"
               aria-haspopup="listbox"
               aria-expanded={isSortOpen}
               aria-label="Sort products"
@@ -192,7 +192,7 @@ export function CatalogClient({ initialItems, initialCategories, initialNextCurs
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.95 }}
                   transition={{ duration: 0.15, ease: EASE_OUT }}
-                  className="absolute right-0 mt-2 w-full sm:w-48 bg-white border border-gray-200 rounded-lg shadow-lg py-1 z-20 origin-top-right"
+                  className="absolute right-0 mt-2 w-full sm:w-48 bg-off-white border border-gray-200 rounded-lg shadow-lg py-1 z-20 origin-top-right"
                 >
                   <button
                     role="option"
@@ -248,7 +248,7 @@ export function CatalogClient({ initialItems, initialCategories, initialNextCurs
             <button
               onClick={handlePrevPage}
               disabled={isLoading}
-              className="px-6 py-3 text-sm font-semibold text-black bg-white border border-gray-200 rounded-lg transition-[background-color,transform] duration-200 ease-[var(--ease-out)] hover:bg-gray-50 active:scale-[0.97] disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100"
+              className="px-6 py-3 text-sm font-semibold text-black bg-off-white border border-gray-200 rounded-lg transition-[background-color,transform] duration-200 ease-[var(--ease-out)] hover:bg-gray-50 active:scale-[0.97] disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100"
             >
               Previous Page
             </button>

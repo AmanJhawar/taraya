@@ -96,7 +96,7 @@ export default function AdminInventory() {
       {!isFormOpen && (
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
           <div>
-            <h1 className="text-3xl font-bold text-black mb-2 tracking-tight flex items-center gap-3">
+            <h1 className="text-3xl font-bold text-black mb-2 tracking-tight flex items-center gap-3 font-serif">
               <Box size={28} />
               Inventory Manager
             </h1>
@@ -136,7 +136,7 @@ export default function AdminInventory() {
       )}
 
       {isFormOpen && (
-        <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm mb-8 animate-[fadeInUp_300ms_var(--ease-out)_forwards]">
+        <div className="bg-off-white p-6 rounded-xl border border-gray-200 shadow-sm mb-8 animate-[fadeInUp_300ms_var(--ease-out)_forwards]">
           <h2 className="text-xl font-semibold mb-6">{editingId ? 'Edit Product' : 'Add New Product'}</h2>
           <form onSubmit={handleSave} className="space-y-6">
             {/* Row 1: Slug + SKU */}
@@ -193,7 +193,7 @@ export default function AdminInventory() {
                     <ChevronDown size={16} className={`text-gray-400 transition-transform ${categoryOpen ? 'rotate-180' : ''}`} />
                   </button>
                   {categoryOpen && (
-                    <div className="absolute z-10 mt-1 w-full bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden origin-top animate-[fadeInUp_150ms_var(--ease-out)_forwards]">
+                    <div className="absolute z-10 mt-1 w-full bg-off-white border border-gray-200 rounded-lg shadow-lg overflow-hidden origin-top animate-[fadeInUp_150ms_var(--ease-out)_forwards]">
                       <ul id="admin-category-listbox" role="listbox" className="m-0 p-0 list-none max-h-60 overflow-y-auto">
                         {categories.map((cat, idx) => (
                           <li key={cat} role="option" aria-selected={formData.category === cat}>
@@ -239,12 +239,12 @@ export default function AdminInventory() {
                   }}
                   className={`relative inline-flex h-[22px] w-[42px] shrink-0 cursor-pointer items-center rounded-full transition-colors duration-[160ms] ease-[var(--ease-in-out)] ${formData.hasVariants ? 'bg-black' : 'bg-gray-200'}`}
                 >
-                  <span className={`pointer-events-none inline-block h-[18px] w-[18px] transform rounded-full bg-white shadow-sm ring-0 transition-transform duration-[160ms] ease-[var(--ease-in-out)] ${formData.hasVariants ? 'translate-x-[22px]' : 'translate-x-[2px]'}`} />
+                  <span className={`pointer-events-none inline-block h-[18px] w-[18px] transform rounded-full bg-off-white shadow-sm ring-0 transition-transform duration-[160ms] ease-[var(--ease-in-out)] ${formData.hasVariants ? 'translate-x-[22px]' : 'translate-x-[2px]'}`} />
                 </button>
               </div>
 
               {formData.hasVariants && (
-                <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-8 bg-white">
+                <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-8 bg-off-white">
                   {/* ── Size Column ── */}
                   <div className={isNoPurityCategory(formData.category) ? 'md:col-span-2' : ''}>
                     <p className="text-[11px] font-semibold tracking-widest uppercase text-gray-400 mb-4">
@@ -356,7 +356,7 @@ export default function AdminInventory() {
 
                 if (combos.length === 0) {
                   return (
-                    <div className="px-6 pb-6 bg-white">
+                    <div className="px-6 pb-6 bg-off-white">
                       <div className="pt-6 border-t border-gray-100">
                         <p className="text-sm text-gray-500 italic">
                           {hasStonesCategory(formData.category)
@@ -371,14 +371,14 @@ export default function AdminInventory() {
                 }
 
                 return (
-                  <div className="px-6 pb-6 bg-white">
+                  <div className="px-6 pb-6 bg-off-white">
                     <div className="pt-6 border-t border-gray-100">
                       <p className="text-[11px] font-semibold tracking-widest uppercase text-gray-400 mb-4">
                         {isBullion ? 'Variant SKUs' : 'Variant SKUs & Approx Weights'}
                       </p>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         {combos.map(combo => (
-                          <div key={combo.key} className="p-4 bg-white rounded-xl border border-gray-200 space-y-3">
+                          <div key={combo.key} className="p-4 bg-off-white rounded-xl border border-gray-200 space-y-3">
                             <span className="text-[11px] font-semibold text-black uppercase tracking-widest block">{combo.label}</span>
                             <div className={isBullion ? '' : 'grid grid-cols-2 gap-3'}>
                               <div className="flex flex-col gap-1">
@@ -572,7 +572,7 @@ export default function AdminInventory() {
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-black"></div>
           </div>
         ) : (
-          <div className="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm">
+          <div className="bg-off-white rounded-xl border border-gray-200 overflow-hidden shadow-sm">
             <div className="overflow-x-auto">
               <table className="w-full text-left border-collapse min-w-[900px]">
                 <thead>

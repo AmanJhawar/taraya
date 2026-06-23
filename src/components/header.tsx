@@ -159,7 +159,7 @@ export default function Header() {
               {(pathname.startsWith('/catalog') || (isInitialized && totalItems > 0)) && (
                 <button 
                   onClick={() => setIsCartOpen(true)}
-                  className={`relative p-2 rounded-full transition-[color,background-color] duration-200 ease-[var(--ease-out)] active:scale-[0.97] ${!isSolid ? 'text-white hover:bg-white/10' : 'text-black hover:bg-gray-100'}`}
+                  className={`relative p-2 rounded-full transition-[color,background-color] duration-200 ease-[var(--ease-out)] active:scale-[0.97] ${!isSolid ? 'text-white hover:bg-off-white/10' : 'text-black hover:bg-gray-100'}`}
                   aria-label="Open inquiry"
                 >
                   <ShoppingBag size={20} strokeWidth={1.5} />
@@ -178,7 +178,7 @@ export default function Header() {
             <div className="w-10 h-10 flex items-center justify-center">
               {(pathname.startsWith('/catalog') || (isInitialized && totalItems > 0)) && (
                 <button 
-                  className={`p-2 relative flex items-center justify-center rounded-full transition-[color,background-color] duration-200 ease-[var(--ease-out)] active:scale-[0.97] ${!isSolid ? 'text-white hover:bg-white/10' : 'text-black hover:bg-gray-100'}`}
+                  className={`p-2 relative flex items-center justify-center rounded-full transition-[color,background-color] duration-200 ease-[var(--ease-out)] active:scale-[0.97] ${!isSolid ? 'text-white hover:bg-off-white/10' : 'text-black hover:bg-gray-100'}`}
                   onClick={() => setIsCartOpen(true)}
                   aria-label="Open inquiry"
                 >
@@ -199,9 +199,9 @@ export default function Header() {
               aria-controls="mobile-nav"
             >
               <div className="flex flex-col w-6 h-[18px] relative justify-between">
-                <span className={`block h-[2px] w-full transition-[transform,background-color] duration-200 ease-[var(--ease-out)] ${!isSolid ? 'bg-white' : 'bg-black'} ${isMenuOpen ? 'rotate-45 translate-y-[8px]' : ''}`}></span>
-                <span className={`block h-[2px] w-full transition-[opacity,background-color] duration-200 ease-[var(--ease-out)] ${!isSolid ? 'bg-white' : 'bg-black'} ${isMenuOpen ? 'opacity-0' : ''}`}></span>
-                <span className={`block h-[2px] w-full transition-[transform,background-color] duration-200 ease-[var(--ease-out)] ${!isSolid ? 'bg-white' : 'bg-black'} ${isMenuOpen ? '-rotate-45 -translate-y-[8px]' : ''}`}></span>
+                <span className={`block h-[2px] w-full transition-[transform,background-color] duration-200 ease-[var(--ease-out)] ${!isSolid ? 'bg-off-white' : 'bg-black'} ${isMenuOpen ? 'rotate-45 translate-y-[8px]' : ''}`}></span>
+                <span className={`block h-[2px] w-full transition-[opacity,background-color] duration-200 ease-[var(--ease-out)] ${!isSolid ? 'bg-off-white' : 'bg-black'} ${isMenuOpen ? 'opacity-0' : ''}`}></span>
+                <span className={`block h-[2px] w-full transition-[transform,background-color] duration-200 ease-[var(--ease-out)] ${!isSolid ? 'bg-off-white' : 'bg-black'} ${isMenuOpen ? '-rotate-45 -translate-y-[8px]' : ''}`}></span>
               </div>
             </button>
           </div>

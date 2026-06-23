@@ -54,7 +54,7 @@ export default function NetworkHero() {
 
         {/* Main Title */}
         <motion.h1
-          className="text-4xl md:text-5xl lg:text-6xl font-medium leading-tight text-white mb-24"
+          className="text-4xl md:text-5xl lg:text-6xl font-medium leading-tight text-white mb-24 font-serif"
           initial={{ clipPath: 'inset(0 0 100% 0)' }}
           animate={{ clipPath: 'inset(0 0 0% 0)' }}
           transition={{ duration: 0.8, ease: EASE_OUT }}
@@ -63,7 +63,7 @@ export default function NetworkHero() {
           <span className="relative inline-block">
             bullions & silver
             <motion.span
-              className="absolute bottom-1 left-0 right-0 h-0.5 bg-white"
+              className="absolute bottom-1 left-0 right-0 h-0.5 bg-off-white"
               initial={{ scaleX: 0 }}
               animate={{ scaleX: 1 }}
               style={{ originX: 0 }}

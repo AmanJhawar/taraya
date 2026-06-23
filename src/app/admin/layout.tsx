@@ -38,7 +38,7 @@ function SidebarContent({ setIsMobileMenuOpen }: { setIsMobileMenuOpen: (v: bool
               key={item.name}
               href={item.href}
               className={`flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-[box-shadow,background-color,border-color,color] duration-150 ${isActive
-                  ? 'bg-white text-black outline outline-2 outline-offset-[-2px] outline-black shadow-[0_0_0_1px_black]'
+                  ? 'bg-off-white text-black outline outline-2 outline-offset-[-2px] outline-black shadow-[0_0_0_1px_black]'
                   : 'text-gray-500 hover:bg-gray-100 hover:text-black'
                 }`}
             >
@@ -133,7 +133,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   return (
     <div className="min-h-screen flex flex-col md:flex-row bg-gray-50 text-black">
       {/* Mobile Top Bar */}
-      <div className="md:hidden bg-white border-b border-gray-200 p-4 flex items-center justify-between sticky top-0 z-20">
+      <div className="md:hidden bg-off-white border-b border-gray-200 p-4 flex items-center justify-between sticky top-0 z-20">
         <span className="text-lg font-bold tracking-tight">Taraya Admin</span>
         <button onClick={() => setIsMobileMenuOpen(true)} className="p-2 -mr-2 text-gray-500 hover:text-black transition-[color,transform] active:scale-[0.97]">
           <Menu size={24} />
@@ -141,14 +141,14 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       </div>
 
       {/* Desktop Sidebar */}
-      <aside className="w-64 bg-white border-r border-gray-200 flex flex-col hidden md:flex sticky top-0 h-screen shrink-0">
+      <aside className="w-64 bg-off-white border-r border-gray-200 flex flex-col hidden md:flex sticky top-0 h-screen shrink-0">
         <SidebarContent setIsMobileMenuOpen={setIsMobileMenuOpen} />
       </aside>
 
       {/* Mobile Sidebar Overlay */}
       {isMobileMenuOpen && (
         <div className="md:hidden fixed inset-0 z-30 bg-black/50" onClick={() => setIsMobileMenuOpen(false)}>
-          <aside className="w-64 bg-white h-full flex flex-col transform transition-transform" onClick={e => e.stopPropagation()}>
+          <aside className="w-64 bg-off-white h-full flex flex-col transform transition-transform" onClick={e => e.stopPropagation()}>
             <SidebarContent setIsMobileMenuOpen={setIsMobileMenuOpen} />
           </aside>
         </div>

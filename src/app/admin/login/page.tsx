@@ -54,9 +54,9 @@ export default function AdminLogin() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full bg-white p-10 rounded-xl shadow-[0_8px_24px_rgba(0,0,0,0.06)] border border-gray-100">
+      <div className="max-w-md w-full bg-off-white p-10 rounded-xl shadow-[0_8px_24px_rgba(0,0,0,0.06)] border border-gray-100">
         <div className="text-center mb-10">
-          <h2 className="text-3xl font-bold text-black tracking-tight mb-2">Admin</h2>
+          <h2 className="text-3xl font-bold text-black tracking-tight mb-2 font-serif">Admin</h2>
           <p className="text-sm text-gray-500">Sign in to manage your command center.</p>
         </div>
 

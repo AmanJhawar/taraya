@@ -39,7 +39,7 @@ export default async function Catalog() {
       <div className="relative py-12 mb-12">
         <div className="max-w-8xl mx-auto px-6 relative z-10">
           <StaggerContainer className="text-center">
-            <FadeInUp className="text-4xl md:text-5xl font-bold leading-tight tracking-tight text-black mb-6">
+            <FadeInUp className="text-4xl md:text-5xl font-bold leading-tight tracking-tight text-black mb-6 font-serif">
               Catalog
             </FadeInUp>
             <FadeInUp 

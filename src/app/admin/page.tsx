@@ -15,7 +15,7 @@ export default function AdminDashboard() {
   return (
     <div>
       <div className="mb-10">
-        <h1 className="text-3xl font-bold text-black mb-2 tracking-tight">Dashboard Overview</h1>
+        <h1 className="text-3xl font-bold text-black mb-2 tracking-tight font-serif">Dashboard Overview</h1>
         <p className="text-gray-500 text-lg">Welcome to the Taraya command center.</p>
       </div>
 
@@ -26,7 +26,7 @@ export default function AdminDashboard() {
             <Link 
               key={card.name} 
               href={card.href}
-              className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-[transform,box-shadow] duration-200 hover:-translate-y-0.5 group"
+              className="bg-off-white p-6 rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-[transform,box-shadow] duration-200 hover:-translate-y-0.5 group"
             >
               <div className="w-12 h-12 bg-gray-50 rounded-xl flex items-center justify-center mb-4 group-hover:bg-black group-hover:text-white transition-colors duration-200">
                 <Icon size={24} className="text-gray-500 group-hover:text-white transition-colors duration-200" strokeWidth={1.5} />

@@ -93,7 +93,7 @@ export default function CustomSelect({ id, name, value, onChange, options }: Cus
         aria-expanded={isOpen}
         aria-controls={`${id}-listbox`}
         onClick={() => isOpen ? closeSelect() : openSelect()}
-        className={`w-full px-4 py-3 border border-gray-200 rounded-lg text-base bg-white text-left flex justify-between items-center transition-colors duration-150 ease-[var(--ease-out)] focus:border-black focus:ring-4 focus:ring-black/10 ${isOpen ? 'border-black ring-4 ring-black/10' : ''}`}
+        className={`w-full px-4 py-3 border border-gray-200 rounded-lg text-base bg-off-white text-left flex justify-between items-center transition-colors duration-150 ease-[var(--ease-out)] focus:border-black focus:ring-4 focus:ring-black/10 ${isOpen ? 'border-black ring-4 ring-black/10' : ''}`}
       >
         <span className="text-black">{selectedOption.label}</span>
         <ChevronDown 
@@ -102,7 +102,7 @@ export default function CustomSelect({ id, name, value, onChange, options }: Cus
       </button>
 
       {isOpen && (
-        <div className="absolute z-10 w-full mt-2 bg-white border border-gray-200 rounded-lg shadow-[0_8px_24px_rgba(0,0,0,0.06)] overflow-hidden animate-[fadeInUp_200ms_var(--ease-out)_forwards] origin-top">
+        <div className="absolute z-10 w-full mt-2 bg-off-white border border-gray-200 rounded-lg shadow-[0_8px_24px_rgba(0,0,0,0.06)] overflow-hidden animate-[fadeInUp_200ms_var(--ease-out)_forwards] origin-top">
           <ul 
             id={`${id}-listbox`}
             role="listbox"

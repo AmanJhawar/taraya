@@ -101,7 +101,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
               item={item}
               headingSlot={
                 <>
-                  <h1 className="text-4xl md:text-5xl font-bold leading-tight tracking-tight text-black mb-2">
+                  <h1 className="text-4xl md:text-5xl font-bold leading-tight tracking-tight text-black mb-2 font-serif">
                     {item.name}
                   </h1>
                   <p className="text-sm font-medium tracking-wide text-gray-500 mb-6">

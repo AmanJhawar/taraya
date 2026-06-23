@@ -114,7 +114,7 @@ export function ConfirmModal({
             animate={{ opacity: 1, transform: "scale(1) translateY(0px)" }}
             exit={{ opacity: 0, transform: "scale(0.95) translateY(8px)" }}
             transition={{ duration: 0.2, ease: EASE_OUT }}
-            className="relative bg-white rounded-xl shadow-[0_8px_24px_rgba(0,0,0,0.06)] w-full max-w-md overflow-hidden z-10"
+            className="relative bg-off-white rounded-xl shadow-[0_8px_24px_rgba(0,0,0,0.06)] w-full max-w-md overflow-hidden z-10"
           >
             <div className="p-6 md:p-8">
               <div className="flex items-center justify-between mb-4">
@@ -136,7 +136,7 @@ export function ConfirmModal({
               <div className="flex flex-col-reverse sm:flex-row items-center sm:justify-end gap-3 mt-8">
                 <button
                   onClick={() => onClose()}
-                  className="w-full sm:w-auto px-6 py-3 text-sm font-semibold text-black bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-[background-color,border-color,color,transform] duration-200 ease-[var(--ease-out)] active:scale-[0.97]"
+                  className="w-full sm:w-auto px-6 py-3 text-sm font-semibold text-black bg-off-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-[background-color,border-color,color,transform] duration-200 ease-[var(--ease-out)] active:scale-[0.97]"
                 >
                   {cancelText}
                 </button>

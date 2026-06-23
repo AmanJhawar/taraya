@@ -44,7 +44,7 @@ function ContactForm() {
             id="firstName"
             placeholder="e.g., Jane"
             {...register('firstName')}
-            className={`px-4 py-3 border rounded-lg text-base bg-white transition-colors duration-150 ease-[var(--ease-out)] focus:border-black focus:ring-4 focus:ring-black/10 ${errors.firstName ? 'border-gray-900' : 'border-gray-200'}`}
+            className={`px-4 py-3 border rounded-lg text-base bg-off-white transition-colors duration-150 ease-[var(--ease-out)] focus:border-black focus:ring-4 focus:ring-black/10 ${errors.firstName ? 'border-gray-900' : 'border-gray-200'}`}
           />
           {errors.firstName && <p className="text-gray-500 font-medium text-sm mt-1">{errors.firstName.message}</p>}
         </div>
@@ -56,7 +56,7 @@ function ContactForm() {
             id="middleName"
             placeholder="e.g., A."
             {...register('middleName')}
-            className="px-4 py-3 border border-gray-200 rounded-lg text-base bg-white transition-colors duration-150 ease-[var(--ease-out)] focus:border-black focus:ring-4 focus:ring-black/10"
+            className="px-4 py-3 border border-gray-200 rounded-lg text-base bg-off-white transition-colors duration-150 ease-[var(--ease-out)] focus:border-black focus:ring-4 focus:ring-black/10"
           />
         </div>
 
@@ -67,7 +67,7 @@ function ContactForm() {
             id="lastName"
             placeholder="e.g., Doe"
             {...register('lastName')}
-            className={`px-4 py-3 border rounded-lg text-base bg-white transition-colors duration-150 ease-[var(--ease-out)] focus:border-black focus:ring-4 focus:ring-black/10 ${errors.lastName ? 'border-gray-900' : 'border-gray-200'}`}
+            className={`px-4 py-3 border rounded-lg text-base bg-off-white transition-colors duration-150 ease-[var(--ease-out)] focus:border-black focus:ring-4 focus:ring-black/10 ${errors.lastName ? 'border-gray-900' : 'border-gray-200'}`}
           />
           {errors.lastName && <p className="text-gray-500 font-medium text-sm mt-1">{errors.lastName.message}</p>}
         </div>
@@ -87,7 +87,7 @@ function ContactForm() {
                   e.target.value = e.target.value.replace(/\D/g, '').slice(0, 4);
                 }
               })}
-              className={`w-20 min-w-0 pl-8 pr-3 py-3 border rounded-lg text-base bg-white transition-colors duration-150 ease-[var(--ease-out)] focus:border-black focus:ring-4 focus:ring-black/10 ${errors.countryCode ? 'border-gray-900' : 'border-gray-200'}`}
+              className={`w-20 min-w-0 pl-8 pr-3 py-3 border rounded-lg text-base bg-off-white transition-colors duration-150 ease-[var(--ease-out)] focus:border-black focus:ring-4 focus:ring-black/10 ${errors.countryCode ? 'border-gray-900' : 'border-gray-200'}`}
             />
               <input
               type="tel"
@@ -98,7 +98,7 @@ function ContactForm() {
                 }
               })}
               placeholder="e.g., 9876543210"
-              className={`flex-1 min-w-0 px-4 py-3 border rounded-lg text-base bg-white transition-colors duration-150 ease-[var(--ease-out)] focus:border-black focus:ring-4 focus:ring-black/10 ${errors.mobile ? 'border-gray-900' : 'border-gray-200'}`}
+              className={`flex-1 min-w-0 px-4 py-3 border rounded-lg text-base bg-off-white transition-colors duration-150 ease-[var(--ease-out)] focus:border-black focus:ring-4 focus:ring-black/10 ${errors.mobile ? 'border-gray-900' : 'border-gray-200'}`}
             />
           </div>
           {(errors.countryCode || errors.mobile) && (
@@ -115,7 +115,7 @@ function ContactForm() {
             id="email"
             placeholder="e.g., jane@example.com"
             {...register('email')}
-            className={`px-4 py-3 border rounded-lg text-base bg-white transition-colors duration-150 ease-[var(--ease-out)] focus:border-black focus:ring-4 focus:ring-black/10 ${errors.email ? 'border-gray-900' : 'border-gray-200'}`}
+            className={`px-4 py-3 border rounded-lg text-base bg-off-white transition-colors duration-150 ease-[var(--ease-out)] focus:border-black focus:ring-4 focus:ring-black/10 ${errors.email ? 'border-gray-900' : 'border-gray-200'}`}
           />
           {errors.email && <p className="text-gray-500 font-medium text-sm mt-1">{errors.email.message}</p>}
         </div>
@@ -129,7 +129,7 @@ function ContactForm() {
             id="company"
             placeholder="e.g., Acme Corp"
             {...register('company')}
-            className="px-4 py-3 border border-gray-200 rounded-lg text-base bg-white transition-colors duration-150 ease-[var(--ease-out)] focus:border-black focus:ring-4 focus:ring-black/10"
+            className="px-4 py-3 border border-gray-200 rounded-lg text-base bg-off-white transition-colors duration-150 ease-[var(--ease-out)] focus:border-black focus:ring-4 focus:ring-black/10"
           />
         </div>
 
@@ -139,7 +139,7 @@ function ContactForm() {
             type="text"
             id="gstinPan"
             {...register('gstinPan')}
-            className="px-4 py-3 border border-gray-200 rounded-lg text-base bg-white transition-colors duration-150 ease-[var(--ease-out)] focus:border-black focus:ring-4 focus:ring-black/10 uppercase"
+            className="px-4 py-3 border border-gray-200 rounded-lg text-base bg-off-white transition-colors duration-150 ease-[var(--ease-out)] focus:border-black focus:ring-4 focus:ring-black/10 uppercase"
             placeholder="e.g., ABCDE1234F"
           />
         </div>
@@ -151,7 +151,7 @@ function ContactForm() {
           id="message"
           placeholder="How can we help you?"
           {...register('message')}
-          className={`px-4 py-3 border rounded-lg text-base bg-white transition-colors duration-150 ease-[var(--ease-out)] focus:border-black focus:ring-4 focus:ring-black/10 resize-y min-h-[160px] ${errors.message ? 'border-gray-900' : 'border-gray-200'}`}
+          className={`px-4 py-3 border rounded-lg text-base bg-off-white transition-colors duration-150 ease-[var(--ease-out)] focus:border-black focus:ring-4 focus:ring-black/10 resize-y min-h-[160px] ${errors.message ? 'border-gray-900' : 'border-gray-200'}`}
           rows={8}
         ></textarea>
         {errors.message && <p className="text-gray-500 font-medium text-sm mt-1">{errors.message.message}</p>}
@@ -183,7 +183,7 @@ export default function Contact() {
     <div className="pt-10 pb-20 min-h-[calc(100vh-160px)]">
       <div className="max-w-8xl mx-auto px-6">
         <div className="text-center mb-20">
-          <h1 className="text-4xl md:text-5xl font-bold leading-tight tracking-tight text-black mb-6">
+          <h1 className="text-4xl md:text-5xl font-bold leading-tight tracking-tight text-black mb-6 font-serif">
             Contact Us
           </h1>
           <p className="text-xl font-normal text-gray-500 leading-relaxed max-w-[600px] mx-auto">

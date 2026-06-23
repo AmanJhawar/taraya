@@ -35,7 +35,7 @@ function StatusDropdown({ status, onChange }: { status: Inquiry['status'], onCha
     <div className="relative inline-block text-left" ref={ref}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center justify-between gap-2 w-28 text-sm bg-white border border-gray-200 rounded-lg px-3 py-1.5 hover:border-gray-200 transition-[border-color,transform] active:scale-[0.97]"
+        className="flex items-center justify-between gap-2 w-28 text-sm bg-off-white border border-gray-200 rounded-lg px-3 py-1.5 hover:border-gray-200 transition-[border-color,transform] active:scale-[0.97]"
       >
         <span className="capitalize">{currentOption?.label}</span>
         <ChevronDown size={14} className={`text-gray-400 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
@@ -48,7 +48,7 @@ function StatusDropdown({ status, onChange }: { status: Inquiry['status'], onCha
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: -4 }}
             transition={{ duration: 0.15, ease: EASE_OUT }}
-            className="absolute z-10 mt-1 w-full bg-white border border-gray-100 rounded-lg shadow-[0_8px_24px_rgba(0,0,0,0.06)] overflow-hidden origin-top"
+            className="absolute z-10 mt-1 w-full bg-off-white border border-gray-100 rounded-lg shadow-[0_8px_24px_rgba(0,0,0,0.06)] overflow-hidden origin-top"
           >
             {options.map((opt) => (
               <button
@@ -154,7 +154,7 @@ export default function AdminInquiries() {
 
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-black mb-2 tracking-tight flex items-center gap-3">
+          <h1 className="text-3xl font-bold text-black mb-2 tracking-tight flex items-center gap-3 font-serif">
             <MessageSquare size={28} />
             Inquiries
           </h1>
@@ -167,7 +167,7 @@ export default function AdminInquiries() {
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-black"></div>
         </div>
       ) : (
-        <div className="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm">
+        <div className="bg-off-white rounded-xl border border-gray-200 overflow-hidden shadow-sm">
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse min-w-[1000px]">
               <thead>
@@ -243,7 +243,7 @@ export default function AdminInquiries() {
               <button 
                 onClick={loadMore}
                 disabled={loadingMore}
-                className="px-6 py-2 bg-white border border-gray-200 rounded-lg text-sm font-medium hover:bg-gray-50 disabled:opacity-50 transition-colors"
+                className="px-6 py-2 bg-off-white border border-gray-200 rounded-lg text-sm font-medium hover:bg-gray-50 disabled:opacity-50 transition-colors"
               >
                 {loadingMore ? 'Loading...' : 'Load More'}
               </button>

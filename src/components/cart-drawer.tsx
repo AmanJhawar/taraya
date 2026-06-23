@@ -102,7 +102,7 @@ export function CartDrawer() {
             animate={{ transform: "translateX(0%)" }}
             exit={{ transform: "translateX(100%)" }}
             transition={{ duration: 0.35, ease: [0.32, 0.72, 0, 1] }}
-            className="fixed top-0 right-0 h-full w-[400px] max-w-[100vw] bg-white z-[70] shadow-2xl flex flex-col"
+            className="fixed top-0 right-0 h-full w-[400px] max-w-[100vw] bg-off-white z-[70] shadow-2xl flex flex-col"
           >
             <div className="flex items-center justify-between p-6 border-b border-gray-100">
               <h2 id="inquiry-drawer-title" className="text-xl font-bold tracking-tight">Your Inquiry</h2>
@@ -194,7 +194,7 @@ export function CartDrawer() {
             </div>
 
             {cartItems.length > 0 && (
-              <div className="p-6 bg-white">
+              <div className="p-6 bg-off-white">
                 <Link
                   href="/contact?fromCart=true"
                   onClick={() => setIsCartOpen(false)}
