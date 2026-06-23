@@ -4,7 +4,7 @@ export function SkeletonGrid({ count = 6 }: { count?: number }) {
       {Array.from({ length: count }).map((_, i) => (
         <div 
           key={i} 
-          className="bg-off-white border border-gray-200 rounded-xl overflow-hidden min-h-[300px] flex flex-col"
+          className="bg-field border border-line rounded-xl overflow-hidden min-h-[300px] flex flex-col"
         >
           {/* Image placeholder */}
           <div className="aspect-[3/4] bg-[#f5f5f7] animate-pulse relative overflow-hidden" />

@@ -15,8 +15,8 @@ export default function AdminDashboard() {
   return (
     <div>
       <div className="mb-10">
-        <h1 className="text-3xl font-bold text-black mb-2 tracking-tight font-serif">Dashboard Overview</h1>
-        <p className="text-gray-500 text-lg">Welcome to the Taraya command center.</p>
+        <h1 className="text-3xl font-bold text-ink mb-2 tracking-tight font-serif">Dashboard Overview</h1>
+        <p className="text-muted text-lg">Welcome to the Taraya command center.</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -26,13 +26,13 @@ export default function AdminDashboard() {
             <Link 
               key={card.name} 
               href={card.href}
-              className="bg-off-white p-6 rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-[transform,box-shadow] duration-200 hover:-translate-y-0.5 group"
+              className="bg-field p-6 rounded-xl border border-line shadow-sm hover:shadow-md transition-[transform,box-shadow] duration-200 hover:-translate-y-0.5 group"
             >
-              <div className="w-12 h-12 bg-gray-50 rounded-xl flex items-center justify-center mb-4 group-hover:bg-black group-hover:text-white transition-colors duration-200">
-                <Icon size={24} className="text-gray-500 group-hover:text-white transition-colors duration-200" strokeWidth={1.5} />
+              <div className="w-12 h-12 bg-band rounded-xl flex items-center justify-center mb-4 group-hover:bg-ink group-hover:text-white transition-colors duration-200">
+                <Icon size={24} className="text-muted group-hover:text-white transition-colors duration-200" strokeWidth={1.5} />
               </div>
-              <h2 className="text-xl font-semibold text-black mb-2">{card.name}</h2>
-              <p className="text-gray-500 text-sm leading-relaxed">
+              <h2 className="text-xl font-semibold text-ink mb-2">{card.name}</h2>
+              <p className="text-muted text-sm leading-relaxed">
                 {card.description}
               </p>
             </Link>

@@ -96,13 +96,13 @@ export function ImageDropzone({ value, onChange }: ImageDropzoneProps) {
   if (value) {
     const imgSrc = value.startsWith('http') ? value : `/assets/${value}`
     return (
-      <div className="relative group border border-gray-200 rounded-lg overflow-hidden bg-gray-50 h-48 flex items-center justify-center">
+      <div className="relative group border border-line rounded-lg overflow-hidden bg-band h-48 flex items-center justify-center">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={imgSrc} alt="Uploaded preview" className="max-h-full object-contain transition-transform duration-[250ms] ease-[var(--ease-out)] group-hover:scale-[1.02] will-change-transform" />
         <button
           type="button"
           onClick={() => onChange('')}
-          className="absolute top-2 right-2 bg-off-white/90 backdrop-blur-sm text-gray-500 p-2 rounded-full shadow-sm hover:bg-gray-100 hover:text-black transition-colors opacity-0 group-hover:opacity-100 duration-150 active:scale-[0.97]"
+          className="absolute top-2 right-2 bg-field/90 backdrop-blur-sm text-muted p-2 rounded-full shadow-sm hover:bg-band hover:text-ink transition-colors opacity-0 group-hover:opacity-100 duration-150 active:scale-[0.97]"
         >
           <X size={16} />
         </button>
@@ -117,8 +117,8 @@ export function ImageDropzone({ value, onChange }: ImageDropzoneProps) {
       onDragLeave={onDragLeave}
       onDrop={onDrop}
       className={`relative flex flex-col items-center justify-center gap-3 w-full px-4 py-8 rounded-xl border-2 border-dashed text-sm focus:outline-none transition-all duration-[160ms] ease-[var(--ease-out)]
-        ${isUploading ? 'opacity-70 cursor-not-allowed border-gray-200 bg-gray-50' : 'cursor-pointer'}
-        ${isDragging ? 'border-black bg-gray-50 scale-[0.99]' : 'border-gray-300 hover:bg-gray-50 hover:border-gray-400'}
+        ${isUploading ? 'opacity-70 cursor-not-allowed border-line bg-band' : 'cursor-pointer'}
+        ${isDragging ? 'border-ink bg-band scale-[0.99]' : 'border-line hover:bg-band hover:border-line'}
       `}
     >
       <input 
@@ -129,9 +129,9 @@ export function ImageDropzone({ value, onChange }: ImageDropzoneProps) {
         className="hidden" 
       />
       
-      <div className={`w-10 h-10 rounded-full flex items-center justify-center transition-colors duration-[160ms] ${isDragging ? 'bg-black text-white' : 'bg-gray-100 text-gray-500'}`}>
+      <div className={`w-10 h-10 rounded-full flex items-center justify-center transition-colors duration-[160ms] ${isDragging ? 'bg-ink text-white' : 'bg-band text-muted'}`}>
         {isUploading ? (
-          <Loader2 size={20} className="animate-spin text-gray-500" />
+          <Loader2 size={20} className="animate-spin text-muted" />
         ) : isDragging ? (
           <ImageIcon size={20} />
         ) : (
@@ -140,11 +140,11 @@ export function ImageDropzone({ value, onChange }: ImageDropzoneProps) {
       </div>
       
       <div className="text-center">
-        <p className={`font-medium transition-colors duration-[160ms] ${isDragging ? 'text-black' : 'text-gray-700'}`}>
+        <p className={`font-medium transition-colors duration-[160ms] ${isDragging ? 'text-ink' : 'text-ink'}`}>
           {isUploading ? 'Uploading...' : isDragging ? 'Drop image here' : 'Click or drag to upload'}
         </p>
         {!isUploading && (
-          <p className="text-[11px] text-gray-400 mt-1">JPEG, PNG, WebP up to 10MB</p>
+          <p className="text-[11px] text-muted mt-1">JPEG, PNG, WebP up to 10MB</p>
         )}
       </div>
     </div>

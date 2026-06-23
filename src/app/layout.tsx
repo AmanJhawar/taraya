@@ -50,7 +50,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" data-scroll-behavior="smooth">
-      <body className={`${cormorant.variable} ${garamond.variable} min-h-screen flex flex-col text-black bg-off-white antialiased`}>
+      <body className={`${cormorant.variable} ${garamond.variable} min-h-screen flex flex-col text-ink bg-field antialiased`}>
         <CartProvider>
           <Header />
           <CartDrawer />

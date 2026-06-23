@@ -88,7 +88,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
           <FadeInUp className="mb-8">
             <Link 
               href="/catalog" 
-              className="inline-flex items-center gap-2 text-sm font-medium text-gray-500 hover:text-black transition-colors duration-200 group"
+              className="inline-flex items-center gap-2 text-sm font-medium text-muted hover:text-ink transition-colors duration-200 group"
             >
               <ArrowLeft size={16} className="transition-transform duration-200 group-hover:-translate-x-1" />
               Back to Catalog
@@ -101,27 +101,27 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
               item={item}
               headingSlot={
                 <>
-                  <h1 className="text-4xl md:text-5xl font-bold leading-tight tracking-tight text-black mb-2 font-serif">
+                  <h1 className="text-4xl md:text-5xl font-bold leading-tight tracking-tight text-ink mb-2 font-serif">
                     {item.name}
                   </h1>
-                  <p className="text-sm font-medium tracking-wide text-gray-500 mb-6">
+                  <p className="text-sm font-medium tracking-wide text-muted mb-6">
                     Price on request
                   </p>
-                  <p className="text-lg font-normal text-gray-500 leading-relaxed mb-10">
+                  <p className="text-lg font-normal text-muted leading-relaxed mb-10">
                     {item.description}
                   </p>
                 </>
               }
               specsSlot={
-                <div className="mt-12 space-y-1 text-sm text-gray-500">
+                <div className="mt-12 space-y-1 text-sm text-muted">
                   <div className="flex justify-between py-2">
                     <span className="font-medium">Category</span>
-                    <span className="text-black text-right">{item.category}</span>
+                    <span className="text-ink text-right">{item.category}</span>
                   </div>
                   {item.material && (
                     <div className="flex justify-between py-2">
                       <span className="font-medium">Material</span>
-                      <span className="text-black text-right">{item.material}</span>
+                      <span className="text-ink text-right">{item.material}</span>
                     </div>
                   )}
                   {(() => {
@@ -139,7 +139,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
                     return (
                       <div className="flex justify-between py-2">
                         <span className="font-medium">Approx Weight</span>
-                        <span className="text-black text-right">
+                        <span className="text-ink text-right">
                           {item.weight.match(/[a-zA-Z]/) ? item.weight : `${item.weight}g`}
                         </span>
                       </div>
@@ -154,7 +154,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
         {/* More Products Section */}
         {moreProducts.length > 0 && (
           <div className="mt-32 pt-16">
-            <h2 className="text-2xl font-bold tracking-tight text-black mb-10 text-center">More from our catalog</h2>
+            <h2 className="text-2xl font-bold tracking-tight text-ink mb-10 text-center">More from our catalog</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {moreProducts.map((p) => (
                 <ProductCard key={p.id} item={p} showVariants={false} />

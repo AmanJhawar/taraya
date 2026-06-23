@@ -24,7 +24,7 @@ function SidebarContent({ setIsMobileMenuOpen }: { setIsMobileMenuOpen: (v: bool
         <Link href="/" className="text-xl font-bold tracking-tight hover:opacity-70 transition-opacity duration-200">
           Admin
         </Link>
-        <button className="md:hidden p-2 -mr-2 text-gray-500 hover:text-black transition-[color,transform] active:scale-[0.97]" onClick={() => setIsMobileMenuOpen(false)}>
+        <button className="md:hidden p-2 -mr-2 text-muted hover:text-ink transition-[color,transform] active:scale-[0.97]" onClick={() => setIsMobileMenuOpen(false)}>
           <X size={20} />
         </button>
       </div>
@@ -38,8 +38,8 @@ function SidebarContent({ setIsMobileMenuOpen }: { setIsMobileMenuOpen: (v: bool
               key={item.name}
               href={item.href}
               className={`flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-[box-shadow,background-color,border-color,color] duration-150 ${isActive
-                  ? 'bg-off-white text-black outline outline-2 outline-offset-[-2px] outline-black shadow-[0_0_0_1px_black]'
-                  : 'text-gray-500 hover:bg-gray-100 hover:text-black'
+                  ? 'bg-field text-ink outline outline-2 outline-offset-[-2px] outline-black shadow-[0_0_0_1px_black]'
+                  : 'text-muted hover:bg-band hover:text-ink'
                 }`}
             >
               <Icon size={18} strokeWidth={isActive ? 2.5 : 2} />
@@ -55,7 +55,7 @@ function SidebarContent({ setIsMobileMenuOpen }: { setIsMobileMenuOpen: (v: bool
             signOut(auth)
             router.push('/admin/login')
           }}
-          className="flex items-center gap-3 w-full px-4 py-3 text-sm font-medium text-gray-500 hover:text-black hover:bg-gray-100 rounded-lg transition-colors duration-150"
+          className="flex items-center gap-3 w-full px-4 py-3 text-sm font-medium text-muted hover:text-ink hover:bg-band rounded-lg transition-colors duration-150"
         >
           <LogOut size={18} />
           Sign Out
@@ -115,8 +115,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-black"></div>
+      <div className="min-h-screen flex items-center justify-center bg-band">
+        <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-ink"></div>
       </div>
     )
   }
@@ -131,24 +131,24 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   }
 
   return (
-    <div className="min-h-screen flex flex-col md:flex-row bg-gray-50 text-black">
+    <div className="min-h-screen flex flex-col md:flex-row bg-band text-ink">
       {/* Mobile Top Bar */}
-      <div className="md:hidden bg-off-white border-b border-gray-200 p-4 flex items-center justify-between sticky top-0 z-20">
+      <div className="md:hidden bg-field border-b border-line p-4 flex items-center justify-between sticky top-0 z-20">
         <span className="text-lg font-bold tracking-tight">Taraya Admin</span>
-        <button onClick={() => setIsMobileMenuOpen(true)} className="p-2 -mr-2 text-gray-500 hover:text-black transition-[color,transform] active:scale-[0.97]">
+        <button onClick={() => setIsMobileMenuOpen(true)} className="p-2 -mr-2 text-muted hover:text-ink transition-[color,transform] active:scale-[0.97]">
           <Menu size={24} />
         </button>
       </div>
 
       {/* Desktop Sidebar */}
-      <aside className="w-64 bg-off-white border-r border-gray-200 flex flex-col hidden md:flex sticky top-0 h-screen shrink-0">
+      <aside className="w-64 bg-field border-r border-line flex flex-col hidden md:flex sticky top-0 h-screen shrink-0">
         <SidebarContent setIsMobileMenuOpen={setIsMobileMenuOpen} />
       </aside>
 
       {/* Mobile Sidebar Overlay */}
       {isMobileMenuOpen && (
-        <div className="md:hidden fixed inset-0 z-30 bg-black/50" onClick={() => setIsMobileMenuOpen(false)}>
-          <aside className="w-64 bg-off-white h-full flex flex-col transform transition-transform" onClick={e => e.stopPropagation()}>
+        <div className="md:hidden fixed inset-0 z-30 bg-ink/50" onClick={() => setIsMobileMenuOpen(false)}>
+          <aside className="w-64 bg-field h-full flex flex-col transform transition-transform" onClick={e => e.stopPropagation()}>
             <SidebarContent setIsMobileMenuOpen={setIsMobileMenuOpen} />
           </aside>
         </div>

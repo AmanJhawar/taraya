@@ -39,11 +39,11 @@ export default async function Catalog() {
       <div className="relative py-12 mb-12">
         <div className="max-w-8xl mx-auto px-6 relative z-10">
           <StaggerContainer className="text-center">
-            <FadeInUp className="text-4xl md:text-5xl font-bold leading-tight tracking-tight text-black mb-6 font-serif">
+            <FadeInUp className="text-4xl md:text-5xl font-bold leading-tight tracking-tight text-ink mb-6 font-serif">
               Catalog
             </FadeInUp>
             <FadeInUp 
-              className="text-xl font-normal text-gray-500 leading-relaxed max-w-[600px] mx-auto"
+              className="text-xl font-normal text-muted leading-relaxed max-w-[600px] mx-auto"
             >
               Silver articles, marble frames and bullion, made to order.
             </FadeInUp>

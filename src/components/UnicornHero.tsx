@@ -63,7 +63,7 @@ export default function NetworkHero() {
           <span className="relative inline-block">
             bullions & silver
             <motion.span
-              className="absolute bottom-1 left-0 right-0 h-0.5 bg-off-white"
+              className="absolute bottom-1 left-0 right-0 h-0.5 bg-field"
               initial={{ scaleX: 0 }}
               animate={{ scaleX: 1 }}
               style={{ originX: 0 }}

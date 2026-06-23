@@ -113,7 +113,7 @@ export function AddToCartSection({ item, onVariantChange }: { item: CatalogItem,
         {/* Silver Articles Sizes */}
         {hasSizes && (
           <div>
-            <h3 className="text-[11px] font-semibold text-gray-400 uppercase tracking-widest mb-3">Size</h3>
+            <h3 className="text-[11px] font-semibold text-muted uppercase tracking-widest mb-3">Size</h3>
             <div className="flex flex-wrap gap-2">
               {item.standardSizes?.map((s) => (
                 <button 
@@ -121,8 +121,8 @@ export function AddToCartSection({ item, onVariantChange }: { item: CatalogItem,
                   onClick={() => handleSizeChange(s)}
                   className={`px-5 py-2.5 rounded-lg text-[13px] font-semibold uppercase tracking-[0.1em] transition-[box-shadow,background-color,border-color,transform] duration-150 ease-[var(--ease-out)] active:scale-[0.97] ${
                     selectedSize === s 
-                      ? 'bg-off-white text-black border border-black shadow-[0_0_0_1px_black]' 
-                      : 'bg-off-white text-gray-500 border border-gray-200 hover:border-black/30'
+                      ? 'bg-field text-ink border border-ink shadow-[0_0_0_1px_black]' 
+                      : 'bg-field text-muted border border-line hover:border-ink/30'
                   }`}
                 >
                   {s}
@@ -134,8 +134,8 @@ export function AddToCartSection({ item, onVariantChange }: { item: CatalogItem,
                   onClick={() => handleSizeChange(s)}
                   className={`px-5 py-2.5 rounded-lg text-[13px] font-semibold uppercase tracking-[0.1em] transition-[box-shadow,background-color,border-color,transform] duration-150 ease-[var(--ease-out)] active:scale-[0.97] border-dashed flex items-center gap-1 ${
                     selectedSize === s 
-                      ? 'bg-off-white text-black border-black shadow-[0_0_0_1px_black] border-solid' 
-                      : 'bg-off-white text-gray-500 border border-gray-200 hover:border-black/30'
+                      ? 'bg-field text-ink border-ink shadow-[0_0_0_1px_black] border-solid' 
+                      : 'bg-field text-muted border border-line hover:border-ink/30'
                   }`}
                 >
                   {s} <span className="text-xs opacity-70">(Custom)</span>
@@ -148,7 +148,7 @@ export function AddToCartSection({ item, onVariantChange }: { item: CatalogItem,
         {/* Silver Articles Purities */}
         {hasPurities && (
           <div>
-            <h3 className="text-[11px] font-semibold text-gray-400 uppercase tracking-widest mb-3">Purity</h3>
+            <h3 className="text-[11px] font-semibold text-muted uppercase tracking-widest mb-3">Purity</h3>
             <div className="flex flex-wrap gap-2">
               {item.standardPurities?.map((p) => (
                 <button 
@@ -156,8 +156,8 @@ export function AddToCartSection({ item, onVariantChange }: { item: CatalogItem,
                   onClick={() => handlePurityChange(p)}
                   className={`px-5 py-2.5 rounded-lg text-[13px] font-semibold uppercase tracking-[0.1em] transition-[box-shadow,background-color,border-color,transform] duration-150 ease-[var(--ease-out)] active:scale-[0.97] ${
                     selectedPurity === p 
-                      ? 'bg-off-white text-black border border-black shadow-[0_0_0_1px_black]' 
-                      : 'bg-off-white text-gray-500 border border-gray-200 hover:border-black/30'
+                      ? 'bg-field text-ink border border-ink shadow-[0_0_0_1px_black]' 
+                      : 'bg-field text-muted border border-line hover:border-ink/30'
                   }`}
                 >
                   {p}%
@@ -169,8 +169,8 @@ export function AddToCartSection({ item, onVariantChange }: { item: CatalogItem,
                   onClick={() => handlePurityChange(p)}
                   className={`px-5 py-2.5 rounded-lg text-[13px] font-semibold uppercase tracking-[0.1em] transition-[box-shadow,background-color,border-color,transform] duration-150 ease-[var(--ease-out)] active:scale-[0.97] border-dashed flex items-center gap-1 ${
                     selectedPurity === p 
-                      ? 'bg-off-white text-black border-black shadow-[0_0_0_1px_black] border-solid' 
-                      : 'bg-off-white text-gray-500 border border-gray-200 hover:border-black/30'
+                      ? 'bg-field text-ink border-ink shadow-[0_0_0_1px_black] border-solid' 
+                      : 'bg-field text-muted border border-line hover:border-ink/30'
                   }`}
                 >
                   {p}% <span className="text-xs opacity-70">(Custom)</span>
@@ -183,7 +183,7 @@ export function AddToCartSection({ item, onVariantChange }: { item: CatalogItem,
         {/* Bullions Weights */}
         {hasWeights && (
           <div>
-            <h3 className="text-[11px] font-semibold text-gray-400 uppercase tracking-widest mb-3">Weight</h3>
+            <h3 className="text-[11px] font-semibold text-muted uppercase tracking-widest mb-3">Weight</h3>
             <div className="flex flex-wrap gap-2">
               {item.standardWeights?.map((w) => (
                 <button 
@@ -191,8 +191,8 @@ export function AddToCartSection({ item, onVariantChange }: { item: CatalogItem,
                   onClick={() => handleWeightChange(w)}
                   className={`px-5 py-2.5 rounded-lg text-[13px] font-semibold uppercase tracking-[0.1em] transition-[box-shadow,background-color,border-color,transform] duration-150 ease-[var(--ease-out)] active:scale-[0.97] ${
                     selectedWeight === w 
-                      ? 'bg-off-white text-black border border-black shadow-[0_0_0_1px_black]' 
-                      : 'bg-off-white text-gray-500 border border-gray-200 hover:border-black/30'
+                      ? 'bg-field text-ink border border-ink shadow-[0_0_0_1px_black]' 
+                      : 'bg-field text-muted border border-line hover:border-ink/30'
                   }`}
                 >
                   {w}
@@ -204,8 +204,8 @@ export function AddToCartSection({ item, onVariantChange }: { item: CatalogItem,
                   onClick={() => handleWeightChange(w)}
                   className={`px-5 py-2.5 rounded-lg text-[13px] font-semibold uppercase tracking-[0.1em] transition-[box-shadow,background-color,border-color,transform] duration-150 ease-[var(--ease-out)] active:scale-[0.97] border-dashed flex items-center gap-1 ${
                     selectedWeight === w 
-                      ? 'bg-off-white text-black border-black shadow-[0_0_0_1px_black] border-solid' 
-                      : 'bg-off-white text-gray-500 border border-gray-200 hover:border-black/30'
+                      ? 'bg-field text-ink border-ink shadow-[0_0_0_1px_black] border-solid' 
+                      : 'bg-field text-muted border border-line hover:border-ink/30'
                   }`}
                 >
                   {w} <span className="text-xs opacity-70">(Custom)</span>
@@ -218,7 +218,7 @@ export function AddToCartSection({ item, onVariantChange }: { item: CatalogItem,
         {/* Marble Photoframes Stones */}
         {hasStones && (
           <div>
-            <h3 className="text-[11px] font-semibold text-gray-400 uppercase tracking-widest mb-3">Stone</h3>
+            <h3 className="text-[11px] font-semibold text-muted uppercase tracking-widest mb-3">Stone</h3>
             <div className="flex flex-wrap gap-2">
               {item.standardStones?.map((st) => (
                 <button 
@@ -226,8 +226,8 @@ export function AddToCartSection({ item, onVariantChange }: { item: CatalogItem,
                   onClick={() => handleStoneChange(st)}
                   className={`px-5 py-2.5 rounded-lg text-[13px] font-semibold uppercase tracking-[0.1em] transition-[box-shadow,background-color,border-color,transform] duration-150 ease-[var(--ease-out)] active:scale-[0.97] ${
                     selectedStone === st 
-                      ? 'bg-off-white text-black border border-black shadow-[0_0_0_1px_black]' 
-                      : 'bg-off-white text-gray-500 border border-gray-200 hover:border-black/30'
+                      ? 'bg-field text-ink border border-ink shadow-[0_0_0_1px_black]' 
+                      : 'bg-field text-muted border border-line hover:border-ink/30'
                   }`}
                 >
                   {st}
@@ -239,8 +239,8 @@ export function AddToCartSection({ item, onVariantChange }: { item: CatalogItem,
                   onClick={() => handleStoneChange(st)}
                   className={`px-5 py-2.5 rounded-lg text-[13px] font-semibold uppercase tracking-[0.1em] transition-[box-shadow,background-color,border-color,transform] duration-150 ease-[var(--ease-out)] active:scale-[0.97] border-dashed flex items-center gap-1 ${
                     selectedStone === st 
-                      ? 'bg-off-white text-black border-black shadow-[0_0_0_1px_black] border-solid' 
-                      : 'bg-off-white text-gray-500 border border-gray-200 hover:border-black/30'
+                      ? 'bg-field text-ink border-ink shadow-[0_0_0_1px_black] border-solid' 
+                      : 'bg-field text-muted border border-line hover:border-ink/30'
                   }`}
                 >
                   {st} <span className="text-xs opacity-70">(Custom)</span>

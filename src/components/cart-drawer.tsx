@@ -88,7 +88,7 @@ export function CartDrawer() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2, ease: EASE_OUT }}
-            className="fixed inset-0 bg-black/20 backdrop-blur-sm z-[60]"
+            className="fixed inset-0 bg-ink/20 backdrop-blur-sm z-[60]"
             onClick={() => setIsCartOpen(false)}
           />
 
@@ -102,13 +102,13 @@ export function CartDrawer() {
             animate={{ transform: "translateX(0%)" }}
             exit={{ transform: "translateX(100%)" }}
             transition={{ duration: 0.35, ease: [0.32, 0.72, 0, 1] }}
-            className="fixed top-0 right-0 h-full w-[400px] max-w-[100vw] bg-off-white z-[70] shadow-2xl flex flex-col"
+            className="fixed top-0 right-0 h-full w-[400px] max-w-[100vw] bg-field z-[70] shadow-2xl flex flex-col"
           >
             <div className="flex items-center justify-between p-6 border-b border-gray-100">
               <h2 id="inquiry-drawer-title" className="text-xl font-bold tracking-tight">Your Inquiry</h2>
               <button
                 onClick={() => setIsCartOpen(false)}
-                className="p-2 hover:bg-gray-100 rounded-full transition-[background-color,transform] active:scale-[0.97]"
+                className="p-2 hover:bg-band rounded-full transition-[background-color,transform] active:scale-[0.97]"
               >
                 <X size={20} />
               </button>
@@ -122,7 +122,7 @@ export function CartDrawer() {
                   action={
                     <button
                       onClick={() => setIsCartOpen(false)}
-                      className="text-sm font-medium text-black underline underline-offset-4 transition-transform active:scale-[0.97]"
+                      className="text-sm font-medium text-ink underline underline-offset-4 transition-transform active:scale-[0.97]"
                     >
                       Continue Browsing
                     </button>
@@ -141,10 +141,10 @@ export function CartDrawer() {
                     </div>
                     <div className="flex-1 flex flex-col">
                       <div className="flex justify-between items-start">
-                        <h3 className="font-semibold text-sm line-clamp-2 pr-4 text-black">{item.productName}</h3>
+                        <h3 className="font-semibold text-sm line-clamp-2 pr-4 text-ink">{item.productName}</h3>
                       </div>
 
-                      <div className="flex flex-col mt-0.5 text-[13px] text-gray-500 leading-snug">
+                      <div className="flex flex-col mt-0.5 text-[13px] text-muted leading-snug">
                         {item.selectedSize && <span>Size: {item.selectedSize}</span>}
                         {item.selectedPurity && <span>Purity: {item.selectedPurity}%</span>}
                         {item.selectedStone && <span>Stone: {item.selectedStone}</span>}
@@ -167,13 +167,13 @@ export function CartDrawer() {
                               const newQty = parseInt(e.target.value, 10);
                               updateQuantity(item.cartId, newQty - item.quantity);
                             }}
-                            className="appearance-none bg-[#f5f5f7] border border-gray-200 hover:border-gray-300 rounded-lg py-1 pl-3 pr-8 text-[13px] font-medium text-black focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent cursor-pointer transition-colors"
+                            className="appearance-none bg-[#f5f5f7] border border-line hover:border-line rounded-lg py-1 pl-3 pr-8 text-[13px] font-medium text-ink focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent cursor-pointer transition-colors"
                           >
                             {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((num) => (
                               <option key={num} value={num}>{num}</option>
                             ))}
                           </select>
-                          <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-500">
+                          <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-muted">
                             <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                               <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
                             </svg>
@@ -182,7 +182,7 @@ export function CartDrawer() {
 
                         <button
                           onClick={() => removeFromCart(item.cartId)}
-                          className="text-[13px] text-gray-400 hover:text-black hover:underline underline-offset-4 transition-colors active:scale-[0.97]"
+                          className="text-[13px] text-muted hover:text-ink hover:underline underline-offset-4 transition-colors active:scale-[0.97]"
                         >
                           Remove
                         </button>
@@ -194,7 +194,7 @@ export function CartDrawer() {
             </div>
 
             {cartItems.length > 0 && (
-              <div className="p-6 bg-off-white">
+              <div className="p-6 bg-field">
                 <Link
                   href="/contact?fromCart=true"
                   onClick={() => setIsCartOpen(false)}

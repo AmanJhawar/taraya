@@ -105,8 +105,8 @@ export function CatalogClient({ initialItems, initialCategories, initialNextCurs
                 onClick={() => handleCategoryChange(cat)}
                 className={`px-6 py-2 rounded-lg text-sm font-medium transition-[background-color,border-color,color,box-shadow,transform] duration-150 ease-[var(--ease-out)] active:scale-[0.97] border ${
                   activeFilter === cat 
-                    ? 'bg-off-white text-black border-black shadow-[0_0_0_1px_black]' 
-                    : 'bg-off-white text-gray-500 border-gray-200 hover:border-black/30'
+                    ? 'bg-field text-ink border-ink shadow-[0_0_0_1px_black]' 
+                    : 'bg-field text-muted border-line hover:border-ink/30'
                 }`}
               >
                 {cat}
@@ -120,10 +120,10 @@ export function CatalogClient({ initialItems, initialCategories, initialNextCurs
           {/* Search Input */}
           <div className="relative flex items-center justify-end h-[38px] w-full sm:w-[38px]">
             <div 
-              className={`absolute right-0 top-0 h-[38px] w-full sm:w-64 flex items-center bg-off-white transition-[clip-path,border-color,background-color,box-shadow,transform] duration-[250ms] ease-[var(--ease-out)] rounded-lg border ${
+              className={`absolute right-0 top-0 h-[38px] w-full sm:w-64 flex items-center bg-field transition-[clip-path,border-color,background-color,box-shadow,transform] duration-[250ms] ease-[var(--ease-out)] rounded-lg border ${
                 isSearchExpanded || searchInput 
-                  ? 'border-black shadow-[0_4px_12px_rgba(0,0,0,0.05)] z-30'
-                  : 'border-transparent hover:bg-gray-100 z-10'
+                  ? 'border-ink shadow-[0_4px_12px_rgba(0,0,0,0.05)] z-30'
+                  : 'border-transparent hover:bg-band z-10'
               } ${(!isSearchExpanded && !searchInput) ? 'active:scale-[0.97] cursor-pointer' : ''}`}
               style={{
                 clipPath: (isSearchExpanded || searchInput) ? 'inset(0 0 0 0)' : 'inset(0 0 0 calc(100% - 38px))'
@@ -144,7 +144,7 @@ export function CatalogClient({ initialItems, initialCategories, initialNextCurs
                 onBlur={() => {
                   if (!searchInput) setIsSearchExpanded(false)
                 }}
-                className={`w-full h-full pl-4 pr-1 bg-transparent text-sm text-black placeholder:text-gray-400 focus:outline-none transition-opacity duration-[250ms] ease-[var(--ease-out)] ${
+                className={`w-full h-full pl-4 pr-1 bg-transparent text-sm text-ink placeholder:text-muted focus:outline-none transition-opacity duration-[250ms] ease-[var(--ease-out)] ${
                   isSearchExpanded || searchInput ? 'opacity-100' : 'opacity-0'
                 }`}
                 tabIndex={isSearchExpanded || searchInput ? 0 : -1}
@@ -161,7 +161,7 @@ export function CatalogClient({ initialItems, initialCategories, initialNextCurs
                   }
                 }}
                 className={`flex-shrink-0 w-[38px] h-[38px] flex items-center justify-center z-10 transition-colors ${
-                  isSearchExpanded || searchInput ? 'text-black' : 'text-gray-500'
+                  isSearchExpanded || searchInput ? 'text-ink' : 'text-muted'
                 }`}
                 aria-label="Search catalog"
               >
@@ -175,13 +175,13 @@ export function CatalogClient({ initialItems, initialCategories, initialNextCurs
             <button
               onClick={() => setIsSortOpen(!isSortOpen)}
               onKeyDown={handleDropdownKeyDown}
-              className="flex items-center justify-between sm:justify-start gap-1.5 w-full sm:w-auto px-4 py-2 bg-off-white border border-gray-200 rounded-lg text-sm font-medium text-gray-700 hover:text-black hover:bg-gray-50 active:scale-[0.97] transition-[color,background-color,border-color,transform] duration-150 ease-[var(--ease-out)]"
+              className="flex items-center justify-between sm:justify-start gap-1.5 w-full sm:w-auto px-4 py-2 bg-field border border-line rounded-lg text-sm font-medium text-ink hover:text-ink hover:bg-band active:scale-[0.97] transition-[color,background-color,border-color,transform] duration-150 ease-[var(--ease-out)]"
               aria-haspopup="listbox"
               aria-expanded={isSortOpen}
               aria-label="Sort products"
             >
               <span>Sort: {sortBy === 'default' ? 'Default' : sortBy === 'name-asc' ? 'Name (A-Z)' : 'Name (Z-A)'}</span>
-              <ChevronDown size={14} className={`transition-transform duration-200 text-gray-400 ${isSortOpen ? 'rotate-180' : ''}`} />
+              <ChevronDown size={14} className={`transition-transform duration-200 text-muted ${isSortOpen ? 'rotate-180' : ''}`} />
             </button>
 
             <AnimatePresence>
@@ -192,13 +192,13 @@ export function CatalogClient({ initialItems, initialCategories, initialNextCurs
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.95 }}
                   transition={{ duration: 0.15, ease: EASE_OUT }}
-                  className="absolute right-0 mt-2 w-full sm:w-48 bg-off-white border border-gray-200 rounded-lg shadow-lg py-1 z-20 origin-top-right"
+                  className="absolute right-0 mt-2 w-full sm:w-48 bg-field border border-line rounded-lg shadow-lg py-1 z-20 origin-top-right"
                 >
                   <button
                     role="option"
                     aria-selected={sortBy === 'default'}
                     onClick={() => { handleSortChange('default'); closeDropdown() }}
-                    className={`w-full text-left px-4 py-2 text-sm transition-colors duration-150 hover:bg-gray-100 ${sortBy === 'default' ? 'font-semibold text-black' : 'text-gray-500'} ${focusedIndex === 0 ? 'bg-gray-100 outline outline-2 outline-black -outline-offset-2' : ''}`}
+                    className={`w-full text-left px-4 py-2 text-sm transition-colors duration-150 hover:bg-band ${sortBy === 'default' ? 'font-semibold text-ink' : 'text-muted'} ${focusedIndex === 0 ? 'bg-band outline outline-2 outline-black -outline-offset-2' : ''}`}
                   >
                     Default
                   </button>
@@ -206,7 +206,7 @@ export function CatalogClient({ initialItems, initialCategories, initialNextCurs
                     role="option"
                     aria-selected={sortBy === 'name-asc'}
                     onClick={() => { handleSortChange('name-asc'); closeDropdown() }}
-                    className={`w-full text-left px-4 py-2 text-sm transition-colors duration-150 hover:bg-gray-100 ${sortBy === 'name-asc' ? 'font-semibold text-black' : 'text-gray-500'} ${focusedIndex === 1 ? 'bg-gray-100 outline outline-2 outline-black -outline-offset-2' : ''}`}
+                    className={`w-full text-left px-4 py-2 text-sm transition-colors duration-150 hover:bg-band ${sortBy === 'name-asc' ? 'font-semibold text-ink' : 'text-muted'} ${focusedIndex === 1 ? 'bg-band outline outline-2 outline-black -outline-offset-2' : ''}`}
                   >
                     Name (A-Z)
                   </button>
@@ -214,7 +214,7 @@ export function CatalogClient({ initialItems, initialCategories, initialNextCurs
                     role="option"
                     aria-selected={sortBy === 'name-desc'}
                     onClick={() => { handleSortChange('name-desc'); closeDropdown() }}
-                    className={`w-full text-left px-4 py-2 text-sm transition-colors duration-150 hover:bg-gray-100 ${sortBy === 'name-desc' ? 'font-semibold text-black' : 'text-gray-500'} ${focusedIndex === 2 ? 'bg-gray-100 outline outline-2 outline-black -outline-offset-2' : ''}`}
+                    className={`w-full text-left px-4 py-2 text-sm transition-colors duration-150 hover:bg-band ${sortBy === 'name-desc' ? 'font-semibold text-ink' : 'text-muted'} ${focusedIndex === 2 ? 'bg-band outline outline-2 outline-black -outline-offset-2' : ''}`}
                   >
                     Name (Z-A)
                   </button>
@@ -248,7 +248,7 @@ export function CatalogClient({ initialItems, initialCategories, initialNextCurs
             <button
               onClick={handlePrevPage}
               disabled={isLoading}
-              className="px-6 py-3 text-sm font-semibold text-black bg-off-white border border-gray-200 rounded-lg transition-[background-color,transform] duration-200 ease-[var(--ease-out)] hover:bg-gray-50 active:scale-[0.97] disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100"
+              className="px-6 py-3 text-sm font-semibold text-ink bg-field border border-line rounded-lg transition-[background-color,transform] duration-200 ease-[var(--ease-out)] hover:bg-band active:scale-[0.97] disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100"
             >
               Previous Page
             </button>

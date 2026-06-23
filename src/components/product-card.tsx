@@ -14,10 +14,10 @@ export function ProductCard({ item, showVariants = false }: ProductCardProps) {
     <FadeInUp className="h-full flex">
       <Link 
         href={`/catalog/${item.id}`}
-        className="flex flex-col w-full border border-gray-200 rounded-xl overflow-hidden bg-off-white group transition-[border-color,box-shadow,transform] duration-200 ease-[var(--ease-out)] hover:border-black/20 hover:shadow-[0_8px_24px_rgba(0,0,0,0.06)] hover:-translate-y-0.5 active:scale-[0.97]"
+        className="flex flex-col w-full border border-line rounded-xl overflow-hidden bg-field group transition-[border-color,box-shadow,transform] duration-200 ease-[var(--ease-out)] hover:border-ink/20 hover:shadow-[0_8px_24px_rgba(0,0,0,0.06)] hover:-translate-y-0.5 active:scale-[0.97]"
       >
         <div className="aspect-[3/4] bg-[#f5f5f7] relative overflow-hidden">
-          <div className="w-full h-full relative flex items-center justify-center text-gray-400 text-sm">
+          <div className="w-full h-full relative flex items-center justify-center text-muted text-sm">
             {item.imageFile ? (
               <ProtectedImage 
                 src={getOptimizedUrl(item.imageFile, 800)} 
@@ -32,9 +32,9 @@ export function ProductCard({ item, showVariants = false }: ProductCardProps) {
         </div>
       <div className="p-6 flex flex-col flex-1">
         <div className="flex flex-col items-start mb-2">
-          <h2 className="text-sm font-semibold text-black tracking-wide uppercase line-clamp-2">{item.name}</h2>
+          <h2 className="text-sm font-semibold text-ink tracking-wide uppercase line-clamp-2">{item.name}</h2>
           {item.category && (
-            <span className="text-[11px] font-semibold text-gray-400 uppercase tracking-widest mt-2">{item.category}</span>
+            <span className="text-[11px] font-semibold text-muted uppercase tracking-widest mt-2">{item.category}</span>
           )}
         </div>
         
@@ -63,7 +63,7 @@ export function ProductCard({ item, showVariants = false }: ProductCardProps) {
               if (purities > 0) parts.push(`${purities} purities`)
               
               return (
-                <p className="text-xs text-gray-400 font-medium tracking-wide">
+                <p className="text-xs text-muted font-medium tracking-wide">
                   Available in {parts.join(' & ')}
                 </p>
               )

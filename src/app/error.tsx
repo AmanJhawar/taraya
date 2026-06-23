@@ -22,12 +22,12 @@ export default function Error({
         500
       </FadeInUp>
       <FadeInUp 
-        className="text-2xl md:text-3xl font-bold text-black mb-4 tracking-tight"
+        className="text-2xl md:text-3xl font-bold text-ink mb-4 tracking-tight"
       >
         Something went wrong
       </FadeInUp>
       <FadeInUp 
-        className="text-gray-500 max-w-md mx-auto mb-8"
+        className="text-muted max-w-md mx-auto mb-8"
       >
         An unexpected error occurred. We&apos;ve been notified and are looking into it.
       </FadeInUp>

@@ -142,15 +142,15 @@ export default function AdminCategories() {
     <div>
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-black mb-2 tracking-tight flex items-center gap-3 font-serif">
+          <h1 className="text-3xl font-bold text-ink mb-2 tracking-tight flex items-center gap-3 font-serif">
             <Tags size={28} />
             Categories
           </h1>
-          <p className="text-gray-500">Manage the product categories displayed on the storefront.</p>
+          <p className="text-muted">Manage the product categories displayed on the storefront.</p>
         </div>
       </div>
 
-      <div className="bg-off-white p-6 md:p-8 rounded-xl border border-gray-200 shadow-sm w-full">
+      <div className="bg-field p-6 md:p-8 rounded-xl border border-line shadow-sm w-full">
         <div className="mb-8">
           <form onSubmit={handleSubmit(onAddCategory)} className="flex gap-4 items-start">
             <div className="flex-1">
@@ -160,7 +160,7 @@ export default function AdminCategories() {
                 placeholder="New Category Name..."
                 className={`admin-input w-full ${errors.name ? 'border-gray-900 focus:border-gray-900 focus:ring-black/10' : ''}`}
               />
-              {errors.name && <p className="text-gray-500 font-medium text-sm mt-1">{errors.name.message}</p>}
+              {errors.name && <p className="text-muted font-medium text-sm mt-1">{errors.name.message}</p>}
             </div>
             <button type="submit" disabled={isSubmitting} className="admin-btn-primary whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100">
               {isSubmitting ? 'Adding...' : 'Add Category'}
@@ -170,12 +170,12 @@ export default function AdminCategories() {
 
         {loading ? (
           <div className="flex justify-center py-10">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-black"></div>
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-ink"></div>
           </div>
         ) : (
           <div className="flex flex-col gap-3">
             {categories.map((cat, idx) => (
-              <div key={`${cat}-${idx}`} className="flex items-center justify-between p-4 border border-gray-100 rounded-xl hover:bg-gray-50 transition-colors">
+              <div key={`${cat}-${idx}`} className="flex items-center justify-between p-4 border border-gray-100 rounded-xl hover:bg-band transition-colors">
                 {editingIndex === idx ? (
                   <div className="flex items-center gap-3 flex-1">
                     <input 
@@ -187,28 +187,28 @@ export default function AdminCategories() {
                       autoFocus
                     />
                     <div className="flex items-center gap-1 w-16 justify-end shrink-0">
-                      <button onClick={() => saveEdit(idx, cat)} className="text-gray-400 hover:text-black p-2 transition-[color,transform] active:scale-[0.97]" title="Save">
+                      <button onClick={() => saveEdit(idx, cat)} className="text-muted hover:text-ink p-2 transition-[color,transform] active:scale-[0.97]" title="Save">
                         <Check size={18} />
                       </button>
-                      <button onClick={cancelEdit} className="text-gray-400 hover:text-gray-500 p-2 transition-[color,transform] active:scale-[0.97]" title="Cancel">
+                      <button onClick={cancelEdit} className="text-muted hover:text-muted p-2 transition-[color,transform] active:scale-[0.97]" title="Cancel">
                         <X size={18} />
                       </button>
                     </div>
                   </div>
                 ) : (
                   <div className="flex items-center justify-between flex-1 gap-3">
-                    <span className="font-medium text-black flex-1 truncate">{cat}</span>
+                    <span className="font-medium text-ink flex-1 truncate">{cat}</span>
                     <div className="flex items-center gap-1 w-16 justify-end shrink-0">
                       <button
                         onClick={() => startEdit(idx, cat)}
-                        className="text-gray-400 hover:text-black transition-[color,transform] active:scale-[0.97] p-2"
+                        className="text-muted hover:text-ink transition-[color,transform] active:scale-[0.97] p-2"
                         title="Edit Category"
                       >
                         <Edit2 size={18} />
                       </button>
                       <button
                         onClick={() => confirmRemove(cat)}
-                        className="text-gray-400 hover:text-black transition-[color,transform] active:scale-[0.97] p-2"
+                        className="text-muted hover:text-ink transition-[color,transform] active:scale-[0.97] p-2"
                         title="Remove Category"
                       >
                         <Trash2 size={18} />
@@ -219,7 +219,7 @@ export default function AdminCategories() {
               </div>
             ))}
             {categories.length === 0 && (
-              <p className="text-gray-500 text-center py-6">No categories found. Add one above.</p>
+              <p className="text-muted text-center py-6">No categories found. Add one above.</p>
             )}
           </div>
         )}

@@ -93,16 +93,16 @@ export default function CustomSelect({ id, name, value, onChange, options }: Cus
         aria-expanded={isOpen}
         aria-controls={`${id}-listbox`}
         onClick={() => isOpen ? closeSelect() : openSelect()}
-        className={`w-full px-4 py-3 border border-gray-200 rounded-lg text-base bg-off-white text-left flex justify-between items-center transition-colors duration-150 ease-[var(--ease-out)] focus:border-black focus:ring-4 focus:ring-black/10 ${isOpen ? 'border-black ring-4 ring-black/10' : ''}`}
+        className={`w-full px-4 py-3 border border-line rounded-lg text-base bg-field text-left flex justify-between items-center transition-colors duration-150 ease-[var(--ease-out)] focus:border-ink focus:ring-4 focus:ring-black/10 ${isOpen ? 'border-ink ring-4 ring-black/10' : ''}`}
       >
-        <span className="text-black">{selectedOption.label}</span>
+        <span className="text-ink">{selectedOption.label}</span>
         <ChevronDown 
-          className={`w-5 h-5 text-gray-500 transition-transform duration-200 ease-[var(--ease-out)] ${isOpen ? 'rotate-180' : ''}`}
+          className={`w-5 h-5 text-muted transition-transform duration-200 ease-[var(--ease-out)] ${isOpen ? 'rotate-180' : ''}`}
         />
       </button>
 
       {isOpen && (
-        <div className="absolute z-10 w-full mt-2 bg-off-white border border-gray-200 rounded-lg shadow-[0_8px_24px_rgba(0,0,0,0.06)] overflow-hidden animate-[fadeInUp_200ms_var(--ease-out)_forwards] origin-top">
+        <div className="absolute z-10 w-full mt-2 bg-field border border-line rounded-lg shadow-[0_8px_24px_rgba(0,0,0,0.06)] overflow-hidden animate-[fadeInUp_200ms_var(--ease-out)_forwards] origin-top">
           <ul 
             id={`${id}-listbox`}
             role="listbox"
@@ -114,10 +114,10 @@ export default function CustomSelect({ id, name, value, onChange, options }: Cus
                   type="button"
                   tabIndex={-1}
                   onClick={() => handleSelect(option.value)}
-                  className={`w-full text-left px-4 py-3 text-sm transition-colors duration-150 ease-[var(--ease-out)] hover:bg-gray-100 ${
-                    focusedIndex === idx ? 'bg-gray-100' : ''
+                  className={`w-full text-left px-4 py-3 text-sm transition-colors duration-150 ease-[var(--ease-out)] hover:bg-band ${
+                    focusedIndex === idx ? 'bg-band' : ''
                   } ${
-                    value === option.value ? 'bg-gray-50 font-semibold text-black' : 'text-gray-500'
+                    value === option.value ? 'bg-band font-semibold text-ink' : 'text-muted'
                   }`}
                 >
                   {option.label}

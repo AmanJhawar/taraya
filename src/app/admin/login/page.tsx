@@ -53,40 +53,40 @@ export default function AdminLogin() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full bg-off-white p-10 rounded-xl shadow-[0_8px_24px_rgba(0,0,0,0.06)] border border-gray-100">
+    <div className="min-h-screen flex items-center justify-center bg-band py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-md w-full bg-field p-10 rounded-xl shadow-[0_8px_24px_rgba(0,0,0,0.06)] border border-gray-100">
         <div className="text-center mb-10">
-          <h2 className="text-3xl font-bold text-black tracking-tight mb-2 font-serif">Admin</h2>
-          <p className="text-sm text-gray-500">Sign in to manage your command center.</p>
+          <h2 className="text-3xl font-bold text-ink tracking-tight mb-2 font-serif">Admin</h2>
+          <p className="text-sm text-muted">Sign in to manage your command center.</p>
         </div>
 
         {error && (
-          <div className="mb-6 p-4 bg-gray-50 text-black rounded-lg text-sm font-semibold text-center border border-gray-200">
+          <div className="mb-6 p-4 bg-band text-ink rounded-lg text-sm font-semibold text-center border border-line">
             {error}
           </div>
         )}
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           <div>
-            <label className="block text-sm font-medium text-gray-500 mb-2">Email Address</label>
+            <label className="block text-sm font-medium text-muted mb-2">Email Address</label>
             <input
               type="email"
               {...register('email')}
-              className={`w-full px-4 py-3 rounded-lg border focus:border-black focus:ring-4 focus:ring-black/10 transition-[border-color,box-shadow] duration-200 ${errors.email ? 'border-gray-900' : 'border-gray-200'}`}
+              className={`w-full px-4 py-3 rounded-lg border focus:border-ink focus:ring-4 focus:ring-black/10 transition-[border-color,box-shadow] duration-200 ${errors.email ? 'border-gray-900' : 'border-line'}`}
               placeholder="you@example.com"
             />
-            {errors.email && <p className="text-gray-500 font-medium text-sm mt-1">{errors.email.message}</p>}
+            {errors.email && <p className="text-muted font-medium text-sm mt-1">{errors.email.message}</p>}
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-500 mb-2">Password</label>
+            <label className="block text-sm font-medium text-muted mb-2">Password</label>
             <input
               type="password"
               {...register('password')}
-              className={`w-full px-4 py-3 rounded-lg border focus:border-black focus:ring-4 focus:ring-black/10 transition-[border-color,box-shadow] duration-200 ${errors.password ? 'border-gray-900' : 'border-gray-200'}`}
+              className={`w-full px-4 py-3 rounded-lg border focus:border-ink focus:ring-4 focus:ring-black/10 transition-[border-color,box-shadow] duration-200 ${errors.password ? 'border-gray-900' : 'border-line'}`}
               placeholder="••••••••"
             />
-            {errors.password && <p className="text-gray-500 font-medium text-sm mt-1">{errors.password.message}</p>}
+            {errors.password && <p className="text-muted font-medium text-sm mt-1">{errors.password.message}</p>}
           </div>
 
           <button

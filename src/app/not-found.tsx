@@ -8,12 +8,12 @@ export default function NotFound() {
         404
       </FadeInUp>
       <FadeInUp 
-        className="text-2xl md:text-3xl font-bold text-black mb-4 tracking-tight"
+        className="text-2xl md:text-3xl font-bold text-ink mb-4 tracking-tight"
       >
         Page Not Found
       </FadeInUp>
       <FadeInUp 
-        className="text-gray-500 max-w-md mx-auto mb-8"
+        className="text-muted max-w-md mx-auto mb-8"
       >
         We couldn&apos;t find the page you&apos;re looking for. It might have been moved or doesn&apos;t exist.
       </FadeInUp>

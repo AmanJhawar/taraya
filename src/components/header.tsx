@@ -120,7 +120,7 @@ export default function Header() {
   return (
     <header className={`fixed top-0 left-0 right-0 z-50 transition-[background-color,border-color,backdrop-filter,color] duration-200 ease-[var(--ease-out)] ${
       isSolid
-        ? 'bg-off-white/95 backdrop-blur-md'
+        ? 'bg-field/95 backdrop-blur-md'
         : 'bg-transparent border-transparent'
     }`}>
       <div 
@@ -159,12 +159,12 @@ export default function Header() {
               {(pathname.startsWith('/catalog') || (isInitialized && totalItems > 0)) && (
                 <button 
                   onClick={() => setIsCartOpen(true)}
-                  className={`relative p-2 rounded-full transition-[color,background-color] duration-200 ease-[var(--ease-out)] active:scale-[0.97] ${!isSolid ? 'text-white hover:bg-off-white/10' : 'text-black hover:bg-gray-100'}`}
+                  className={`relative p-2 rounded-full transition-[color,background-color] duration-200 ease-[var(--ease-out)] active:scale-[0.97] ${!isSolid ? 'text-white hover:bg-field/10' : 'text-ink hover:bg-band'}`}
                   aria-label="Open inquiry"
                 >
                   <ShoppingBag size={20} strokeWidth={1.5} />
                   {isInitialized && totalItems > 0 && (
-                    <span className="absolute top-1 right-1 bg-black text-white text-[10px] font-bold w-4 h-4 flex items-center justify-center rounded-full transform translate-x-1 -translate-y-1">
+                    <span className="absolute top-1 right-1 bg-ink text-white text-[10px] font-bold w-4 h-4 flex items-center justify-center rounded-full transform translate-x-1 -translate-y-1">
                       {totalItems}
                     </span>
                   )}
@@ -178,13 +178,13 @@ export default function Header() {
             <div className="w-10 h-10 flex items-center justify-center">
               {(pathname.startsWith('/catalog') || (isInitialized && totalItems > 0)) && (
                 <button 
-                  className={`p-2 relative flex items-center justify-center rounded-full transition-[color,background-color] duration-200 ease-[var(--ease-out)] active:scale-[0.97] ${!isSolid ? 'text-white hover:bg-off-white/10' : 'text-black hover:bg-gray-100'}`}
+                  className={`p-2 relative flex items-center justify-center rounded-full transition-[color,background-color] duration-200 ease-[var(--ease-out)] active:scale-[0.97] ${!isSolid ? 'text-white hover:bg-field/10' : 'text-ink hover:bg-band'}`}
                   onClick={() => setIsCartOpen(true)}
                   aria-label="Open inquiry"
                 >
                   <ShoppingBag size={20} strokeWidth={1.5} />
                   {isInitialized && totalItems > 0 && (
-                    <span className="absolute top-1 right-1 bg-black text-white text-[10px] font-bold w-4 h-4 flex items-center justify-center rounded-full">
+                    <span className="absolute top-1 right-1 bg-ink text-white text-[10px] font-bold w-4 h-4 flex items-center justify-center rounded-full">
                       {totalItems}
                     </span>
                   )}
@@ -199,9 +199,9 @@ export default function Header() {
               aria-controls="mobile-nav"
             >
               <div className="flex flex-col w-6 h-[18px] relative justify-between">
-                <span className={`block h-[2px] w-full transition-[transform,background-color] duration-200 ease-[var(--ease-out)] ${!isSolid ? 'bg-off-white' : 'bg-black'} ${isMenuOpen ? 'rotate-45 translate-y-[8px]' : ''}`}></span>
-                <span className={`block h-[2px] w-full transition-[opacity,background-color] duration-200 ease-[var(--ease-out)] ${!isSolid ? 'bg-off-white' : 'bg-black'} ${isMenuOpen ? 'opacity-0' : ''}`}></span>
-                <span className={`block h-[2px] w-full transition-[transform,background-color] duration-200 ease-[var(--ease-out)] ${!isSolid ? 'bg-off-white' : 'bg-black'} ${isMenuOpen ? '-rotate-45 -translate-y-[8px]' : ''}`}></span>
+                <span className={`block h-[2px] w-full transition-[transform,background-color] duration-200 ease-[var(--ease-out)] ${!isSolid ? 'bg-field' : 'bg-ink'} ${isMenuOpen ? 'rotate-45 translate-y-[8px]' : ''}`}></span>
+                <span className={`block h-[2px] w-full transition-[opacity,background-color] duration-200 ease-[var(--ease-out)] ${!isSolid ? 'bg-field' : 'bg-ink'} ${isMenuOpen ? 'opacity-0' : ''}`}></span>
+                <span className={`block h-[2px] w-full transition-[transform,background-color] duration-200 ease-[var(--ease-out)] ${!isSolid ? 'bg-field' : 'bg-ink'} ${isMenuOpen ? '-rotate-45 -translate-y-[8px]' : ''}`}></span>
               </div>
             </button>
           </div>
@@ -210,7 +210,7 @@ export default function Header() {
         {/* Mobile Overlay */}
         {isMenuOpen && (
           <div 
-            className="md:hidden fixed inset-0 top-[80px] bg-black/40 backdrop-blur-sm z-40 transition-opacity animate-[fadeIn_200ms_var(--ease-out)]"
+            className="md:hidden fixed inset-0 top-[80px] bg-ink/40 backdrop-blur-sm z-40 transition-opacity animate-[fadeIn_200ms_var(--ease-out)]"
             onClick={closeMenu}
             aria-hidden="true"
           />
@@ -220,7 +220,7 @@ export default function Header() {
         <nav 
           id="mobile-nav"
           ref={menuRef}
-          className={`md:hidden flex flex-col gap-6 absolute top-full left-0 right-0 bg-off-white border-b border-gray-200 px-6 py-6 z-50 max-h-[calc(100vh-5rem)] overflow-y-auto motion-safe:transition-[opacity,visibility] motion-reduce:transition-none duration-200 ease-[var(--ease-out)] ${isMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible'}`}
+          className={`md:hidden flex flex-col gap-6 absolute top-full left-0 right-0 bg-field border-b border-line px-6 py-6 z-50 max-h-[calc(100vh-5rem)] overflow-y-auto motion-safe:transition-[opacity,visibility] motion-reduce:transition-none duration-200 ease-[var(--ease-out)] ${isMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible'}`}
         >
           <NavLink href="/catalog" isActive={pathname.startsWith('/catalog')} isSolid={true} onClick={closeMenu}>CATALOG</NavLink>
           <NavLink href="/about" isActive={pathname === '/about'} isSolid={true} onClick={closeMenu}>ABOUT</NavLink>
