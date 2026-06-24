@@ -1,7 +1,7 @@
 import { Metadata } from 'next'
 import Image from 'next/image'
 import { StaggerContainer, FadeInUp } from '@/components/motion-transitions'
-import { makingStages } from '@/data/the-making'
+import { getMakingStages } from '@/lib/services/the-making.service'
 
 export const metadata: Metadata = {
   title: 'From Sketch to Silver | Taraya',
@@ -18,7 +18,9 @@ function StarDivider() {
   )
 }
 
-export default function TheMakingPage() {
+export default async function TheMakingPage() {
+  const makingStages = await getMakingStages()
+
   return (
     <main className="bg-field min-h-[calc(100vh-160px)]">
       <StaggerContainer>
