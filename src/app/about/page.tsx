@@ -34,10 +34,10 @@ export default function About() {
 
           {/* Hero */}
           <FadeInUp className="w-full text-center">
-            <p className="font-garamond font-normal text-xs uppercase tracking-[0.3em] text-muted mb-6 md:mb-8">
+            <p className="font-garamond font-normal text-xs [font-variant:small-caps] tracking-[0.1em] text-muted mb-6 md:mb-8">
               Our Heritage
             </p>
-            <h1 className="text-3xl md:text-5xl lg:text-6xl font-serif font-medium text-ink leading-[1.25] tracking-tight max-w-3xl mx-auto">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-medium text-ink leading-[1.25] tracking-tight max-w-3xl mx-auto">
               A silver idol is the centre a home is built around.
             </h1>
           </FadeInUp>

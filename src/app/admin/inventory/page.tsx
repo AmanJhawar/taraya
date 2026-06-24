@@ -10,13 +10,13 @@ import { getOptimizedUrl } from '@/lib/utils'
 import { ConfirmModal } from '@/components/confirm-modal'
 import { useInventoryForm } from '@/hooks/use-inventory-form'
 import { backfillSearchTermsForAllItems } from '@/lib/services/inventory.service'
-import { COLLECTION_LIST, type Collection } from '@/lib/collections'
+import { type CollectionConfig } from '@/lib/collections'
 import {
   getStandardSizeMatrix,
   getCustomSizeMatrix,
   getSizeMatrix
 } from '@/lib/domain/inventory'
-import { usesStones, usesPurity, usesWeights } from '@/lib/collections'
+import { usesStones, usesPurity, usesWeights } from '@/lib/services/collections.service'
 
 const STANDARD_SIZES = ['4cm', '7cm', '10cm', '12.5cm']
 const STANDARD_PURITIES = ['92.5', '80.0']
@@ -34,7 +34,7 @@ export default function AdminInventory() {
     items, loading, isFormOpen, editingId, deleteId,
     formData, customSizeInput, customPurityInput,
     variantSkuInputs, variantWeightInputs, variantImageInputs,
-    combos
+    combos, collections
   } = state
 
   const {
@@ -48,7 +48,13 @@ export default function AdminInventory() {
 
   const confirmDelete = (id: string) => setDeleteId(id)
 
-  const collectionOptions = COLLECTION_LIST.map(c => ({ value: c.slug, label: c.title }))
+  const activeConfig = collections.find(c => c.slug === formData.collection)
+  const isStones = usesStones(activeConfig)
+  const isWeights = usesWeights(activeConfig)
+  const isPurity = usesPurity(activeConfig)
+  const isBullion = !!isWeights
+
+  const collectionOptions = collections.map(c => ({ value: c.slug, label: c.title }))
 
   return (
     <div>
@@ -138,7 +144,7 @@ export default function AdminInventory() {
                 <label className="admin-label required mb-2">Collection</label>
                 <CustomSelect
                   value={formData.collection ?? ''}
-                  onChange={v => setFormData({ ...formData, collection: v as Collection })}
+                  onChange={v => setFormData({ ...formData, collection: v as string })}
                   options={collectionOptions}
                   placeholder="Select collection"
                   className="py-2.5 px-4 text-[15px] font-medium"
@@ -171,23 +177,23 @@ export default function AdminInventory() {
               {formData.hasVariants && (
                 <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-8 bg-field">
                   {/* ── Size Column ── */}
-                  <div className={!usesPurity(formData.collection) ? 'md:col-span-2' : ''}>
+                  <div className={!isPurity ? 'md:col-span-2' : ''}>
                     <p className="text-[11px] font-semibold tracking-widest uppercase text-muted mb-4">
-                      {usesStones(formData.collection) ? 'Available Stones' : usesWeights(formData.collection) ? 'Available Weights' : 'Available Sizes'}
+                      {isStones ? 'Available Stones' : isWeights ? 'Available Weights' : 'Available Sizes'}
                     </p>
                     <div className="flex flex-wrap gap-2 mb-6">
                       {Array.from(new Set([
-                        ...(usesStones(formData.collection)
+                        ...(isStones
                           ? STANDARD_STONES
-                          : usesWeights(formData.collection)
+                          : isWeights
                             ? STANDARD_WEIGHTS
                             : STANDARD_SIZES),
-                        ...getStandardSizeMatrix(formData)
+                        ...getStandardSizeMatrix(formData, activeConfig)
                       ])).map(opt => (
                         <button
                           key={opt} type="button"
                           onClick={() => toggleSize(opt)}
-                          className={`admin-pill ${getStandardSizeMatrix(formData).includes(opt) ? 'admin-pill-active' : ''}`}
+                          className={`admin-pill ${getStandardSizeMatrix(formData, activeConfig).includes(opt) ? 'admin-pill-active' : ''}`}
                         >
                           {opt}
                         </button>
@@ -195,9 +201,9 @@ export default function AdminInventory() {
                     </div>
 
                     {/* Custom sizes already added */}
-                    {getCustomSizeMatrix(formData).length > 0 && (
+                    {getCustomSizeMatrix(formData, activeConfig).length > 0 && (
                       <div className="flex flex-wrap gap-2 mb-4">
-                        {getCustomSizeMatrix(formData).map(s => (
+                        {getCustomSizeMatrix(formData, activeConfig).map(s => (
                           <span key={s} className="admin-pill admin-pill-active flex items-center gap-1.5">
                             {s}
                             <button type="button" onClick={() => removeCustomSize(s)} className="opacity-60 hover:opacity-100 transition-[opacity,transform] active:scale-[0.97]"><X size={12} /></button>
@@ -207,17 +213,17 @@ export default function AdminInventory() {
                     )}
 
                     <p className="text-[11px] font-semibold tracking-widest uppercase text-muted mb-3">
-                      {usesStones(formData.collection) ? 'Custom Stone' : usesWeights(formData.collection) ? 'Custom Weight' : 'Custom Size'}
+                      {isStones ? 'Custom Stone' : isWeights ? 'Custom Weight' : 'Custom Size'}
                     </p>
                     <div className="flex items-end gap-3 max-w-sm">
                       <div className="flex-1 relative">
                         <input
                           type="text"
                           value={customSizeInput}
-                          onChange={e => setCustomSizeInput(usesStones(formData.collection) ? e.target.value : numericFilter(e.target.value))}
+                          onChange={e => setCustomSizeInput(isStones ? e.target.value : numericFilter(e.target.value))}
                           onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); addCustomSize() } }}
                           className="admin-input-underline"
-                          placeholder={usesStones(formData.collection) ? "e.g., Rose Quartz" : usesWeights(formData.collection) ? "e.g., 100" : "e.g., 20"}
+                          placeholder={isStones ? "e.g., Rose Quartz" : isWeights ? "e.g., 100" : "e.g., 20"}
                         />
                       </div>
                       <button type="button" onClick={addCustomSize} className="admin-btn-outline">
@@ -227,7 +233,7 @@ export default function AdminInventory() {
                   </div>
 
                   {/* ── Purity Column ── */}
-                  {usesPurity(formData.collection) && (
+                  {isPurity && (
                     <div>
                       <p className="text-[11px] font-semibold tracking-widest uppercase text-muted mb-4">Available Purities</p>
                       <div className="flex flex-wrap gap-2 mb-6">
@@ -277,14 +283,14 @@ export default function AdminInventory() {
 
               {/* ── Per-Variant SKUs & Weights ── */}
               {formData.hasVariants && (() => {
-                const isBullion = !!usesWeights(formData.collection)
+
 
                 if (combos.length === 0) {
                   return (
                     <div className="px-6 pb-6 bg-field">
                       <div className="pt-6 border-t border-gray-100">
                         <p className="text-sm text-muted italic">
-                          {usesStones(formData.collection)
+                          {isStones
                             ? 'Select at least one stone to configure variant SKUs.'
                             : isBullion
                               ? 'Select at least one weight to configure variant SKUs.'
@@ -332,17 +338,17 @@ export default function AdminInventory() {
                             <div className="flex flex-col gap-2 pt-3 mt-3 border-t border-gray-100">
                               <div>
                                 <label className="text-[10px] font-semibold text-muted uppercase tracking-wider block">
-                                  {usesStones(formData.collection) || isBullion ? 'Image Overrides (All)' : 'Image Override (Last Image)'}
+                                  {isStones || isBullion ? 'Image Overrides (All)' : 'Image Override (Last Image)'}
                                 </label>
                                 <p className="text-[10px] text-muted mt-0.5 mb-2 leading-tight">
-                                  {usesStones(formData.collection) || isBullion
+                                  {isStones || isBullion
                                     ? 'These images will completely replace the default product gallery when this variant is selected.'
                                     : 'This image will replace ONLY the last slide of the product gallery when this variant is selected.'}
                                 </p>
                               </div>
                               <div className="grid grid-cols-2 gap-3">
                                 {(() => {
-                                  const isFullOverride = usesStones(formData.collection) || isBullion
+                                  const isFullOverride = isStones || isBullion
                                   const currentImages = variantImageInputs[combo.key] || []
 
                                   if (!isFullOverride) {
@@ -513,7 +519,8 @@ export default function AdminInventory() {
                 </thead>
                 <tbody>
                   {items.map((item) => {
-                    const allSizes = getSizeMatrix(item)
+                    const itemConfig = collections.find(c => c.slug === item.collection)
+                    const allSizes = getSizeMatrix(item, itemConfig)
                     const allPurities = [...(item.standardPurities || []), ...(item.customPurities || [])]
                     return (
                       <tr key={item.id} className="border-b border-gray-100 hover:bg-band/50">

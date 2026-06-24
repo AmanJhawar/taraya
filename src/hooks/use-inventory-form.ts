@@ -2,7 +2,8 @@ import { useState, useEffect, useMemo } from 'react'
 import { getInventoryItems, saveInventoryItem, deleteInventoryItem } from '@/lib/services/inventory.service'
 import { buildVariantCombos, buildSearchTerms } from '@/lib/domain/inventory'
 import { Product, VariantDetail } from '@/lib/types'
-import { usesStones, usesWeights } from '@/lib/collections'
+import { getCollections, usesStones, usesWeights } from '@/lib/services/collections.service'
+import type { CollectionConfig } from '@/lib/collections'
 
 
 const emptyForm: Partial<Product> = {
@@ -17,6 +18,7 @@ const numericFilter = (val: string) => val.replace(/[^0-9.]/g, '').replace(/(\..
 
 export function useInventoryForm() {
   const [items, setItems] = useState<Product[]>([])
+  const [collections, setCollections] = useState<CollectionConfig[]>([])
   const [loading, setLoading] = useState(true)
   const [isFormOpen, setIsFormOpen] = useState(false)
   const [editingId, setEditingId] = useState<string | null>(null)
@@ -33,8 +35,12 @@ export function useInventoryForm() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const catItems = await getInventoryItems()
+        const [catItems, colls] = await Promise.all([
+          getInventoryItems(),
+          getCollections()
+        ])
         setItems(catItems as unknown as Product[])
+        setCollections(colls)
       } catch (err) {
         console.error("Error fetching data", err)
       } finally {
@@ -57,13 +63,13 @@ export function useInventoryForm() {
     }
   }
 
-  const combos = useMemo(() => buildVariantCombos(formData), [formData])
+  const combos = useMemo(() => buildVariantCombos(formData, collections.find(c => c.slug === formData.collection)), [formData, collections])
 
   const handleEdit = (item: Product) => {
     setFormData({ ...item, orderIndex: item.orderIndex || 0 })
     const skuInputs: Record<string, string> = {}
     const weightInputs: Record<string, string> = {}
-    const combos = buildVariantCombos(item)
+    const combos = buildVariantCombos(item, collections.find(c => c.slug === item.collection))
     if (item.variantSkus) {
       for (const [sku, detail] of Object.entries(item.variantSkus)) {
         const match = combos.find(c =>
@@ -96,7 +102,8 @@ export function useInventoryForm() {
   }
 
   const cleanupOrphanedInputs = (newFormData: Partial<Product>) => {
-    const validKeys = new Set(buildVariantCombos(newFormData).map(c => c.key))
+    const config = collections.find(c => c.slug === newFormData.collection)
+    const validKeys = new Set(buildVariantCombos(newFormData, config).map(c => c.key))
     
     setVariantSkuInputs(prev => {
       let changed = false
@@ -121,8 +128,9 @@ export function useInventoryForm() {
   }
 
   const getMatrixFields = () => {
-    if (usesStones(formData.collection)) return ['standardStones', 'customStones'] as const
-    if (usesWeights(formData.collection)) return ['standardWeights', 'customWeights'] as const
+    const config = collections.find(c => c.slug === formData.collection)
+    if (usesStones(config)) return ['standardStones', 'customStones'] as const
+    if (usesWeights(config)) return ['standardWeights', 'customWeights'] as const
     return ['standardSizes', 'customSizes'] as const
   }
 
@@ -146,7 +154,8 @@ export function useInventoryForm() {
   const addCustomSize = () => {
     const v = customSizeInput.trim()
     if (!v) return
-    if (!/^\d+(\.\d+)?$/.test(v) && !usesStones(formData.collection)) {
+    const config = collections.find(c => c.slug === formData.collection)
+    if (!/^\d+(\.\d+)?$/.test(v) && !usesStones(config)) {
       alert('Only numeric values are allowed for custom sizes/weights.')
       return
     }
@@ -223,7 +232,8 @@ export function useInventoryForm() {
           return
         }
 
-        const isBullion = usesWeights(formData.collection)
+        const config = collections.find(c => c.slug === formData.collection)
+        const isBullion = usesWeights(config)
         const variantSkus: Record<string, VariantDetail> = {}
         const seenSkus = new Set<string>()
 
@@ -271,6 +281,7 @@ export function useInventoryForm() {
   return {
     state: {
       items,
+      collections,
       loading,
       isFormOpen,
       editingId,

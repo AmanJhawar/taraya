@@ -48,7 +48,7 @@ export default function TheMakingPage() {
                   <div className={`w-full md:w-1/2 flex flex-col ${isImageRight ? 'md:order-1' : 'md:order-2'}`}>
                     <FadeInUp yOffset={24}>
                       <div className="max-w-[34rem]">
-                        <span className="block text-lg font-garamond [font-variant:small-caps] tracking-[0.1em] text-muted mb-4">
+                        <span className="block text-[13px] font-garamond [font-variant:small-caps] tracking-[0.1em] text-muted mb-4">
                           Stage {stage.numberLabel}
                         </span>
                         <h2 className="text-3xl md:text-4xl font-serif text-ink mb-6">

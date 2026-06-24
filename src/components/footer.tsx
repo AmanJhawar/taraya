@@ -9,29 +9,29 @@ export default function Footer() {
       <div className="max-w-8xl mx-auto px-6 py-8">
         <div className="flex flex-col sm:flex-row justify-center gap-12 md:gap-32 mb-16 text-center">
           <div>
-            <h3 className="text-sm font-semibold tracking-widest text-ink mb-6 uppercase">Company</h3>
+            <h3 className="text-[13px] font-garamond font-semibold tracking-[0.1em] text-ink mb-6 [font-variant:small-caps]">Company</h3>
             <ul className="space-y-3">
               <li>
-                <Link href="/about" className="text-sm text-muted hover:text-ink transition-[color,transform] duration-200 ease-[var(--ease-out)] active:scale-[0.97] inline-block">About Us</Link>
+                <Link href="/about" className="text-[15px] text-muted hover:text-ink transition-[color,transform] duration-200 ease-[var(--ease-out)] active:scale-[0.97] inline-block">About Us</Link>
               </li>
             </ul>
           </div>
 
           <div>
-            <h3 className="text-sm font-semibold tracking-widest text-ink mb-6 uppercase">Store</h3>
+            <h3 className="text-[13px] font-garamond font-semibold tracking-[0.1em] text-ink mb-6 [font-variant:small-caps]">Store</h3>
             <ul className="space-y-3">
               <li>
-                <Link href="/collections" className="text-sm text-muted hover:text-ink transition-[color,transform] duration-200 ease-[var(--ease-out)] active:scale-[0.97] inline-block">Collections</Link>
+                <Link href="/collections" className="text-[15px] text-muted hover:text-ink transition-[color,transform] duration-200 ease-[var(--ease-out)] active:scale-[0.97] inline-block">Collections</Link>
               </li>
             </ul>
           </div>
 
 
           <div>
-            <h3 className="text-sm font-semibold tracking-widest text-ink mb-6 uppercase">Contact</h3>
+            <h3 className="text-[13px] font-garamond font-semibold tracking-[0.1em] text-ink mb-6 [font-variant:small-caps]">Contact</h3>
             <ul className="space-y-3">
               <li>
-                <Link href="/contact" className="text-sm text-muted hover:text-ink transition-[color,transform] duration-200 ease-[var(--ease-out)] active:scale-[0.97] inline-block">Get in Touch</Link>
+                <Link href="/contact" className="text-[15px] text-muted hover:text-ink transition-[color,transform] duration-200 ease-[var(--ease-out)] active:scale-[0.97] inline-block">Get in Touch</Link>
               </li>
             </ul>
           </div>

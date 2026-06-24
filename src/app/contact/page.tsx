@@ -194,23 +194,23 @@ export default function Contact() {
           <div className="flex flex-col gap-10">
             <div>
               <h3 className="text-xl font-semibold text-ink mb-4">Corporate Gifting</h3>
-              <p className="text-muted leading-relaxed mb-4">Looking for personalized silver frames or bulk orders for your organization? Reach out to our specialized gifting team.</p>
-              <div className="text-muted leading-relaxed">
+              <p className="text-lg text-muted leading-relaxed mb-4">Looking for personalized silver frames or bulk orders for your organization? Reach out to our specialized gifting team.</p>
+              <div className="text-lg text-muted leading-relaxed">
                 <strong className="text-ink">Email:</strong> corporate@taraya.com
               </div>
             </div>
 
             <div>
               <h3 className="text-xl font-semibold text-ink mb-4">Wholesale & Bullion</h3>
-              <p className="text-muted leading-relaxed mb-4">For B2B pricing, wholesale partnerships, and silver bullion investments.</p>
-              <div className="text-muted leading-relaxed">
+              <p className="text-lg text-muted leading-relaxed mb-4">For B2B pricing, wholesale partnerships, and silver bullion investments.</p>
+              <div className="text-lg text-muted leading-relaxed">
                 <strong className="text-ink">Email:</strong> bullion@taraya.com
               </div>
             </div>
 
             <div>
               <h3 className="text-xl font-semibold text-ink mb-4">Office Location</h3>
-              <div className="text-muted leading-relaxed">
+              <div className="text-lg text-muted leading-relaxed">
                 <strong className="text-ink">Address:</strong><br />
                 A96 Ventures Private Limited<br />
                 Kolkata, WB<br />

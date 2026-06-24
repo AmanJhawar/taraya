@@ -4,7 +4,7 @@ import { CollectionItem } from '@/data/collections'
 import { FadeInUp } from './motion-transitions'
 
 export function CollectionProductCard({ item, index }: { item: CollectionItem; index: number }) {
-  const isDarkGround = item.material === 'silver' || item.material === 'bullion'
+  const isDarkGround = item.darkGround
   const hasSecondImage = item.images.length > 1
 
   return (
@@ -51,14 +51,14 @@ export function CollectionProductCard({ item, index }: { item: CollectionItem; i
         {/* Label and name only. No price on the collection page. */}
         <div className="mt-6 flex flex-col items-center text-center">
           <span
-            className="font-garamond text-[11px] tracking-[0.1em] text-muted mb-2"
+            className="font-garamond text-[13px] tracking-[0.1em] text-muted mb-2"
             style={{ fontVariant: 'small-caps' }}
           >
             {item.material.replace('-', ' ')}
             {item.weightGrams ? ` · ${item.weightGrams}g` : ''}
           </span>
 
-          <h3 className="font-serif text-lg md:text-xl text-ink font-medium tracking-wide">
+          <h3 className="font-serif text-xl md:text-2xl text-ink font-medium tracking-wide">
             {item.name}
           </h3>
         </div>

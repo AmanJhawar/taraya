@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { doc, getDoc, setDoc, getFirestore } from 'firebase/firestore/lite'
 import { app } from '@/lib/firebase/config'
 import { Layers, Trash2, Edit2, Check, Plus, ChevronDown, ChevronUp } from 'lucide-react'
-import { COLLECTION_LIST, type CollectionConfig, type Collection, type VariantModel, type Material } from '@/lib/collections'
+import { type CollectionConfig, type VariantModel, type Material } from '@/lib/collections'
 import { ConfirmModal } from '@/components/confirm-modal'
 import CustomSelect from '@/components/custom-select'
 import { ImageDropzone } from '@/components/image-dropzone'
@@ -58,12 +58,12 @@ export default function AdminCollections() {
         if (snap.exists() && Array.isArray(snap.data().list)) {
           setCollections(snap.data().list as CollectionConfig[])
         } else {
-          setCollections(COLLECTION_LIST)
-          await setDoc(FIRESTORE_KEY, { list: COLLECTION_LIST })
+          setCollections([])
+          await setDoc(FIRESTORE_KEY, { list: [] })
         }
       } catch (err) {
         console.error('Failed to load collections', err)
-        setCollections(COLLECTION_LIST)
+        setCollections([])
       } finally {
         setLoading(false)
       }
@@ -83,7 +83,7 @@ export default function AdminCollections() {
     if (collections.some(c => c.slug === slug)) { alert(`A collection with slug "${slug}" already exists.`); return }
     setSaving(true)
     try {
-      await persist([...collections, { ...addForm, slug: slug as Collection }])
+      await persist([...collections, { ...addForm, slug: slug }])
       setAddForm(emptyForm())
       setShowAddForm(false)
     } catch { alert('Failed to save. Check permissions.') }
@@ -98,7 +98,7 @@ export default function AdminCollections() {
   const cancelEdit = () => { setEditingIndex(null); setEditForm(null) }
   const saveEdit = async (idx: number) => {
     if (!editForm) return
-    const slug = editForm.slug.trim().toLowerCase().replace(/[^a-z0-9-]+/g, '-') as Collection
+    const slug = editForm.slug.trim().toLowerCase().replace(/[^a-z0-9-]+/g, '-')
     if (!slug || !editForm.title.trim()) { alert('Slug and title are required.'); return }
     if (collections.some((c, i) => i !== idx && c.slug === slug)) { alert(`Another collection with slug "${slug}" already exists.`); return }
     setSaving(true)

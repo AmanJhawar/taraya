@@ -1,5 +1,6 @@
 import type { Product } from './types'
-import { usesStones, usesWeights } from '@/lib/collections'
+import { usesStones, usesWeights } from '@/lib/services/collections.service'
+import type { CollectionConfig } from '@/lib/collections'
 
 /**
  * Resolves the ordered gallery of image URLs for a product given an optional
@@ -13,7 +14,7 @@ import { usesStones, usesWeights } from '@/lib/collections'
  * Falls back to the default gallery ([imageFile, ...additionalImages]) when no
  * variant is selected or no override is defined for the selected variant.
  */
-export function resolveGallery(item: Product, selectedVariant?: string): string[] {
+export function resolveGallery(item: Product, selectedVariant?: string, config?: CollectionConfig): string[] {
   const defaultGallery = [item.imageFile, ...(item.additionalImages ?? [])].filter(Boolean)
 
   if (!selectedVariant || !item.variantImages?.[selectedVariant]?.length) {
@@ -21,7 +22,7 @@ export function resolveGallery(item: Product, selectedVariant?: string): string[
   }
 
   const overrideImages = item.variantImages[selectedVariant]
-  const isFullOverride = usesStones(item.collection) || usesWeights(item.collection)
+  const isFullOverride = usesStones(config) || usesWeights(config)
 
   if (isFullOverride) {
     return overrideImages

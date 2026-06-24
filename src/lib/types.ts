@@ -1,4 +1,3 @@
-import type { Collection } from '@/lib/collections'
 
 // A single configured variant, identified by its own SKU.
 // The attributes describe which selection this SKU corresponds to.
@@ -13,7 +12,7 @@ export interface Product {
   id: string;
   sku: string;
   name: string;
-  collection: Collection;
+  collection: string;
   description: string;
   standardSizes?: string[];
   customSizes?: string[];

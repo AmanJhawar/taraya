@@ -1,4 +1,4 @@
-import { COLLECTIONS_CONFIG } from '@/data/collections'
+import { getCollections } from '@/lib/services/collections.service'
 import Link from 'next/link'
 import Image from 'next/image'
 import { FadeInUp, StaggerContainer } from '@/components/motion-transitions'
@@ -9,8 +9,8 @@ export const metadata: Metadata = {
   description: 'Explore our curated collections of silver idols, bullion, and stone-set frames.',
 }
 
-export default function CollectionsIndexPage() {
-  const collections = Object.values(COLLECTIONS_CONFIG)
+export default async function CollectionsIndexPage() {
+  const collections = await getCollections()
 
   return (
     <div className="pt-24 pb-32 min-h-screen">
@@ -53,7 +53,7 @@ export default function CollectionsIndexPage() {
 
                 {/* Metadata */}
                 <div className="mt-8 flex flex-col items-center text-center">
-                  <span className="font-garamond text-[11px] tracking-[0.1em] text-muted mb-3 transition-opacity duration-500 md:opacity-70 md:group-hover:opacity-100" style={{ fontVariant: 'small-caps' }}>
+                  <span className="font-garamond text-[13px] tracking-[0.1em] text-muted mb-3 transition-opacity duration-500 md:opacity-70 md:group-hover:opacity-100" style={{ fontVariant: 'small-caps' }}>
                     {config.eyebrow}
                   </span>
                   
@@ -61,7 +61,7 @@ export default function CollectionsIndexPage() {
                     {config.title}
                   </h3>
                   
-                  <p className="font-garamond text-base text-muted max-w-sm mx-auto transition-opacity duration-500 md:opacity-70 md:group-hover:opacity-100">
+                  <p className="font-garamond text-lg text-muted max-w-sm mx-auto transition-opacity duration-500 md:opacity-70 md:group-hover:opacity-100">
                     {config.standfirst}
                   </p>
                 </div>

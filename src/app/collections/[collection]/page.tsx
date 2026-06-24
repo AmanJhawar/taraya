@@ -1,19 +1,27 @@
 import { notFound } from 'next/navigation'
-import { COLLECTIONS_CONFIG, getCollectionItems } from '@/data/collections'
+import { getCollectionItems } from '@/data/collections'
+import { getCollectionBySlug, getCollections } from '@/lib/services/collections.service'
 import { CollectionClient } from '@/components/collection-client'
 import { FadeInUp, StaggerContainer } from '@/components/motion-transitions'
 import { Metadata } from 'next'
 
+export async function generateStaticParams() {
+  const collections = await getCollections()
+  return collections.map((c) => ({
+    collection: c.slug,
+  }))
+}
+
 export async function generateMetadata({ params }: { params: Promise<{ collection: string }> }): Promise<Metadata> {
   const collectionParam = (await params).collection
-  const config = COLLECTIONS_CONFIG[collectionParam]
+  const config = await getCollectionBySlug(collectionParam)
   if (!config) return { title: 'Collection Not Found' }
   return { title: `${config.title} | Taraya` }
 }
 
 export default async function CollectionPage({ params }: { params: Promise<{ collection: string }> }) {
   const collectionParam = (await params).collection
-  const config = COLLECTIONS_CONFIG[collectionParam]
+  const config = await getCollectionBySlug(collectionParam)
   
   if (!config) {
     notFound()

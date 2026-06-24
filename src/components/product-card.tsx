@@ -3,14 +3,16 @@ import { ProtectedImage } from '@/components/protected-image'
 import { FadeInUp } from '@/components/motion-transitions'
 import { getOptimizedUrl } from '@/lib/utils'
 import type { Product } from '@/lib/types'
-import { usesStones, usesWeights } from '@/lib/collections'
+import { usesStones, usesWeights } from '@/lib/services/collections.service'
+import type { CollectionConfig } from '@/lib/collections'
 
 interface ProductCardProps {
   item: Product
   showVariants?: boolean
+  config?: CollectionConfig
 }
 
-export function ProductCard({ item, showVariants = false }: ProductCardProps) {
+export function ProductCard({ item, showVariants = false, config }: ProductCardProps) {
   return (
     <FadeInUp className="h-full flex">
       <Link 
@@ -42,10 +44,10 @@ export function ProductCard({ item, showVariants = false }: ProductCardProps) {
               let sizes = 0
               let sizeLabel = 'sizes'
               
-              if (usesStones(item.collection)) {
+              if (usesStones(config)) {
                 sizes = (item.standardStones?.length || 0) + (item.customStones?.length || 0)
                 sizeLabel = 'stones'
-              } else if (usesWeights(item.collection)) {
+              } else if (usesWeights(config)) {
                 sizes = (item.standardWeights?.length || 0) + (item.customWeights?.length || 0)
                 sizeLabel = 'weights'
               } else {
