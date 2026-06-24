@@ -125,7 +125,7 @@ export default function CustomSelect({ id, name, value, onChange, options, place
                   type="button"
                   tabIndex={-1}
                   onClick={() => handleSelect(option.value)}
-                  className={`w-full text-left px-4 py-3 text-sm transition-colors duration-150 ease-[var(--ease-out)] hover:bg-band ${
+                  className={`w-full text-left px-4 py-3 text-sm transition-[color,transform] active:scale-[0.98] duration-150 ease-[var(--ease-out)] hover:bg-band ${
                     focusedIndex === idx ? 'bg-band' : ''
                   } ${
                     value === option.value ? 'bg-band font-semibold text-ink' : 'text-muted'

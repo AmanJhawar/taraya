@@ -1,60 +1,62 @@
 'use client'
 
-import React from 'react'
-import dynamic from 'next/dynamic'
+import React, { useState, useEffect } from 'react'
+import Image from 'next/image'
 import Link from 'next/link'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { EASE_OUT } from '@/components/motion-transitions'
 
-// Dynamically import UnicornScene so it doesn't run on the server
-const UnicornScene = dynamic(
-  () => import('unicornstudio-react').then((mod) => mod.default),
-  {
-    ssr: false,
-    loading: () => <div className="absolute inset-0 z-0 bg-neutral-950" />,
-  }
-)
+const images = [
+  '/assets/marble-photoframe.png',
+  '/assets/silver-elephant.png',
+  '/assets/silver-ganesha.png',
+  '/assets/silver-ganesha-2.png',
+  '/assets/idolize.png'
+]
 
-export default function NetworkHero() {
+export default function HeroCarousel() {
+  const [currentIndex, setCurrentIndex] = useState(0)
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % images.length)
+    }, 5000)
+    return () => clearInterval(timer)
+  }, [])
+
   return (
     <section className="relative w-full h-screen min-h-[600px] overflow-hidden bg-neutral-950 -mt-20 flex flex-col justify-center items-center">
-      {/* Unicorn Studio Background */}
-      <motion.div
-        className="absolute inset-0 z-0"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1.0, ease: EASE_OUT }}
-      >
-        {/* Force UnicornScene internals to fill the container */}
-        <style dangerouslySetInnerHTML={{
-          __html: `
-        .unicorn-scene-wrapper,
-        .unicorn-scene-wrapper > div,
-        .unicorn-scene-wrapper canvas {
-          width: 100% !important;
-          height: 100% !important;
-          position: absolute !important;
-          inset: 0 !important;
-        }
-      `}} />
-        <UnicornScene
-          projectId="Pvsa8dKMzsvq5SodEcxA"
-          width="100%"
-          height="100%"
-          scale={1}
-          dpi={1.5}
-          production={true}
-          className="unicorn-scene-wrapper"
-          sdkUrl="/unicornStudio.umd.js"
-        />
-      </motion.div>
+      
+      {/* Background Carousel */}
+      <div className="absolute inset-0 z-0">
+        <AnimatePresence mode="popLayout">
+          <motion.div
+            key={currentIndex}
+            className="absolute inset-0"
+            initial={{ opacity: 0, scale: 1.05 }}
+            animate={{ opacity: 0.6, scale: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 1.2, ease: EASE_OUT }}
+          >
+            <Image
+              src={images[currentIndex]}
+              alt="Taraya Collection"
+              fill
+              priority
+              className="object-cover"
+            />
+          </motion.div>
+        </AnimatePresence>
+      </div>
+
+      <div className="absolute inset-0 z-0 bg-gradient-to-t from-neutral-950 via-neutral-950/20 to-transparent pointer-events-none" />
 
       {/* Overlay Content */}
       <div className="relative z-10 flex flex-col items-center justify-center pointer-events-none text-center px-6 max-w-5xl mx-auto pt-10">
-
+        
         {/* Main Title */}
         <motion.h1
-          className="text-4xl md:text-5xl lg:text-7xl font-medium leading-tight text-white mb-24 font-serif"
+          className="text-3xl md:text-4xl lg:text-5xl font-medium leading-snug text-white mb-16 font-serif drop-shadow-md tracking-wide"
           initial={{ clipPath: 'inset(0 0 100% 0)' }}
           animate={{ clipPath: 'inset(0 0 0% 0)' }}
           transition={{ duration: 0.8, ease: EASE_OUT }}
@@ -80,14 +82,14 @@ export default function NetworkHero() {
           animate={{ opacity: 1, transform: "translateY(0px)" }}
           transition={{ duration: 0.6, ease: EASE_OUT, delay: 0.6 }}
         >
-
           <Link
             href="/collections"
-            className="btn-secondary shadow-sm"
+            className="btn-secondary shadow-sm bg-white/10 backdrop-blur-md text-white border-white/20 hover:bg-white/20"
           >
             Explore Collections
           </Link>
         </motion.div>
+
       </div>
     </section>
   )

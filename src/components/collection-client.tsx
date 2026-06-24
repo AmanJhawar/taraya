@@ -61,7 +61,7 @@ export function CollectionClient({ initialItems, initialCursor, slug, config }: 
           <button
             onClick={loadMore}
             disabled={isFetchingMore}
-            className="px-8 py-3 border border-line rounded-none bg-surface text-ink font-medium tracking-wide hover:bg-mute transition-[background-color,transform] active:scale-[0.97] disabled:opacity-50 flex items-center justify-center min-w-[160px]"
+            className="px-8 py-3 border border-line rounded-lg bg-field text-ink font-medium tracking-wide hover:bg-band transition-[background-color,transform] active:scale-[0.97] disabled:opacity-50 flex items-center justify-center min-w-[160px]"
           >
             {isFetchingMore ? <div className="w-5 h-5 border-2 border-muted border-t-ink rounded-full animate-spin" /> : 'Load More'}
           </button>

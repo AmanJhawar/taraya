@@ -15,7 +15,7 @@ export function CollectionProductCard({ item, index }: { item: CollectionItem; i
         className="block focus:outline-none focus-visible:ring-1 focus-visible:ring-ink"
       >
         <div
-          className="relative w-full overflow-hidden aspect-[4/5] flex items-center justify-center"
+          className="relative w-full overflow-hidden aspect-[4/5] flex items-center justify-center rounded-lg"
           style={{ backgroundColor: isDarkGround ? '#2B2723' : 'transparent' }}
         >
           {/* drop-shadow-2xl removed: the contact shadow is baked into the product photo

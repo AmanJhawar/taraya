@@ -1,7 +1,7 @@
 export const revalidate = 3600;
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import UnicornHero from '@/components/UnicornHero'
+import HeroCarousel from '@/components/HeroCarousel'
 
 export const metadata: Metadata = {
   title: 'Taraya | Bullions & Silver Articles',
@@ -14,7 +14,7 @@ export default async function Home() {
 
   return (
     <>
-      <UnicornHero />
+      <HeroCarousel />
 
 
 

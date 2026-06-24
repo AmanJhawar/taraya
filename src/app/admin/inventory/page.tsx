@@ -148,7 +148,7 @@ export default function AdminInventory() {
                     setFormData(newFormData)
                     if (!newFormData.hasVariants) cleanupOrphanedInputs(newFormData)
                   }}
-                  className={`relative inline-flex h-[22px] w-[42px] shrink-0 cursor-pointer items-center rounded-full transition-colors duration-[160ms] ease-[var(--ease-out)] ${formData.hasVariants ? 'bg-ink' : 'bg-gray-200'}`}
+                  className={`relative inline-flex h-[22px] w-[42px] shrink-0 cursor-pointer items-center rounded-full transition-colors duration-[160ms] ease-[var(--ease-out)] ${formData.hasVariants ? 'bg-ink' : 'bg-line'}`}
                 >
                   <span className={`pointer-events-none inline-block h-[18px] w-[18px] transform rounded-full bg-field shadow-sm ring-0 transition-transform duration-[160ms] ease-[var(--ease-in-out)] ${formData.hasVariants ? 'translate-x-[22px]' : 'translate-x-[2px]'}`} />
                 </button>
@@ -564,7 +564,7 @@ export default function AdminInventory() {
                 <button
                   onClick={loadMore}
                   disabled={isFetchingMore}
-                  className="px-6 py-2.5 border border-line rounded-none bg-surface text-ink hover:bg-mute transition-[background-color,transform] active:scale-[0.97] disabled:opacity-50 flex items-center justify-center min-w-[140px]"
+                  className="px-6 py-2.5 border border-line rounded-lg bg-field text-ink hover:bg-band transition-[background-color,transform] active:scale-[0.97] disabled:opacity-50 flex items-center justify-center min-w-[140px]"
                 >
                   {isFetchingMore ? <div className="w-5 h-5 border-2 border-muted border-t-ink rounded-full animate-spin" /> : 'Load More'}
                 </button>

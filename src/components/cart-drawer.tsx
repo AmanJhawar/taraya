@@ -108,7 +108,7 @@ export function CartDrawer() {
               <h2 id="inquiry-drawer-title" className="text-xl font-bold tracking-tight">Your Inquiry</h2>
               <button
                 onClick={() => setIsCartOpen(false)}
-                className="p-2 hover:bg-band rounded-full transition-[background-color,transform] active:scale-[0.97]"
+                className="p-2 hover:bg-band rounded-full transition-[background-color,transform] active:scale-[0.97] focus:outline-none"
               >
                 <X size={20} />
               </button>

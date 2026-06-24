@@ -38,7 +38,7 @@ export default async function CollectionsIndexPage() {
               <Link href={`/collections/${config.slug}`} className="block focus:outline-none focus-visible:ring-1 focus-visible:ring-ink">
                 {/* Image Plate */}
                 <div 
-                  className="relative w-full overflow-hidden aspect-[4/5] flex items-center justify-center transition-transform duration-700 ease-[var(--ease-out)]"
+                  className="relative w-full overflow-hidden aspect-[4/5] flex items-center justify-center rounded-lg transition-transform duration-700 ease-[var(--ease-out)]"
                   style={{ backgroundColor: config.darkGround ? '#2B2723' : 'transparent' }}
                 >
                   <div className="absolute inset-0 transition-transform duration-1000 ease-out group-hover:scale-[1.02]">

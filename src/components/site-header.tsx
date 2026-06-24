@@ -161,7 +161,7 @@ export default function SiteHeader() {
           </nav>
           
           <button 
-            className="md:hidden p-2 -ml-2 text-current"
+            className="md:hidden p-2 -ml-2 text-current transition-[color,transform] active:scale-[0.97]"
             onClick={() => setIsMobileMenuOpen(true)}
             aria-label="Open menu"
             aria-expanded={isMobileMenuOpen}
@@ -184,17 +184,17 @@ export default function SiteHeader() {
         <div className="flex-1 flex items-center justify-end gap-4 md:gap-6">
           <button 
             aria-label="Search" 
-            className="hover:text-accent transition-colors"
+            className="hover:text-accent transition-[color,transform] active:scale-[0.97]"
             onClick={() => setIsSearchOpen(true)}
           >
             <Search size={18} strokeWidth={1.5} />
           </button>
-          <button aria-label="Account" className="hidden md:block hover:text-accent transition-colors">
+          <button aria-label="Account" className="hidden md:block hover:text-accent transition-[color,transform] active:scale-[0.97]">
             <User size={18} strokeWidth={1.5} />
           </button>
           <button 
             aria-label="Cart" 
-            className="relative hover:text-accent transition-colors p-2 -mr-2 md:p-0 md:mr-0"
+            className="relative hover:text-accent transition-[color,transform] active:scale-[0.97] p-2 -mr-2 md:p-0 md:mr-0"
             onClick={() => setIsCartOpen(true)}
           >
             <ShoppingBag size={18} strokeWidth={1.5} />
@@ -222,7 +222,7 @@ export default function SiteHeader() {
           >
             <div className="flex items-center justify-between px-6 h-14 border-b border-line">
               <button 
-                className="p-2 -ml-2 text-ink hover:text-accent transition-colors"
+                className="p-2 -ml-2 text-ink hover:text-accent transition-[color,transform] active:scale-[0.97]"
                 onClick={() => setIsMobileMenuOpen(false)}
                 aria-label="Close menu"
               >

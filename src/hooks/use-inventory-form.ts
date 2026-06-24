@@ -42,7 +42,7 @@ export function useInventoryForm() {
           getInventoryPage(50),
           getCollections()
         ])
-        setItems(pageData.items as unknown as Product[])
+        setItems(pageData.items)
         setNextCursor(pageData.nextCursor)
         setCollections(colls)
       } catch (err) {
@@ -284,7 +284,7 @@ export function useInventoryForm() {
       await saveInventoryItem(docId, payload)
 
       if (editingId) {
-        setItems(items.map(i => i.id === editingId ? { id: docId, ...payload } as Product : i))
+        setItems(items.map(i => i.id === editingId ? { ...i, ...payload } : i))
       } else {
         setItems([...items, { id: docId, ...payload } as Product])
       }
