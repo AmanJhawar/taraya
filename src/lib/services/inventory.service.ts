@@ -81,3 +81,25 @@ export async function backfillSearchTermsForAllItems(): Promise<number> {
   await Promise.all(promises);
   return promises.length;
 }
+
+export async function searchInventory(searchQuery: string): Promise<Product[]> {
+  const queryText = searchQuery.toLowerCase().trim()
+  if (!queryText) return []
+  
+  // The searchTerms index stores prefixes up to 30 chars.
+  const term = queryText.substring(0, 30)
+
+  const q = query(
+    collection(db, CATALOG_COLLECTION),
+    where('searchTerms', 'array-contains', term),
+    orderBy('orderIndex', 'asc'),
+    limit(100)
+  )
+  
+  const querySnapshot = await withTimeout(getDocs(q))
+  const items: Product[] = []
+  querySnapshot.forEach((docSnap) => {
+    items.push({ ...docSnap.data(), id: docSnap.id } as Product)
+  })
+  return items
+}

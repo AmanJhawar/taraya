@@ -20,7 +20,7 @@ function SidebarContent({ setIsMobileMenuOpen }: { setIsMobileMenuOpen: (v: bool
 
   return (
     <>
-      <div className="p-6 border-b border-gray-100 mb-4 flex justify-between items-center">
+      <div className="p-6 border-b border-line mb-4 flex justify-between items-center">
         <Link href="/" className="text-xl font-bold tracking-tight hover:opacity-70 transition-opacity duration-200">
           Admin
         </Link>

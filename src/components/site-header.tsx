@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { motion, useScroll, useMotionValueEvent, AnimatePresence } from 'framer-motion'
@@ -26,6 +26,54 @@ export default function SiteHeader() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [isSearchOpen, setIsSearchOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
+
+  const overlayRef = useRef<HTMLDivElement>(null)
+  const prevActiveRef = useRef<HTMLElement | null>(null)
+
+  useEffect(() => {
+    const active = isMobileMenuOpen || isSearchOpen
+    if (!active) return
+
+    const originalStyle = window.getComputedStyle(document.body).overflow
+    document.body.style.overflow = 'hidden'
+    prevActiveRef.current = document.activeElement as HTMLElement
+
+    const timer = setTimeout(() => {
+      const focusable = overlayRef.current?.querySelectorAll(
+        'a[href], button:not([disabled]), input:not([disabled]), textarea:not([disabled]), select:not([disabled]), [tabindex="0"]'
+      ) as NodeListOf<HTMLElement>
+      if (focusable && focusable.length > 0) focusable[0].focus()
+    }, 50)
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setIsMobileMenuOpen(false)
+        setIsSearchOpen(false)
+      }
+      if (e.key === 'Tab' && overlayRef.current) {
+        const list = overlayRef.current.querySelectorAll(
+          'a[href], button:not([disabled]), input:not([disabled]), textarea:not([disabled]), select:not([disabled]), [tabindex="0"]'
+        ) as NodeListOf<HTMLElement>
+        if (!list || list.length === 0) return
+        const first = list[0]
+        const last = list[list.length - 1]
+        if (e.shiftKey) {
+          if (document.activeElement === first) { last.focus(); e.preventDefault(); }
+        } else {
+          if (document.activeElement === last) { first.focus(); e.preventDefault(); }
+        }
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown)
+      document.body.style.overflow = originalStyle
+      clearTimeout(timer)
+      if (prevActiveRef.current) prevActiveRef.current.focus()
+    }
+  }, [isMobileMenuOpen, isSearchOpen])
+
   
   const { scrollY } = useScroll()
 
@@ -74,7 +122,7 @@ export default function SiteHeader() {
     e.preventDefault()
     if (!searchQuery.trim()) return
     setIsSearchOpen(false)
-    router.push(`/collections?q=${encodeURIComponent(searchQuery.trim())}`)
+    router.push(`/search?q=${encodeURIComponent(searchQuery.trim())}`)
   }
 
   return (
@@ -163,6 +211,7 @@ export default function SiteHeader() {
       <AnimatePresence>
         {isMobileMenuOpen && (
           <motion.div
+            ref={overlayRef}
             className="fixed inset-0 z-[60] bg-field text-ink flex flex-col"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -216,6 +265,7 @@ export default function SiteHeader() {
       <AnimatePresence>
         {isSearchOpen && (
           <motion.div
+            ref={overlayRef}
             className="fixed inset-0 z-[60] bg-field/95 backdrop-blur-sm text-ink flex flex-col"
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}

@@ -45,7 +45,7 @@ export default async function CollectionsIndexPage() {
                       src={config.image}
                       alt={config.title}
                       fill
-                      className="object-contain p-12 drop-shadow-2xl"
+                      className="object-contain p-12"
                       sizes="(max-width: 768px) 100vw, 50vw"
                     />
                   </div>

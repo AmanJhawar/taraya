@@ -54,7 +54,7 @@ export default function AdminLogin() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-band py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full bg-field p-10 rounded-xl shadow-[0_8px_24px_rgba(0,0,0,0.06)] border border-gray-100">
+      <div className="max-w-md w-full bg-field p-10 rounded-xl shadow-[0_8px_24px_rgba(0,0,0,0.06)] border border-line">
         <div className="text-center mb-10">
           <h2 className="text-3xl font-bold text-ink tracking-tight mb-2 font-serif">Admin</h2>
           <p className="text-sm text-muted">Sign in to manage your command center.</p>
@@ -72,7 +72,7 @@ export default function AdminLogin() {
             <input
               type="email"
               {...register('email')}
-              className={`w-full px-4 py-3 rounded-lg border focus:border-ink focus:ring-4 focus:ring-black/10 transition-[border-color,box-shadow] duration-200 ${errors.email ? 'border-gray-900' : 'border-line'}`}
+              className={`w-full px-4 py-3 rounded-lg border focus:border-ink focus:ring-4 focus:ring-black/10 transition-[border-color,box-shadow] duration-200 ${errors.email ? 'border-ink' : 'border-line'}`}
               placeholder="you@example.com"
             />
             {errors.email && <p className="text-muted font-medium text-sm mt-1">{errors.email.message}</p>}
@@ -83,7 +83,7 @@ export default function AdminLogin() {
             <input
               type="password"
               {...register('password')}
-              className={`w-full px-4 py-3 rounded-lg border focus:border-ink focus:ring-4 focus:ring-black/10 transition-[border-color,box-shadow] duration-200 ${errors.password ? 'border-gray-900' : 'border-line'}`}
+              className={`w-full px-4 py-3 rounded-lg border focus:border-ink focus:ring-4 focus:ring-black/10 transition-[border-color,box-shadow] duration-200 ${errors.password ? 'border-ink' : 'border-line'}`}
               placeholder="••••••••"
             />
             {errors.password && <p className="text-muted font-medium text-sm mt-1">{errors.password.message}</p>}

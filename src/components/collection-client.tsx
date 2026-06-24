@@ -13,13 +13,15 @@ import { StaggerContainer } from './motion-transitions'
  * Re-add them here once wired to the real catalogue, with non-price sorts and
  * keyboard/touch-accessible controls.
  */
-export function CollectionClient({ items, config }: { items: CollectionItem[]; config: CollectionConfig }) {
+export function CollectionClient({ items, config }: { items: CollectionItem[]; config?: CollectionConfig }) {
+  const isUtilitarian = config?.gridType === 'utilitarian'
+  
   return (
     <div className="pb-32">
       <div className="max-w-8xl mx-auto px-6">
         <StaggerContainer
           className={`grid grid-cols-1 ${
-            config.gridType === 'utilitarian'
+            isUtilitarian
               ? 'md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16'
               : 'md:grid-cols-2 gap-x-12 gap-y-24 md:gap-y-32'
           }`}

@@ -48,7 +48,7 @@ function StatusDropdown({ status, onChange }: { status: Inquiry['status'], onCha
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: -4 }}
             transition={{ duration: 0.15, ease: EASE_OUT }}
-            className="absolute z-10 mt-1 w-full bg-field border border-gray-100 rounded-lg shadow-[0_8px_24px_rgba(0,0,0,0.06)] overflow-hidden origin-top"
+            className="absolute z-10 mt-1 w-full bg-field border border-line rounded-lg shadow-[0_8px_24px_rgba(0,0,0,0.06)] overflow-hidden origin-top"
           >
             {options.map((opt) => (
               <button
@@ -186,7 +186,7 @@ export default function AdminInquiries() {
                   const isUnread = !inquiry.status || inquiry.status === 'unread';
 
                   return (
-                    <tr key={inquiry.id} className={`border-b border-gray-100 align-top transition-colors ${isHandled ? 'bg-band opacity-60' : isUnread ? 'bg-band/50' : 'hover:bg-band/50'}`}>
+                    <tr key={inquiry.id} className={`border-b border-line align-top transition-colors ${isHandled ? 'bg-band opacity-60' : isUnread ? 'bg-band/50' : 'hover:bg-band/50'}`}>
                       <td className="px-6 py-4">
                         <StatusDropdown 
                           status={inquiry.status || 'unread'} 

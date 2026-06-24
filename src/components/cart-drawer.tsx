@@ -104,7 +104,7 @@ export function CartDrawer() {
             transition={{ duration: 0.35, ease: [0.32, 0.72, 0, 1] }}
             className="fixed top-0 right-0 h-full w-[400px] max-w-[100vw] bg-field z-[70] shadow-2xl flex flex-col"
           >
-            <div className="flex items-center justify-between p-6 border-b border-gray-100">
+            <div className="flex items-center justify-between p-6 border-b border-line">
               <h2 id="inquiry-drawer-title" className="text-xl font-bold tracking-tight">Your Inquiry</h2>
               <button
                 onClick={() => setIsCartOpen(false)}
@@ -131,7 +131,7 @@ export function CartDrawer() {
               ) : (
                 cartItems.map((item) => (
                   <div key={item.cartId} className="flex gap-4 items-start">
-                    <div className="w-16 aspect-[3/4] bg-[#f5f5f7] rounded-xl relative overflow-hidden flex-shrink-0 border border-gray-100">
+                    <div className="w-16 aspect-[3/4] bg-band rounded-xl relative overflow-hidden flex-shrink-0 border border-line">
                       <ProtectedImage
                         src={getOptimizedUrl(item.imageFile, 400)}
                         alt={item.productName}
@@ -167,7 +167,7 @@ export function CartDrawer() {
                               const newQty = parseInt(e.target.value, 10);
                               updateQuantity(item.cartId, newQty - item.quantity);
                             }}
-                            className="appearance-none bg-[#f5f5f7] border border-line hover:border-line rounded-lg py-1 pl-3 pr-8 text-[13px] font-medium text-ink focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent cursor-pointer transition-colors"
+                            className="appearance-none bg-field border border-line hover:border-line rounded-lg py-1 pl-3 pr-8 text-[13px] font-medium text-ink focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent cursor-pointer transition-colors"
                           >
                             {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((num) => (
                               <option key={num} value={num}>{num}</option>

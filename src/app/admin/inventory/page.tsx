@@ -154,7 +154,7 @@ export default function AdminInventory() {
 
             {/* ─── Variant Configuration ─── */}
             <div className="border border-line rounded-xl overflow-hidden transition-[background-color,border-color,transform] duration-200 ease-[var(--ease-out)]">
-              <div className={`p-5 flex items-center justify-between transition-colors duration-200 ${formData.hasVariants ? 'border-b border-gray-100 bg-band/50' : ''}`}>
+              <div className={`p-5 flex items-center justify-between transition-colors duration-200 ${formData.hasVariants ? 'border-b border-line bg-band/50' : ''}`}>
                 <div>
                   <h3 className="text-sm font-semibold text-ink">Inventory Variants</h3>
                   <p className="text-xs text-muted mt-0.5">Configure sizes, purities, or specific stones/weights.</p>
@@ -288,7 +288,7 @@ export default function AdminInventory() {
                 if (combos.length === 0) {
                   return (
                     <div className="px-6 pb-6 bg-field">
-                      <div className="pt-6 border-t border-gray-100">
+                      <div className="pt-6 border-t border-line">
                         <p className="text-sm text-muted italic">
                           {isStones
                             ? 'Select at least one stone to configure variant SKUs.'
@@ -303,7 +303,7 @@ export default function AdminInventory() {
 
                 return (
                   <div className="px-6 pb-6 bg-field">
-                    <div className="pt-6 border-t border-gray-100">
+                    <div className="pt-6 border-t border-line">
                       <p className="text-[11px] font-semibold tracking-widest uppercase text-muted mb-4">
                         {isBullion ? 'Variant SKUs' : 'Variant SKUs & Approx Weights'}
                       </p>
@@ -335,7 +335,7 @@ export default function AdminInventory() {
                                 </div>
                               )}
                             </div>
-                            <div className="flex flex-col gap-2 pt-3 mt-3 border-t border-gray-100">
+                            <div className="flex flex-col gap-2 pt-3 mt-3 border-t border-line">
                               <div>
                                 <label className="text-[10px] font-semibold text-muted uppercase tracking-wider block">
                                   {isStones || isBullion ? 'Image Overrides (All)' : 'Image Override (Last Image)'}
@@ -523,12 +523,12 @@ export default function AdminInventory() {
                     const allSizes = getSizeMatrix(item, itemConfig)
                     const allPurities = [...(item.standardPurities || []), ...(item.customPurities || [])]
                     return (
-                      <tr key={item.id} className="border-b border-gray-100 hover:bg-band/50">
+                      <tr key={item.id} className="border-b border-line hover:bg-band/50">
                         <td className="px-6 py-4">
                           {item.imageFile ? (
-                            <Image unoptimized width={48} height={64} src={getOptimizedUrl(item.imageFile, 400)} alt="Product" className="w-12 h-auto aspect-[3/4] object-cover rounded-lg bg-[#f5f5f7]" />
+                            <Image unoptimized width={48} height={64} src={getOptimizedUrl(item.imageFile, 400)} alt="Product" className="w-12 h-auto aspect-[3/4] object-cover rounded-lg bg-band" />
                           ) : (
-                            <div className="w-12 h-auto aspect-[3/4] bg-[#f5f5f7] rounded-lg flex items-center justify-center">
+                            <div className="w-12 h-auto aspect-[3/4] bg-band rounded-lg flex items-center justify-center">
                               <Box size={20} className="text-muted" />
                             </div>
                           )}

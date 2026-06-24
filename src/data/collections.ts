@@ -30,7 +30,7 @@ export interface CollectionItem {
 const db = getFirestore(app)
 const CATALOG = 'catalog'
 
-function toCard(item: Product, config?: CollectionConfig): CollectionItem {
+export function toCard(item: Product, config?: CollectionConfig): CollectionItem {
   const images = [item.imageFile, ...(item.additionalImages || [])]
     .filter(Boolean)
     .map((id) => getOptimizedUrl(id, 1200))

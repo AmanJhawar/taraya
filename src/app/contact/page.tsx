@@ -43,7 +43,7 @@ function ContactForm() {
             id="firstName"
             placeholder="e.g., Jane"
             {...register('firstName')}
-            className={`px-4 py-3 border rounded-lg text-base bg-field transition-colors duration-150 ease-[var(--ease-out)] focus:border-ink focus:ring-4 focus:ring-black/10 ${errors.firstName ? 'border-gray-900' : 'border-line'}`}
+            className={`px-4 py-3 border rounded-lg text-base bg-field transition-colors duration-150 ease-[var(--ease-out)] focus:border-ink focus:ring-4 focus:ring-black/10 ${errors.firstName ? 'border-ink' : 'border-line'}`}
           />
           {errors.firstName && <p className="text-muted font-medium text-sm mt-1">{errors.firstName.message}</p>}
         </div>
@@ -66,7 +66,7 @@ function ContactForm() {
             id="lastName"
             placeholder="e.g., Doe"
             {...register('lastName')}
-            className={`px-4 py-3 border rounded-lg text-base bg-field transition-colors duration-150 ease-[var(--ease-out)] focus:border-ink focus:ring-4 focus:ring-black/10 ${errors.lastName ? 'border-gray-900' : 'border-line'}`}
+            className={`px-4 py-3 border rounded-lg text-base bg-field transition-colors duration-150 ease-[var(--ease-out)] focus:border-ink focus:ring-4 focus:ring-black/10 ${errors.lastName ? 'border-ink' : 'border-line'}`}
           />
           {errors.lastName && <p className="text-muted font-medium text-sm mt-1">{errors.lastName.message}</p>}
         </div>
@@ -86,7 +86,7 @@ function ContactForm() {
                   e.target.value = e.target.value.replace(/\D/g, '').slice(0, 4);
                 }
               })}
-              className={`w-20 min-w-0 pl-8 pr-3 py-3 border rounded-lg text-base bg-field transition-colors duration-150 ease-[var(--ease-out)] focus:border-ink focus:ring-4 focus:ring-black/10 ${errors.countryCode ? 'border-gray-900' : 'border-line'}`}
+              className={`w-20 min-w-0 pl-8 pr-3 py-3 border rounded-lg text-base bg-field transition-colors duration-150 ease-[var(--ease-out)] focus:border-ink focus:ring-4 focus:ring-black/10 ${errors.countryCode ? 'border-ink' : 'border-line'}`}
             />
               <input
               type="tel"
@@ -97,7 +97,7 @@ function ContactForm() {
                 }
               })}
               placeholder="e.g., 9876543210"
-              className={`flex-1 min-w-0 px-4 py-3 border rounded-lg text-base bg-field transition-colors duration-150 ease-[var(--ease-out)] focus:border-ink focus:ring-4 focus:ring-black/10 ${errors.mobile ? 'border-gray-900' : 'border-line'}`}
+              className={`flex-1 min-w-0 px-4 py-3 border rounded-lg text-base bg-field transition-colors duration-150 ease-[var(--ease-out)] focus:border-ink focus:ring-4 focus:ring-black/10 ${errors.mobile ? 'border-ink' : 'border-line'}`}
             />
           </div>
           {(errors.countryCode || errors.mobile) && (
@@ -114,7 +114,7 @@ function ContactForm() {
             id="email"
             placeholder="e.g., jane@example.com"
             {...register('email')}
-            className={`px-4 py-3 border rounded-lg text-base bg-field transition-colors duration-150 ease-[var(--ease-out)] focus:border-ink focus:ring-4 focus:ring-black/10 ${errors.email ? 'border-gray-900' : 'border-line'}`}
+            className={`px-4 py-3 border rounded-lg text-base bg-field transition-colors duration-150 ease-[var(--ease-out)] focus:border-ink focus:ring-4 focus:ring-black/10 ${errors.email ? 'border-ink' : 'border-line'}`}
           />
           {errors.email && <p className="text-muted font-medium text-sm mt-1">{errors.email.message}</p>}
         </div>
@@ -150,7 +150,7 @@ function ContactForm() {
           id="message"
           placeholder="How can we help you?"
           {...register('message')}
-          className={`px-4 py-3 border rounded-lg text-base bg-field transition-colors duration-150 ease-[var(--ease-out)] focus:border-ink focus:ring-4 focus:ring-black/10 resize-y min-h-[160px] ${errors.message ? 'border-gray-900' : 'border-line'}`}
+          className={`px-4 py-3 border rounded-lg text-base bg-field transition-colors duration-150 ease-[var(--ease-out)] focus:border-ink focus:ring-4 focus:ring-black/10 resize-y min-h-[160px] ${errors.message ? 'border-ink' : 'border-line'}`}
           rows={8}
         ></textarea>
         {errors.message && <p className="text-muted font-medium text-sm mt-1">{errors.message.message}</p>}

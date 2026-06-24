@@ -185,7 +185,7 @@
   text-transform: uppercase;
   color: var(--color-ink);
   cursor: pointer;
-  transition: border-color 160ms var(--ease-out), background-color 160ms var(--ease-out), transform 160ms var(--ease-out), filter 160ms var(--ease-out), opacity 160ms var(--ease-out);
+  transition: border-color 160ms var(--ease-out), background-color 160ms var(--ease-out), transform 160ms var(--ease-out), opacity 160ms var(--ease-out);
 }
 
 .admin-btn-outline:hover {
@@ -195,7 +195,6 @@
 
 .admin-btn-outline:active {
   transform: scale(0.97);
-  filter: blur(1px);
   opacity: 0.8;
 }
 
@@ -211,16 +210,15 @@
   text-transform: uppercase;
   color: #fff;
   cursor: pointer;
-  transition: background-color 160ms var(--ease-out), transform 160ms var(--ease-out), filter 160ms var(--ease-out), opacity 160ms var(--ease-out);
+  transition: background-color 160ms var(--ease-out), transform 160ms var(--ease-out), opacity 160ms var(--ease-out);
 }
 
 .admin-btn-primary:hover {
-  background: var(--color-gray-800);
+  background: var(--color-ink);
 }
 
 .admin-btn-primary:active {
   transform: scale(0.97);
-  filter: blur(1px);
   opacity: 0.8;
 }
 
