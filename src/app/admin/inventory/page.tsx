@@ -148,7 +148,9 @@ export default function AdminInventory() {
                   options={collectionOptions}
                   placeholder="Select collection"
                   className="py-2.5 px-4 text-[15px] font-medium"
+                  disabled={!!editingId}
                 />
+                {!!editingId && <p className="text-[11px] text-muted mt-1.5">Collection cannot be changed after creation.</p>}
               </div>
             </div>
 
@@ -525,7 +527,7 @@ export default function AdminInventory() {
                     return (
                       <tr key={item.id} className="border-b border-line hover:bg-band/50">
                         <td className="px-6 py-4">
-                          {item.imageFile ? (
+                          {Boolean(item.imageFile) && item.imageFile.trim() !== '' ? (
                             <Image unoptimized width={48} height={64} src={getOptimizedUrl(item.imageFile, 400)} alt="Product" className="w-12 h-auto aspect-[3/4] object-cover rounded-lg bg-band" />
                           ) : (
                             <div className="w-12 h-auto aspect-[3/4] bg-band rounded-lg flex items-center justify-center">

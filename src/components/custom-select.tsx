@@ -16,9 +16,10 @@ interface CustomSelectProps {
   options: Option[]
   placeholder?: string
   className?: string
+  disabled?: boolean
 }
 
-export default function CustomSelect({ id, name, value, onChange, options, placeholder = 'Select...', className = '' }: CustomSelectProps) {
+export default function CustomSelect({ id, name, value, onChange, options, placeholder = 'Select...', className = '', disabled = false }: CustomSelectProps) {
   const [isOpen, setIsOpen] = useState(false)
   const [focusedIndex, setFocusedIndex] = useState(-1)
   const selectRef = useRef<HTMLDivElement>(null)
@@ -82,12 +83,11 @@ export default function CustomSelect({ id, name, value, onChange, options, place
         if (focusedIndex >= 0 && focusedIndex < options.length) {
           handleSelect(options[focusedIndex].value)
         }
-        break
     }
   }
 
   return (
-    <div className="relative" ref={selectRef} onKeyDown={handleKeyDown}>
+    <div className="relative" ref={selectRef} onKeyDown={disabled ? undefined : handleKeyDown}>
       {name && <input type="hidden" id={resolvedId} name={name} value={value} />}
       
       <button
@@ -96,8 +96,13 @@ export default function CustomSelect({ id, name, value, onChange, options, place
         aria-haspopup="listbox"
         aria-expanded={isOpen}
         aria-controls={`${resolvedId}-listbox`}
-        onClick={() => isOpen ? closeSelect() : openSelect()}
-        className={`w-full px-4 py-3 border border-line rounded-lg text-base bg-field text-left flex justify-between items-center transition-[color,border-color,box-shadow,transform] duration-150 ease-[var(--ease-out)] active:scale-[0.97] focus:border-ink focus:ring-4 focus:ring-black/10 ${isOpen ? 'border-ink ring-4 ring-black/10' : ''} ${className}`}
+        onClick={() => !disabled && (isOpen ? closeSelect() : openSelect())}
+        disabled={disabled}
+        className={`w-full px-4 py-3 border border-line rounded-lg text-base text-left flex justify-between items-center transition-[color,border-color,box-shadow,transform] duration-150 ease-[var(--ease-out)] ${
+          disabled 
+            ? 'bg-band/50 cursor-not-allowed opacity-70' 
+            : `bg-field active:scale-[0.97] focus:border-ink focus:ring-4 focus:ring-black/10 ${isOpen ? 'border-ink ring-4 ring-black/10' : ''}`
+        } ${className}`}
       >
         <span className={selectedOption ? "text-ink" : "text-muted"}>
           {selectedOption ? selectedOption.label : placeholder}

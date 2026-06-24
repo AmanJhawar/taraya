@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from 'react'
-import { doc, getDoc, setDoc, getFirestore } from 'firebase/firestore/lite'
+import { doc, getDoc, setDoc, getFirestore, collection, query, where, getDocs, limit } from 'firebase/firestore/lite'
 import { app } from '@/lib/firebase/config'
 import { Layers, Trash2, Edit2, Check, Plus, ChevronDown, ChevronUp } from 'lucide-react'
 import { type CollectionConfig, type VariantModel, type Material } from '@/lib/collections'
@@ -113,6 +113,24 @@ export default function AdminCollections() {
   }
 
   // ── Delete ──
+  const requestDelete = async (slug: string) => {
+    setSaving(true)
+    try {
+      const q = query(collection(db, 'catalog'), where('collection', '==', slug), limit(1))
+      const snap = await getDocs(q)
+      if (!snap.empty) {
+        alert(`Cannot delete "${slug}". It still contains product(s). Reassign or delete them first.`)
+        return
+      }
+      setDeleteSlug(slug)
+    } catch (e) {
+      console.error(e)
+      alert('Failed to check dependencies. Check permissions.')
+    } finally {
+      setSaving(false)
+    }
+  }
+
   const executeDelete = async () => {
     if (!deleteSlug) return
     setSaving(true)
@@ -137,18 +155,26 @@ export default function AdminCollections() {
     onSave,
     onCancel,
     saveLabel,
+    isNew = false,
   }: {
     form: CollectionConfig | ReturnType<typeof emptyForm>
     onChange: (f: typeof form) => void
     onSave: () => void
     onCancel: () => void
     saveLabel: string
+    isNew?: boolean
   }) => (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-5 bg-band/40 rounded-xl border border-line">
       <div>
         <label className="admin-label required">Slug (URL key)</label>
-        <input className="admin-input" value={form.slug} placeholder="e.g., idols"
-          onChange={e => onChange({ ...form, slug: e.target.value.toLowerCase().replace(/[^a-z0-9-]+/g, '-') })} />
+        <input 
+          className={`admin-input ${!isNew ? 'bg-band/50 cursor-not-allowed opacity-70' : ''}`} 
+          value={form.slug} 
+          placeholder="e.g., idols"
+          disabled={!isNew}
+          onChange={e => onChange({ ...form, slug: e.target.value.toLowerCase().replace(/[^a-z0-9-]+/g, '-') })} 
+        />
+        {!isNew && <p className="text-[11px] text-muted mt-1.5">Slug cannot be changed after creation.</p>}
       </div>
       <div>
         <label className="admin-label required">Title</label>
@@ -242,6 +268,7 @@ export default function AdminCollections() {
             onSave={handleAdd}
             onCancel={() => { setShowAddForm(false); setAddForm(emptyForm()) }}
             saveLabel="Add Collection"
+            isNew={true}
           />
         </div>
       )}
@@ -307,7 +334,7 @@ export default function AdminCollections() {
                         className="text-muted hover:text-ink transition-[color,transform] active:scale-[0.97] p-2" title="Edit">
                         <Edit2 size={18} />
                       </button>
-                      <button onClick={() => setDeleteSlug(col.slug)}
+                      <button onClick={() => requestDelete(col.slug)}
                         className="text-muted hover:text-ink transition-[color,transform] active:scale-[0.97] p-2" title="Delete">
                         <Trash2 size={18} />
                       </button>

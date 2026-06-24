@@ -41,13 +41,15 @@ export default async function CollectionsIndexPage() {
                   style={{ backgroundColor: config.darkGround ? '#2B2723' : 'transparent' }}
                 >
                   <div className="absolute inset-0 transition-transform duration-1000 ease-out group-hover:scale-[1.02]">
-                    <Image
-                      src={config.image}
-                      alt={config.title}
-                      fill
-                      className="object-contain p-12"
-                      sizes="(max-width: 768px) 100vw, 50vw"
-                    />
+                    {Boolean(config.image) && config.image.trim() !== '' ? (
+                      <Image
+                        src={config.image}
+                        alt={config.title}
+                        fill
+                        className="object-contain p-12"
+                        sizes="(max-width: 768px) 100vw, 50vw"
+                      />
+                    ) : null}
                   </div>
                 </div>
 

@@ -148,7 +148,7 @@ export default function SiteHeader() {
               <Link
                 key={link.href}
                 href={link.href}
-                className="font-garamond text-[13px] tracking-[0.1em] transition-[color] duration-200 hover:text-accent relative group"
+                className="font-garamond text-[15px] font-medium tracking-[0.1em] transition-[color] duration-200 hover:text-accent relative group"
                 style={{ fontVariant: 'small-caps' }}
                 aria-current={pathname.startsWith(link.href) ? "page" : undefined}
               >
@@ -175,7 +175,7 @@ export default function SiteHeader() {
 
         {/* Center Zone: Wordmark */}
         <div className="flex-shrink-0 flex flex-col items-center justify-center">
-          <Link href="/" className="font-serif font-medium text-xl md:text-2xl tracking-widest uppercase no-underline flex items-center justify-center">
+          <Link href="/" className="font-serif font-medium text-xl md:text-3xl tracking-widest uppercase no-underline flex items-center justify-center">
             TARAYA
           </Link>
         </div>

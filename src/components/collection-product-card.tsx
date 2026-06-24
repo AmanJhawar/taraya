@@ -25,17 +25,19 @@ export function CollectionProductCard({ item, index }: { item: CollectionItem; i
               hasSecondImage ? 'group-hover:opacity-0 transition-opacity' : ''
             }`}
           >
-            <Image
-              src={item.images[0]}
-              alt={item.name}
-              fill
-              className="object-contain p-8 md:p-12"
-              sizes="(max-width: 768px) 100vw, 50vw"
-              priority={item.feature || index < 4}
-            />
+            {Boolean(item.images[0]) && item.images[0].trim() !== '' ? (
+              <Image
+                src={item.images[0]}
+                alt={item.name}
+                fill
+                className="object-contain p-8 md:p-12"
+                sizes="(max-width: 768px) 100vw, 50vw"
+                priority={item.feature || index < 4}
+              />
+            ) : null}
           </div>
 
-          {hasSecondImage && (
+          {hasSecondImage && Boolean(item.images[1]) && item.images[1].trim() !== '' ? (
             <div className="absolute inset-0 opacity-0 transition-opacity duration-700 ease-out group-hover:opacity-100 group-hover:scale-[1.02]">
               <Image
                 src={item.images[1]}
@@ -45,7 +47,7 @@ export function CollectionProductCard({ item, index }: { item: CollectionItem; i
                 sizes="(max-width: 768px) 100vw, 50vw"
               />
             </div>
-          )}
+          ) : null}
         </div>
 
         {/* Label and name only. No price on the collection page. */}
