@@ -40,8 +40,8 @@ export default function Error({
         >
           Try Again
         </button>
-        <Link href="/catalog" className="btn-secondary">
-          Return to Catalog
+        <Link href="/collections" className="btn-secondary">
+          Return to Collections
         </Link>
       </FadeInUp>
     </StaggerContainer>

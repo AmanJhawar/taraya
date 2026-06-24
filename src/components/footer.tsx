@@ -21,7 +21,7 @@ export default function Footer() {
             <h3 className="text-sm font-semibold tracking-widest text-ink mb-6 uppercase">Store</h3>
             <ul className="space-y-3">
               <li>
-                <Link href="/catalog" className="text-sm text-muted hover:text-ink transition-[color,transform] duration-200 ease-[var(--ease-out)] active:scale-[0.97] inline-block">Catalog</Link>
+                <Link href="/collections" className="text-sm text-muted hover:text-ink transition-[color,transform] duration-200 ease-[var(--ease-out)] active:scale-[0.97] inline-block">Collections</Link>
               </li>
             </ul>
           </div>

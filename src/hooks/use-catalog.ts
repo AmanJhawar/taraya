@@ -6,14 +6,15 @@ interface UseCatalogProps {
   initialItems: CatalogItem[]
   initialNextCursor: string | null
   initialHasNext: boolean
+  initialSearchQuery?: string
 }
 
-export function useCatalog({ initialItems, initialNextCursor, initialHasNext }: UseCatalogProps) {
+export function useCatalog({ initialItems, initialNextCursor, initialHasNext, initialSearchQuery = '' }: UseCatalogProps) {
   const [activeFilter, setActiveFilter] = useState('All')
   const [sortBy, setSortBy] = useState('default')
   
-  const [searchInput, setSearchInput] = useState('')
-  const [activeSearch, setActiveSearch] = useState('')
+  const [searchInput, setSearchInput] = useState(initialSearchQuery)
+  const [activeSearch, setActiveSearch] = useState(initialSearchQuery)
   
   const [items, setItems] = useState<CatalogItem[]>(initialItems)
   const [isLoading, setIsLoading] = useState(false)

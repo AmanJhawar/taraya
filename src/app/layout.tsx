@@ -1,7 +1,8 @@
 import type { Metadata } from 'next'
 
 import './globals.css'
-import Header from '@/components/header'
+import SiteHeader from '@/components/site-header'
+import MainLayout from '@/components/main-layout'
 import Footer from '@/components/footer'
 
 import { Cormorant, EB_Garamond } from 'next/font/google'
@@ -52,11 +53,11 @@ export default function RootLayout({
     <html lang="en" data-scroll-behavior="smooth">
       <body className={`${cormorant.variable} ${garamond.variable} min-h-screen flex flex-col text-ink bg-field antialiased`}>
         <CartProvider>
-          <Header />
+          <SiteHeader />
           <CartDrawer />
-          <main className="flex-1 pt-20">
+          <MainLayout>
             {children}
-          </main>
+          </MainLayout>
           <Footer />
         </CartProvider>
       </body>

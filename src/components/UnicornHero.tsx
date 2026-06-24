@@ -82,10 +82,10 @@ export default function NetworkHero() {
         >
 
           <Link
-            href="/catalog"
+            href="/collections"
             className="btn-secondary shadow-sm"
           >
-            Explore Catalog
+            Explore Collections
           </Link>
         </motion.div>
       </div>
