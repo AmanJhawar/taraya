@@ -1,4 +1,4 @@
-import { Product } from '@/lib/types'
+import { Product } from '@/lib/domain/types'
 
 export type CartItem = {
   cartId: string;

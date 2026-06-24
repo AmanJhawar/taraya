@@ -5,7 +5,7 @@ import { Trash2, MessageSquare, ChevronDown } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ConfirmModal } from '@/components/confirm-modal'
 import { getInquiriesPage, deleteInquiry, updateInquiryStatus } from '@/lib/services/inquiry.service'
-import { Inquiry } from '@/lib/types'
+import { Inquiry } from '@/lib/domain/types'
 
 const EASE_OUT = [0.16, 1, 0.3, 1] as const;
 
@@ -44,8 +44,8 @@ function StatusDropdown({ status, onChange }: { status: Inquiry['status'], onCha
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0, scale: 0.95, y: -4 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
+            initial={{ opacity: 0, transform: "scale(0.95) translateY(-4px)" }}
+            animate={{ opacity: 1, transform: "scale(1) translateY(0px)" }}
             exit={{ opacity: 0, scale: 0.95, y: -4 }}
             transition={{ duration: 0.15, ease: EASE_OUT }}
             className="absolute z-10 mt-1 w-full bg-field border border-line rounded-lg shadow-[0_8px_24px_rgba(0,0,0,0.06)] overflow-hidden origin-top"

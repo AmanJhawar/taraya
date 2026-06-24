@@ -1,25 +1,15 @@
-import { getFirestore, doc, getDoc, setDoc } from 'firebase/firestore/lite'
-import { app } from '@/lib/firebase/config'
-import { makingStages as defaultStages, type MakingStage } from '@/data/the-making'
-
-const db = getFirestore(app)
-const MAKING_DOC = doc(db, 'settings', 'the-making')
+import { getDoc, setDoc } from 'firebase/firestore/lite'
+import { makingStages as defaultStages, type MakingStage } from '@/lib/domain/the-making'
+import { REFS } from '@/lib/firebase/firestore'
+import { revalidatePaths } from './revalidate'
 
 export async function getMakingStages(): Promise<MakingStage[]> {
-  try {
-    const snap = await getDoc(MAKING_DOC)
-    if (snap.exists() && Array.isArray(snap.data().list) && snap.data().list.length > 0) {
-      return snap.data().list as MakingStage[]
-    }
-    // Fallback to hardcoded list if firestore doc is missing or empty
-    return defaultStages
-  } catch (error) {
-    console.error('Error fetching making stages:', error)
-    return defaultStages
-  }
+  const snap = await getDoc(REFS.theMaking)
+  const list = snap.data()?.list
+  return list && list.length > 0 ? list : defaultStages
 }
 
 export async function setMakingStages(list: MakingStage[]): Promise<void> {
-  await setDoc(MAKING_DOC, { list })
+  await setDoc(REFS.theMaking, { list })
+  await revalidatePaths(['/the-making'])
 }
-

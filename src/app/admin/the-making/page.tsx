@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { getMakingStages, setMakingStages } from '@/lib/services/the-making.service'
-import { type MakingStage } from '@/data/the-making'
+import { type MakingStage } from '@/lib/domain/the-making'
 import { BookOpen, Trash2, Edit2, Check, Plus, ChevronDown, ChevronUp } from 'lucide-react'
 import { ConfirmModal } from '@/components/confirm-modal'
 import { ImageDropzone } from '@/components/image-dropzone'

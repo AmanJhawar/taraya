@@ -1,9 +1,9 @@
-import { useState, useEffect, useMemo } from 'react'
-import { getInventoryItems, saveInventoryItem, deleteInventoryItem } from '@/lib/services/inventory.service'
-import { buildVariantCombos, buildSearchTerms } from '@/lib/domain/inventory'
-import { Product, VariantDetail } from '@/lib/types'
+import { useState, useEffect, useMemo, useCallback } from 'react'
+import { getInventoryPage, saveInventoryItem, deleteInventoryItem } from '@/lib/services/inventory.service'
+import { buildVariantCombos } from '@/lib/domain/inventory'
+import { Product, VariantDetail } from '@/lib/domain/types'
 import { getCollections, usesStones, usesWeights } from '@/lib/services/collections.service'
-import type { CollectionConfig } from '@/lib/collections'
+import type { CollectionConfig } from '@/lib/domain/collections'
 
 
 const emptyForm: Partial<Product> = {
@@ -24,6 +24,9 @@ export function useInventoryForm() {
   const [editingId, setEditingId] = useState<string | null>(null)
   const [deleteId, setDeleteId] = useState<string | null>(null)
   
+  const [nextCursor, setNextCursor] = useState<string | null>(null)
+  const [isFetchingMore, setIsFetchingMore] = useState(false)
+  
   const [formData, setFormData] = useState<Partial<Product>>({ ...emptyForm })
   const [customSizeInput, setCustomSizeInput] = useState('')
   const [customPurityInput, setCustomPurityInput] = useState('')
@@ -35,11 +38,12 @@ export function useInventoryForm() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [catItems, colls] = await Promise.all([
-          getInventoryItems(),
+        const [pageData, colls] = await Promise.all([
+          getInventoryPage(50),
           getCollections()
         ])
-        setItems(catItems as unknown as Product[])
+        setItems(pageData.items as unknown as Product[])
+        setNextCursor(pageData.nextCursor)
         setCollections(colls)
       } catch (err) {
         console.error("Error fetching data", err)
@@ -49,6 +53,20 @@ export function useInventoryForm() {
     }
     fetchData()
   }, [])
+
+  const loadMore = useCallback(async () => {
+    if (!nextCursor || isFetchingMore) return
+    setIsFetchingMore(true)
+    try {
+      const pageData = await getInventoryPage(50, nextCursor)
+      setItems(prev => [...prev, ...pageData.items])
+      setNextCursor(pageData.nextCursor)
+    } catch (err) {
+      console.error("Failed to load more items", err)
+    } finally {
+      setIsFetchingMore(false)
+    }
+  }, [nextCursor, isFetchingMore])
 
   const executeDelete = async () => {
     if (!deleteId) return
@@ -262,7 +280,6 @@ export function useInventoryForm() {
         payload.variantImages = cleanedImages
       }
 
-      payload.searchTerms = buildSearchTerms(payload)
 
       await saveInventoryItem(docId, payload)
 
@@ -292,9 +309,12 @@ export function useInventoryForm() {
       variantSkuInputs,
       variantWeightInputs,
       variantImageInputs,
-      combos
+      combos,
+      nextCursor,
+      isFetchingMore
     },
     actions: {
+      loadMore,
       setIsFormOpen,
       setDeleteId,
       setFormData,

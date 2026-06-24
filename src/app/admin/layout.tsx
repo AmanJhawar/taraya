@@ -77,11 +77,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       if (currentUser) {
         try {
-          const { doc, getDoc } = await import('firebase/firestore/lite')
-          const { db } = await import('@/lib/firebase/config')
-          const adminDoc = await getDoc(doc(db, 'admins', currentUser.uid))
-          
-          if (adminDoc.exists()) {
+          const { checkIsAdmin } = await import('@/lib/services/auth.service')
+          const isAdmin = await checkIsAdmin(currentUser.uid)
+
+          if (isAdmin) {
             setUser(currentUser)
           } else {
             setUser(null)

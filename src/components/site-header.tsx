@@ -238,8 +238,8 @@ export default function SiteHeader() {
               {NAV_LINKS.map((link) => (
                 <motion.div
                   key={link.href}
-                  initial={{ y: 20, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
+                  initial={{ transform: "translateY(20px)", opacity: 0 }}
+                  animate={{ transform: "translateY(0px)", opacity: 1 }}
                   transition={{ delay: 0.1 }}
                 >
                   <Link
@@ -267,8 +267,8 @@ export default function SiteHeader() {
           <motion.div
             ref={overlayRef}
             className="fixed inset-0 z-[60] bg-field/95 backdrop-blur-sm text-ink flex flex-col"
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, transform: "translateY(-20px)" }}
+            animate={{ opacity: 1, transform: "translateY(0px)" }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.3, ease: [0.23, 1, 0.32, 1] }}
             role="dialog"

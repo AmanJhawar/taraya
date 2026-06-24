@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import { CollectionItem } from '@/data/collections'
+import { CollectionItem } from '@/lib/services/collections.service'
 import { FadeInUp } from './motion-transitions'
 
 export function CollectionProductCard({ item, index }: { item: CollectionItem; index: number }) {

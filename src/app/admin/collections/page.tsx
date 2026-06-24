@@ -1,16 +1,14 @@
 "use client"
 
 import { useState, useEffect } from 'react'
-import { doc, getDoc, setDoc, getFirestore, collection, query, where, getDocs, limit } from 'firebase/firestore/lite'
-import { app } from '@/lib/firebase/config'
+
 import { Layers, Trash2, Edit2, Check, Plus, ChevronDown, ChevronUp } from 'lucide-react'
-import { type CollectionConfig, type VariantModel, type Material } from '@/lib/collections'
+import { type CollectionConfig, type VariantModel, type Material } from '@/lib/domain/collections'
 import { ConfirmModal } from '@/components/confirm-modal'
 import CustomSelect from '@/components/custom-select'
 import { ImageDropzone } from '@/components/image-dropzone'
-
-const db = getFirestore(app)
-const FIRESTORE_KEY = doc(db, 'settings', 'collections')
+import { setCollections as setCollectionsService, getCollections } from '@/lib/services/collections.service'
+import { hasProductsInCollection } from '@/lib/services/inventory.service'
 
 const VARIANT_MODELS: { value: VariantModel; label: string }[] = [
   { value: 'sizes-purity', label: 'Sizes + Purity' },
@@ -39,6 +37,7 @@ const emptyForm = (): Omit<CollectionConfig, 'slug'> & { slug: string } => ({
   variantModel: 'sizes-purity',
   darkGround: false,
   material: 'silver',
+  displayLimit: undefined,
 })
 
 export default function AdminCollections() {
@@ -54,13 +53,8 @@ export default function AdminCollections() {
   useEffect(() => {
     const load = async () => {
       try {
-        const snap = await getDoc(FIRESTORE_KEY)
-        if (snap.exists() && Array.isArray(snap.data().list)) {
-          setCollections(snap.data().list as CollectionConfig[])
-        } else {
-          setCollections([])
-          await setDoc(FIRESTORE_KEY, { list: [] })
-        }
+        const list = await getCollections()
+        setCollections(list)
       } catch (err) {
         console.error('Failed to load collections', err)
         setCollections([])
@@ -72,7 +66,7 @@ export default function AdminCollections() {
   }, [])
 
   const persist = async (updated: CollectionConfig[]) => {
-    await setDoc(FIRESTORE_KEY, { list: updated })
+    await setCollectionsService(updated)
     setCollections(updated)
   }
 
@@ -116,9 +110,8 @@ export default function AdminCollections() {
   const requestDelete = async (slug: string) => {
     setSaving(true)
     try {
-      const q = query(collection(db, 'catalog'), where('collection', '==', slug), limit(1))
-      const snap = await getDocs(q)
-      if (!snap.empty) {
+      const hasProducts = await hasProductsInCollection(slug)
+      if (hasProducts) {
         alert(`Cannot delete "${slug}". It still contains product(s). Reassign or delete them first.`)
         return
       }
@@ -220,6 +213,16 @@ export default function AdminCollections() {
           onChange={v => onChange({ ...form, gridType: v as 'sparse' | 'utilitarian' })}
           options={GRID_TYPES}
           className="py-2.5 px-4 text-[15px] font-medium"
+        />
+      </div>
+      <div className="flex flex-col">
+        <label className="admin-label mb-2">Display limit (optional)</label>
+        <input 
+          type="number" 
+          className="admin-input py-2.5 h-[42px]" 
+          placeholder="e.g. 10"
+          value={form.displayLimit || ''}
+          onChange={e => onChange({ ...form, displayLimit: e.target.value ? parseInt(e.target.value) : undefined })} 
         />
       </div>
       <div className="flex items-center gap-3 pt-5">

@@ -1,26 +1,20 @@
-import { app } from '@/lib/firebase/config'
-import { getFirestore, collection, doc, getDoc, getDocs, setDoc, deleteDoc, updateDoc, query, orderBy, limit, startAfter, addDoc, serverTimestamp } from 'firebase/firestore/lite'
-import { Inquiry } from '@/lib/types'
+import { getDocs, setDoc, deleteDoc, query, orderBy, limit, startAfter, addDoc, serverTimestamp, getDoc } from 'firebase/firestore/lite'
+import { type Inquiry } from '@/lib/domain/types'
 import { withTimeout } from './utils'
-
-const db = getFirestore(app)
-const INQUIRIES_COLLECTION = 'inquiries'
+import { REFS, docRefs, mapDocs } from '@/lib/firebase/firestore'
 
 export async function getInquiriesPage(pageSize: number, cursorId?: string | null): Promise<{ items: Inquiry[], nextCursor: string | null }> {
-  let q = query(collection(db, INQUIRIES_COLLECTION), orderBy('createdAt', 'desc'), limit(pageSize));
+  let q = query(REFS.inquiries, orderBy('createdAt', 'desc'), limit(pageSize));
   
   if (cursorId) {
-    const cursorDoc = await getDoc(doc(db, INQUIRIES_COLLECTION, cursorId));
+    const cursorDoc = await getDoc(docRefs.inquiry(cursorId));
     if (cursorDoc.exists()) {
-      q = query(collection(db, INQUIRIES_COLLECTION), orderBy('createdAt', 'desc'), startAfter(cursorDoc), limit(pageSize));
+      q = query(REFS.inquiries, orderBy('createdAt', 'desc'), startAfter(cursorDoc), limit(pageSize));
     }
   }
 
   const snapshot = await getDocs(q);
-  const items: Inquiry[] = [];
-  snapshot.forEach(d => {
-    items.push({ id: d.id, ...d.data() } as Inquiry);
-  });
+  const items = mapDocs(snapshot);
 
   const nextCursor = snapshot.docs.length === pageSize ? snapshot.docs[snapshot.docs.length - 1].id : null;
 
@@ -28,11 +22,11 @@ export async function getInquiriesPage(pageSize: number, cursorId?: string | nul
 }
 
 export async function deleteInquiry(id: string): Promise<void> {
-  await deleteDoc(doc(db, INQUIRIES_COLLECTION, id));
+  await deleteDoc(docRefs.inquiry(id));
 }
 
 export async function updateInquiryStatus(id: string, status: 'unread' | 'read' | 'handled'): Promise<void> {
-  await setDoc(doc(db, INQUIRIES_COLLECTION, id), { status }, { merge: true });
+  await setDoc(docRefs.inquiry(id), { status }, { merge: true });
 }
 
 export async function submitInquiry(data: {
@@ -51,5 +45,5 @@ export async function submitInquiry(data: {
     Object.entries({ ...data, status: 'unread', createdAt: serverTimestamp() })
       .filter(([, v]) => v !== undefined && v !== '')
   );
-  return await withTimeout(addDoc(collection(db, INQUIRIES_COLLECTION), payload));
+  return await withTimeout(addDoc(REFS.inquiries, payload as any));
 }

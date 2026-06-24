@@ -1,3 +1,4 @@
+export const revalidate = 3600;
 import { getCollections } from '@/lib/services/collections.service'
 import Link from 'next/link'
 import Image from 'next/image'

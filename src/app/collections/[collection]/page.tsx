@@ -1,6 +1,6 @@
+export const revalidate = 3600;
 import { notFound } from 'next/navigation'
-import { getCollectionItems } from '@/data/collections'
-import { getCollectionBySlug, getCollections } from '@/lib/services/collections.service'
+import { getCollectionBySlug, getCollections, toCard, getCollectionItems } from '@/lib/services/collections.service'
 import { CollectionClient } from '@/components/collection-client'
 import { FadeInUp, StaggerContainer } from '@/components/motion-transitions'
 import { Metadata } from 'next'
@@ -27,7 +27,7 @@ export default async function CollectionPage({ params }: { params: Promise<{ col
     notFound()
   }
 
-  const items = await getCollectionItems(collectionParam)
+  const { items, nextCursor } = await getCollectionItems(collectionParam)
 
   return (
     <div className="pt-24 min-h-screen">
@@ -46,7 +46,7 @@ export default async function CollectionPage({ params }: { params: Promise<{ col
         </StaggerContainer>
       </div>
 
-      <CollectionClient items={items} config={config} />
+      <CollectionClient initialItems={items} initialCursor={nextCursor} slug={config.slug} config={config} />
     </div>
   )
 }

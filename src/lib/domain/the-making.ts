@@ -1,11 +1,15 @@
-export interface MakingStage {
-  id: string
-  numberLabel: string
-  title: string
-  description: string
-  imagePath: string
-  isDarkPlate: boolean
-}
+import { z } from 'zod'
+
+export const MakingStageSchema = z.object({
+  id: z.string(),
+  numberLabel: z.string(),
+  title: z.string(),
+  description: z.string(),
+  imagePath: z.string(),
+  isDarkPlate: z.boolean(),
+})
+
+export type MakingStage = z.infer<typeof MakingStageSchema>
 
 export const makingStages: MakingStage[] = [
   {

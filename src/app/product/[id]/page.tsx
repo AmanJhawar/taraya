@@ -1,3 +1,4 @@
+export const revalidate = 3600;
 import { notFound } from 'next/navigation'
 import { getProductById } from '@/lib/services/inventory.service'
 import { getCollectionBySlug } from '@/lib/services/collections.service'

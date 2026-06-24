@@ -1,3 +1,4 @@
+export const revalidate = 3600;
 import type { Metadata } from 'next'
 import { StaggerContainer, FadeInUp } from '@/components/motion-transitions'
 

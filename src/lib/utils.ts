@@ -1,6 +1,6 @@
-import type { Product } from './types'
+import { Product } from './domain/types'
 import { usesStones, usesWeights } from '@/lib/services/collections.service'
-import type { CollectionConfig } from '@/lib/collections'
+import type { CollectionConfig } from '@/lib/domain/collections'
 
 /**
  * Resolves the ordered gallery of image URLs for a product given an optional

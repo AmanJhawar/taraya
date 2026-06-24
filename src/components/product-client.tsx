@@ -4,8 +4,8 @@ import { useState, useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { getOptimizedUrl, resolveGallery } from '@/lib/utils'
 import { usesStones, usesWeights, usesPurity } from '@/lib/services/collections.service'
-import type { Product } from '@/lib/types'
-import type { CollectionConfig } from '@/lib/collections'
+import type { Product } from '@/lib/domain/types'
+import type { CollectionConfig } from '@/lib/domain/collections'
 import { ProtectedImage } from '@/components/protected-image'
 import { useCart } from '@/components/cart-provider'
 import { FadeInUp, EASE_OUT } from '@/components/motion-transitions'
@@ -95,8 +95,8 @@ export function ProductClient({ product, config }: ProductClientProps) {
             {activeImage && (
               <motion.div
                 key={activeImage}
-                initial={{ opacity: 0, scale: 0.97 }}
-                animate={{ opacity: 1, scale: 1 }}
+                initial={{ opacity: 0, transform: "scale(0.97)" }}
+                animate={{ opacity: 1, transform: "scale(1)" }}
                 exit={{ opacity: 0, scale: 0.97 }}
                 transition={{ duration: 0.4, ease: EASE_OUT }}
                 className="absolute inset-0 w-full h-full"

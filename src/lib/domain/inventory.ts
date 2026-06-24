@@ -1,10 +1,10 @@
-import { VariantDetail, Product } from '@/lib/types'
+import { VariantDetail, Product } from '@/lib/domain/types'
 import {
   usesStones,
   usesWeights,
   usesPurity,
 } from '@/lib/services/collections.service'
-import type { CollectionConfig } from '@/lib/collections'
+import type { CollectionConfig } from '@/lib/domain/collections'
 
 
 
@@ -53,45 +53,3 @@ export const buildVariantCombos = (item: Partial<Product>, config?: CollectionCo
   return combos
 }
 
-export const buildSearchTerms = (item: Partial<Product>): string[] => {
-  const terms = new Set<string>()
-
-  const addPrefixes = (str?: string) => {
-    if (!str) return
-    const s = str.toLowerCase().trim()
-    if (!s) return
-
-    const generateForWordList = (wordList: string[], separator: string) => {
-      for (let i = 0; i < wordList.length; i++) {
-        const remainingString = wordList.slice(i).join(separator)
-        const maxLen = Math.min(remainingString.length, 30)
-        for (let len = 2; len <= maxLen; len++) {
-          terms.add(remainingString.substring(0, len))
-        }
-      }
-    }
-
-    generateForWordList(s.split(/\s+/), ' ')
-    generateForWordList(s.split(/[^a-z0-9]+/).filter(Boolean), ' ')
-  }
-
-  addPrefixes(item.name)
-  addPrefixes(item.sku)
-  addPrefixes(item.id)
-  addPrefixes(item.collection)
-  addPrefixes(item.material)
-
-  const matrices = [
-    ...(item.standardSizes || []), ...(item.customSizes || []),
-    ...(item.standardPurities || []), ...(item.customPurities || []),
-    ...(item.standardWeights || []), ...(item.customWeights || []),
-    ...(item.standardStones || []), ...(item.customStones || []),
-  ]
-  matrices.forEach((m) => addPrefixes(m))
-
-  if (item.variantSkus) {
-    Object.keys(item.variantSkus).forEach((sku) => addPrefixes(sku))
-  }
-
-  return Array.from(terms).slice(0, 500)
-}

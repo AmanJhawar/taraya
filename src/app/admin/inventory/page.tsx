@@ -9,8 +9,7 @@ import CustomSelect from '@/components/custom-select'
 import { getOptimizedUrl } from '@/lib/utils'
 import { ConfirmModal } from '@/components/confirm-modal'
 import { useInventoryForm } from '@/hooks/use-inventory-form'
-import { backfillSearchTermsForAllItems } from '@/lib/services/inventory.service'
-import { type CollectionConfig } from '@/lib/collections'
+import { type CollectionConfig } from '@/lib/domain/collections'
 import {
   getStandardSizeMatrix,
   getCustomSizeMatrix,
@@ -28,17 +27,16 @@ const STANDARD_WEIGHTS = ['10g', '20g', '50g', '100g']
 
 export default function AdminInventory() {
   const { state, actions } = useInventoryForm()
-  const [isBackfilling, setIsBackfilling] = useState(false)
 
   const {
     items, loading, isFormOpen, editingId, deleteId,
     formData, customSizeInput, customPurityInput,
     variantSkuInputs, variantWeightInputs, variantImageInputs,
-    combos, collections
+    combos, collections, nextCursor, isFetchingMore
   } = state
 
   const {
-    setIsFormOpen, setDeleteId, setFormData,
+    loadMore, setIsFormOpen, setDeleteId, setFormData,
     setCustomSizeInput, setCustomPurityInput,
     setVariantSkuInputs, setVariantWeightInputs, setVariantImageInputs,
     cleanupOrphanedInputs, executeDelete, handleEdit, handleCancel, handleSave,
@@ -68,27 +66,7 @@ export default function AdminInventory() {
             <p className="text-muted">Manage inventory products, sizes and purity variants.</p>
           </div>
           <div className="flex flex-wrap items-center gap-4 w-full sm:w-auto">
-            <button
-              onClick={async () => {
-                if (confirm("This will regenerate search terms for all products. Continue?")) {
-                  setIsBackfilling(true)
-                  try {
-                    const count = await backfillSearchTermsForAllItems()
-                    alert(`Successfully regenerated search terms for ${count} products.`)
-                  } catch (err) {
-                    console.error(err)
-                    alert("Failed to backfill search terms.")
-                  } finally {
-                    setIsBackfilling(false)
-                  }
-                }
-              }}
-              disabled={isBackfilling}
-              className="admin-btn-outline flex items-center gap-2 whitespace-nowrap disabled:opacity-50"
-            >
-              <RefreshCw size={16} className={isBackfilling ? "animate-spin" : ""} />
-              {isBackfilling ? 'Backfilling...' : 'Backfill Search'}
-            </button>
+
             <button
               onClick={() => setIsFormOpen(true)}
               className="admin-btn-primary flex items-center gap-2 whitespace-nowrap"
@@ -580,6 +558,18 @@ export default function AdminInventory() {
                 </tbody>
               </table>
             </div>
+            
+            {nextCursor && (
+              <div className="mt-8 flex justify-center">
+                <button
+                  onClick={loadMore}
+                  disabled={isFetchingMore}
+                  className="px-6 py-2.5 border border-line rounded-none bg-surface text-ink hover:bg-mute transition-[background-color,transform] active:scale-[0.97] disabled:opacity-50 flex items-center justify-center min-w-[140px]"
+                >
+                  {isFetchingMore ? <div className="w-5 h-5 border-2 border-muted border-t-ink rounded-full animate-spin" /> : 'Load More'}
+                </button>
+              </div>
+            )}
           </div>
         )
       )}

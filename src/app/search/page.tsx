@@ -1,6 +1,6 @@
+export const revalidate = 3600;
 import { searchInventory } from '@/lib/services/inventory.service'
-import { getCollections } from '@/lib/services/collections.service'
-import { toCard } from '@/data/collections'
+import { getCollections, toCard } from '@/lib/services/collections.service'
 import { CollectionClient } from '@/components/collection-client'
 import { FadeInUp, StaggerContainer } from '@/components/motion-transitions'
 import { Metadata } from 'next'
@@ -41,7 +41,7 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
       </div>
 
       {items.length > 0 && (
-        <CollectionClient items={items} config={{ gridType: 'utilitarian' } as any} />
+        <CollectionClient initialItems={items} initialCursor={null} slug="" config={{ gridType: 'utilitarian' }} />
       )}
     </div>
   )

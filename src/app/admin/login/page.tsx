@@ -35,11 +35,10 @@ export default function AdminLogin() {
       const userCredential = await signInWithEmailAndPassword(auth, data.email, data.password)
       
       // Verify they are in the admins collection
-      const { doc, getDoc } = await import('firebase/firestore/lite')
-      const { db } = await import('@/lib/firebase/config')
-      const adminDoc = await getDoc(doc(db, 'admins', userCredential.user.uid))
+      const { checkIsAdmin } = await import('@/lib/services/auth.service')
+      const isAdmin = await checkIsAdmin(userCredential.user.uid)
       
-      if (!adminDoc.exists()) {
+      if (!isAdmin) {
         const { signOut } = await import('firebase/auth')
         await signOut(auth)
         setError('Unauthorized account. You do not have admin privileges.')

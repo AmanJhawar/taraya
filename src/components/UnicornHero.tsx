@@ -64,8 +64,8 @@ export default function NetworkHero() {
             bullions & silver
             <motion.span
               className="absolute bottom-1 left-0 right-0 h-0.5 bg-field"
-              initial={{ scaleX: 0 }}
-              animate={{ scaleX: 1 }}
+              initial={{ transform: "scaleX(0)" }}
+              animate={{ transform: "scaleX(1)" }}
               style={{ originX: 0 }}
               transition={{ duration: 0.6, ease: EASE_OUT, delay: 0.8 }}
             />
@@ -76,8 +76,8 @@ export default function NetworkHero() {
         {/* Action Buttons */}
         <motion.div
           className="flex flex-wrap gap-4 justify-center pointer-events-auto"
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, transform: "translateY(12px)" }}
+          animate={{ opacity: 1, transform: "translateY(0px)" }}
           transition={{ duration: 0.6, ease: EASE_OUT, delay: 0.6 }}
         >
 
