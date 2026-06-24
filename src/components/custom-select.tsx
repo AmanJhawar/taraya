@@ -1,27 +1,31 @@
 'use client'
 
-import { useState, useRef, useEffect, KeyboardEvent } from 'react'
+import { useState, useRef, useEffect, KeyboardEvent, useId } from 'react'
 import { ChevronDown } from 'lucide-react'
 
-interface Option {
+export interface Option {
   value: string
   label: string
 }
 
 interface CustomSelectProps {
-  id: string
-  name: string
+  id?: string
+  name?: string
   value: string
-  onChange: (e: { target: { name: string; value: string } }) => void
+  onChange: (value: string) => void
   options: Option[]
+  placeholder?: string
+  className?: string
 }
 
-export default function CustomSelect({ id, name, value, onChange, options }: CustomSelectProps) {
+export default function CustomSelect({ id, name, value, onChange, options, placeholder = 'Select...', className = '' }: CustomSelectProps) {
   const [isOpen, setIsOpen] = useState(false)
   const [focusedIndex, setFocusedIndex] = useState(-1)
   const selectRef = useRef<HTMLDivElement>(null)
+  const defaultId = useId()
+  const resolvedId = id || defaultId
 
-  const selectedOption = options.find(opt => opt.value === value) || options[0]
+  const selectedOption = options.find(opt => opt.value === value)
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -46,7 +50,7 @@ export default function CustomSelect({ id, name, value, onChange, options }: Cus
   }
 
   const handleSelect = (optionValue: string) => {
-    onChange({ target: { name, value: optionValue } })
+    onChange(optionValue)
     closeSelect()
   }
 
@@ -84,27 +88,29 @@ export default function CustomSelect({ id, name, value, onChange, options }: Cus
 
   return (
     <div className="relative" ref={selectRef} onKeyDown={handleKeyDown}>
-      <input type="hidden" id={id} name={name} value={value} />
+      {name && <input type="hidden" id={resolvedId} name={name} value={value} />}
       
       <button
         type="button"
         role="combobox"
         aria-haspopup="listbox"
         aria-expanded={isOpen}
-        aria-controls={`${id}-listbox`}
+        aria-controls={`${resolvedId}-listbox`}
         onClick={() => isOpen ? closeSelect() : openSelect()}
-        className={`w-full px-4 py-3 border border-line rounded-lg text-base bg-field text-left flex justify-between items-center transition-[color,border-color,box-shadow,transform] duration-150 ease-[var(--ease-out)] active:scale-[0.97] focus:border-ink focus:ring-4 focus:ring-black/10 ${isOpen ? 'border-ink ring-4 ring-black/10' : ''}`}
+        className={`w-full px-4 py-3 border border-line rounded-lg text-base bg-field text-left flex justify-between items-center transition-[color,border-color,box-shadow,transform] duration-150 ease-[var(--ease-out)] active:scale-[0.97] focus:border-ink focus:ring-4 focus:ring-black/10 ${isOpen ? 'border-ink ring-4 ring-black/10' : ''} ${className}`}
       >
-        <span className="text-ink">{selectedOption.label}</span>
+        <span className={selectedOption ? "text-ink" : "text-muted"}>
+          {selectedOption ? selectedOption.label : placeholder}
+        </span>
         <ChevronDown 
-          className={`w-5 h-5 text-muted transition-transform duration-200 ease-[var(--ease-out)] ${isOpen ? 'rotate-180' : ''}`}
+          className={`w-5 h-5 text-muted transition-transform duration-200 ease-[var(--ease-out)] shrink-0 ${isOpen ? 'rotate-180' : ''}`}
         />
       </button>
 
       {isOpen && (
         <div className="absolute z-10 w-full mt-2 bg-field border border-line rounded-lg shadow-[0_8px_24px_rgba(0,0,0,0.06)] overflow-hidden transition-[opacity,transform] duration-200 ease-[var(--ease-out)] opacity-100 scale-100 starting:opacity-0 starting:scale-[0.97] origin-top">
           <ul 
-            id={`${id}-listbox`}
+            id={`${resolvedId}-listbox`}
             role="listbox"
             className="py-1 m-0 list-none max-h-60 overflow-y-auto"
           >

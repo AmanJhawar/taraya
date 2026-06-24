@@ -1,7 +1,7 @@
 'use client'
 
 import React, { createContext, useContext, useState, useEffect } from 'react'
-import { getCatalogItems } from '@/lib/services/catalog.service'
+import { getInventoryItems } from '@/lib/services/inventory.service'
 import { CartItem, reconcileCart } from '@/lib/domain/cart'
 
 interface CartContextType {
@@ -44,7 +44,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
     const fetchAndReconcile = async () => {
       try {
-        const liveItems = await getCatalogItems()
+        const liveItems = await getInventoryItems()
         if (!active) return
 
         setCartItems(prev => reconcileCart(prev, liveItems))

@@ -1,5 +1,5 @@
 import { MetadataRoute } from 'next'
-import { getCatalogItems } from '@/lib/services/catalog.service'
+import { getInventoryItems } from '@/lib/services/inventory.service'
 
 export const dynamic = 'force-static'
 
@@ -9,7 +9,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   let catalogUrls: MetadataRoute.Sitemap = []
 
   try {
-    const catalogItems = await getCatalogItems()
+    const catalogItems = await getInventoryItems()
 
     catalogUrls = catalogItems.map((item) => ({
       url: `${baseUrl}/catalog/${item.id}`,

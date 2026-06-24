@@ -4,6 +4,14 @@
       "collectionGroup": "catalog",
       "queryScope": "COLLECTION",
       "fields": [
+        { "fieldPath": "collection", "order": "ASCENDING" },
+        { "fieldPath": "orderIndex", "order": "ASCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "catalog",
+      "queryScope": "COLLECTION",
+      "fields": [
         { "fieldPath": "category", "order": "ASCENDING" },
         { "fieldPath": "orderIndex", "order": "ASCENDING" }
       ]

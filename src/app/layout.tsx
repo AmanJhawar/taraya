@@ -27,20 +27,20 @@ import { CartDrawer } from '@/components/cart-drawer'
 export const metadata: Metadata = {
   metadataBase: new URL('https://taraya.com'),
   title: 'Taraya',
-  description: 'Early-stage venture capital focused on transformative technologies and exceptional founders.',
+  description: 'Silver idols, auspicious animals, coins and bars, with stone-set frames. Made to be handed down.',
   icons: {
     icon: '/assets/favicon.svg',
   },
 
   openGraph: {
     title: 'Taraya',
-    description: 'Early-stage venture capital focused on transformative technologies and exceptional founders.',
+    description: 'Silver idols, auspicious animals, coins and bars, with stone-set frames. Made to be handed down.',
     type: 'website',
   },
   twitter: {
     card: 'summary',
     title: 'Taraya',
-    description: 'Early-stage venture capital focused on transformative technologies and exceptional founders.',
+    description: 'Silver idols, auspicious animals, coins and bars, with stone-set frames. Made to be handed down.',
   }
 }
 

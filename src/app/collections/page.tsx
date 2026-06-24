@@ -17,7 +17,7 @@ export default function CollectionsIndexPage() {
       {/* Header */}
       <div className="max-w-4xl mx-auto px-6 text-center mb-24 md:mb-32">
         <StaggerContainer>
-          <FadeInUp className="font-garamond text-xs tracking-[0.2em] text-muted uppercase mb-6" style={{ fontVariant: 'small-caps' }}>
+          <FadeInUp className="font-garamond text-xs tracking-[0.1em] text-muted mb-6" style={{ fontVariant: 'small-caps' }}>
             The Archives
           </FadeInUp>
           <FadeInUp className="font-serif text-4xl md:text-6xl text-ink font-medium tracking-wide mb-8">
@@ -38,7 +38,7 @@ export default function CollectionsIndexPage() {
                 {/* Image Plate */}
                 <div 
                   className="relative w-full overflow-hidden aspect-[4/5] flex items-center justify-center transition-transform duration-700 ease-[var(--ease-out)]"
-                  style={{ backgroundColor: config.gridType === 'sparse' && config.slug !== 'frames' ? '#2B2723' : 'transparent' }}
+                  style={{ backgroundColor: config.darkGround ? '#2B2723' : 'transparent' }}
                 >
                   <div className="absolute inset-0 transition-transform duration-1000 ease-out group-hover:scale-[1.02]">
                     <Image

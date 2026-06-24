@@ -1,15 +1,12 @@
 import { useState, useEffect, useMemo } from 'react'
-import { getCatalogItems, getStoreCategories, saveInventoryItem, deleteInventoryItem } from '@/lib/services/catalog.service'
-import { 
-  InventoryItem, 
-  buildVariantCombos, 
-  hasStonesCategory,
-  buildSearchTerms
-} from '@/lib/domain/inventory'
-import { VariantDetail } from '@/lib/types'
+import { getInventoryItems, saveInventoryItem, deleteInventoryItem } from '@/lib/services/inventory.service'
+import { buildVariantCombos, buildSearchTerms } from '@/lib/domain/inventory'
+import { Product, VariantDetail } from '@/lib/types'
+import { usesStones, usesWeights } from '@/lib/collections'
 
-const emptyForm: Partial<InventoryItem> = {
-  id: '', sku: '', name: '', category: '', hasVariants: false,
+
+const emptyForm: Partial<Product> = {
+  id: '', sku: '', name: '', hasVariants: false,
   standardSizes: [], customSizes: [], standardPurities: [], customPurities: [],
   standardWeights: [], customWeights: [], standardStones: [], customStones: [],
   weight: '', material: '', description: '', imageFile: '',
@@ -19,14 +16,13 @@ const emptyForm: Partial<InventoryItem> = {
 const numericFilter = (val: string) => val.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1')
 
 export function useInventoryForm() {
-  const [items, setItems] = useState<InventoryItem[]>([])
-  const [categories, setCategories] = useState<string[]>([])
+  const [items, setItems] = useState<Product[]>([])
   const [loading, setLoading] = useState(true)
   const [isFormOpen, setIsFormOpen] = useState(false)
   const [editingId, setEditingId] = useState<string | null>(null)
   const [deleteId, setDeleteId] = useState<string | null>(null)
   
-  const [formData, setFormData] = useState<Partial<InventoryItem>>({ ...emptyForm })
+  const [formData, setFormData] = useState<Partial<Product>>({ ...emptyForm })
   const [customSizeInput, setCustomSizeInput] = useState('')
   const [customPurityInput, setCustomPurityInput] = useState('')
   
@@ -34,18 +30,11 @@ export function useInventoryForm() {
   const [variantWeightInputs, setVariantWeightInputs] = useState<Record<string, string>>({})
   const [variantImageInputs, setVariantImageInputs] = useState<Record<string, string[]>>({})
 
-  const [categoryOpen, setCategoryOpen] = useState(false)
-  const [categoryFocusedIndex, setCategoryFocusedIndex] = useState(-1)
-
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [cats, catItems] = await Promise.all([
-          getStoreCategories(),
-          getCatalogItems()
-        ])
-        setCategories(cats)
-        setItems(catItems as unknown as InventoryItem[])
+        const catItems = await getInventoryItems()
+        setItems(catItems as unknown as Product[])
       } catch (err) {
         console.error("Error fetching data", err)
       } finally {
@@ -70,7 +59,7 @@ export function useInventoryForm() {
 
   const combos = useMemo(() => buildVariantCombos(formData), [formData])
 
-  const handleEdit = (item: InventoryItem) => {
+  const handleEdit = (item: Product) => {
     setFormData({ ...item, orderIndex: item.orderIndex || 0 })
     const skuInputs: Record<string, string> = {}
     const weightInputs: Record<string, string> = {}
@@ -106,7 +95,7 @@ export function useInventoryForm() {
     setVariantImageInputs({})
   }
 
-  const cleanupOrphanedInputs = (newFormData: Partial<InventoryItem>) => {
+  const cleanupOrphanedInputs = (newFormData: Partial<Product>) => {
     const validKeys = new Set(buildVariantCombos(newFormData).map(c => c.key))
     
     setVariantSkuInputs(prev => {
@@ -132,8 +121,8 @@ export function useInventoryForm() {
   }
 
   const getMatrixFields = () => {
-    if (hasStonesCategory(formData.category)) return ['standardStones', 'customStones'] as const
-    if (formData.category?.includes('Bullion')) return ['standardWeights', 'customWeights'] as const
+    if (usesStones(formData.collection)) return ['standardStones', 'customStones'] as const
+    if (usesWeights(formData.collection)) return ['standardWeights', 'customWeights'] as const
     return ['standardSizes', 'customSizes'] as const
   }
 
@@ -157,7 +146,7 @@ export function useInventoryForm() {
   const addCustomSize = () => {
     const v = customSizeInput.trim()
     if (!v) return
-    if (!/^\d+(\.\d+)?$/.test(v) && !hasStonesCategory(formData.category)) {
+    if (!/^\d+(\.\d+)?$/.test(v) && !usesStones(formData.collection)) {
       alert('Only numeric values are allowed for custom sizes/weights.')
       return
     }
@@ -197,6 +186,7 @@ export function useInventoryForm() {
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!formData.id) { alert("ID is required!"); return }
+    if (!formData.collection) { alert("Select a collection."); return }
     const docId = editingId || formData.id
 
     try {
@@ -225,13 +215,15 @@ export function useInventoryForm() {
         payload.variantSkus = {}
         payload.variantImages = {}
       } else {
+        payload.sku = ''
+        payload.weight = ''
         const combos = buildVariantCombos(formData)
         if (combos.length === 0) {
           alert('Select the variant options (sizes/purities, stones, or weights) before saving.')
           return
         }
 
-        const isBullion = !!formData.category?.includes('Bullion')
+        const isBullion = usesWeights(formData.collection)
         const variantSkus: Record<string, VariantDetail> = {}
         const seenSkus = new Set<string>()
 
@@ -265,9 +257,9 @@ export function useInventoryForm() {
       await saveInventoryItem(docId, payload)
 
       if (editingId) {
-        setItems(items.map(i => i.id === editingId ? { id: docId, ...payload } as InventoryItem : i))
+        setItems(items.map(i => i.id === editingId ? { id: docId, ...payload } as Product : i))
       } else {
-        setItems([...items, { id: docId, ...payload } as InventoryItem])
+        setItems([...items, { id: docId, ...payload } as Product])
       }
       handleCancel()
     } catch (err) {
@@ -279,7 +271,6 @@ export function useInventoryForm() {
   return {
     state: {
       items,
-      categories,
       loading,
       isFormOpen,
       editingId,
@@ -290,8 +281,6 @@ export function useInventoryForm() {
       variantSkuInputs,
       variantWeightInputs,
       variantImageInputs,
-      categoryOpen,
-      categoryFocusedIndex,
       combos
     },
     actions: {
@@ -303,8 +292,6 @@ export function useInventoryForm() {
       setVariantSkuInputs,
       setVariantWeightInputs,
       setVariantImageInputs,
-      setCategoryOpen,
-      setCategoryFocusedIndex,
       cleanupOrphanedInputs,
       executeDelete,
       handleEdit,

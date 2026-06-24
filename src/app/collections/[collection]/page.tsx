@@ -26,7 +26,7 @@ export default async function CollectionPage({ params }: { params: Promise<{ col
       {/* Header */}
       <div className="max-w-4xl mx-auto px-6 text-center mb-16 md:mb-24">
         <StaggerContainer>
-          <FadeInUp className="font-garamond text-xs tracking-[0.2em] text-muted uppercase mb-6" style={{ fontVariant: 'small-caps' }}>
+          <FadeInUp className="font-garamond text-xs tracking-[0.1em] text-muted mb-6" style={{ fontVariant: 'small-caps' }}>
             {config.eyebrow}
           </FadeInUp>
           <FadeInUp className="font-serif text-4xl md:text-6xl text-ink font-medium tracking-wide mb-8">

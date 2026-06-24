@@ -1,3 +1,5 @@
+import type { Collection } from '@/lib/collections'
+
 // A single configured variant, identified by its own SKU.
 // The attributes describe which selection this SKU corresponds to.
 export interface VariantDetail {
@@ -7,11 +9,11 @@ export interface VariantDetail {
   weight?: string;
 }
 
-export interface CatalogItem {
+export interface Product {
   id: string;
   sku: string;
   name: string;
-  category: string;
+  collection: Collection;
   description: string;
   standardSizes?: string[];
   customSizes?: string[];
@@ -36,7 +38,7 @@ export interface CatalogItem {
   searchTerms?: string[];
 }
 
-export const DEFAULT_CATEGORIES = ['Silver Articles', 'Marble Photoframes', 'Bullions'];
+
 
 
 export interface Inquiry {

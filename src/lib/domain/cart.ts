@@ -1,4 +1,4 @@
-import { CatalogItem } from '@/lib/types'
+import { Product } from '@/lib/types'
 
 export type CartItem = {
   cartId: string;
@@ -14,7 +14,7 @@ export type CartItem = {
   quantity: number;
 }
 
-export function reconcileCart(localItems: CartItem[], liveItems: CatalogItem[]): CartItem[] {
+export function reconcileCart(localItems: CartItem[], liveItems: Product[]): CartItem[] {
   const liveItemsMap = new Map(liveItems.map(i => [i.id, i]))
   const reconciled: CartItem[] = []
   

@@ -2,10 +2,11 @@ import Link from 'next/link'
 import { ProtectedImage } from '@/components/protected-image'
 import { FadeInUp } from '@/components/motion-transitions'
 import { getOptimizedUrl } from '@/lib/utils'
-import type { CatalogItem } from '@/lib/types'
+import type { Product } from '@/lib/types'
+import { usesStones, usesWeights } from '@/lib/collections'
 
 interface ProductCardProps {
-  item: CatalogItem
+  item: Product
   showVariants?: boolean
 }
 
@@ -13,7 +14,7 @@ export function ProductCard({ item, showVariants = false }: ProductCardProps) {
   return (
     <FadeInUp className="h-full flex">
       <Link 
-        href={`/catalog/${item.id}`}
+        href={`/product/${item.id}`}
         className="flex flex-col w-full border border-line rounded-xl overflow-hidden bg-field group transition-[border-color,box-shadow,transform] duration-200 ease-[var(--ease-out)] hover:border-ink/20 hover:shadow-[0_8px_24px_rgba(0,0,0,0.06)] hover:-translate-y-0.5 active:scale-[0.97]"
       >
         <div className="aspect-[3/4] bg-[#f5f5f7] relative overflow-hidden">
@@ -33,9 +34,6 @@ export function ProductCard({ item, showVariants = false }: ProductCardProps) {
       <div className="p-6 flex flex-col flex-1">
         <div className="flex flex-col items-start mb-2">
           <h2 className="text-sm font-semibold text-ink tracking-wide uppercase line-clamp-2">{item.name}</h2>
-          {item.category && (
-            <span className="text-[11px] font-semibold text-muted uppercase tracking-widest mt-2">{item.category}</span>
-          )}
         </div>
         
         {showVariants && (
@@ -44,10 +42,10 @@ export function ProductCard({ item, showVariants = false }: ProductCardProps) {
               let sizes = 0
               let sizeLabel = 'sizes'
               
-              if (item.category?.includes('Marble')) {
+              if (usesStones(item.collection)) {
                 sizes = (item.standardStones?.length || 0) + (item.customStones?.length || 0)
                 sizeLabel = 'stones'
-              } else if (item.category?.includes('Bullion')) {
+              } else if (usesWeights(item.collection)) {
                 sizes = (item.standardWeights?.length || 0) + (item.customWeights?.length || 0)
                 sizeLabel = 'weights'
               } else {

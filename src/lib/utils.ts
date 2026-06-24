@@ -1,18 +1,19 @@
-import type { CatalogItem } from './types'
+import type { Product } from './types'
+import { usesStones, usesWeights } from '@/lib/collections'
 
 /**
  * Resolves the ordered gallery of image URLs for a product given an optional
  * selected variant. Behaviour differs by category:
  *
- * - Marble Photoframes / Bullions: full gallery override — if variantImages has
+ * - Collections with stones or weights (like idols or bullion): full gallery override — if variantImages has
  *   an entry for the selected variant, show only those images.
- * - Silver Articles (and anything else): partial override — replace only the
+ * - Standard sizes (and anything else): partial override — replace only the
  *   last image in the default gallery with the variant's override image.
  *
  * Falls back to the default gallery ([imageFile, ...additionalImages]) when no
  * variant is selected or no override is defined for the selected variant.
  */
-export function resolveGallery(item: CatalogItem, selectedVariant?: string): string[] {
+export function resolveGallery(item: Product, selectedVariant?: string): string[] {
   const defaultGallery = [item.imageFile, ...(item.additionalImages ?? [])].filter(Boolean)
 
   if (!selectedVariant || !item.variantImages?.[selectedVariant]?.length) {
@@ -20,10 +21,7 @@ export function resolveGallery(item: CatalogItem, selectedVariant?: string): str
   }
 
   const overrideImages = item.variantImages[selectedVariant]
-  const isFullOverride =
-    item.category?.includes('Marble') ||
-    item.category?.includes('Photoframe') ||
-    item.category?.includes('Bullion')
+  const isFullOverride = usesStones(item.collection) || usesWeights(item.collection)
 
   if (isFullOverride) {
     return overrideImages

@@ -1,21 +1,22 @@
 "use client"
 
-import { useRef, useEffect, useState } from 'react'
+import { useState } from 'react'
 import Image from 'next/image'
-import { Trash2, Plus, Box, Edit2, X, ChevronDown, RefreshCw } from 'lucide-react'
+import { Trash2, Plus, Box, Edit2, X, RefreshCw } from 'lucide-react'
 import { ImageDropzone } from '@/components/image-dropzone'
+import CustomSelect from '@/components/custom-select'
 
 import { getOptimizedUrl } from '@/lib/utils'
 import { ConfirmModal } from '@/components/confirm-modal'
 import { useInventoryForm } from '@/hooks/use-inventory-form'
-import { backfillSearchTermsForAllItems } from '@/lib/services/catalog.service'
-import { 
-  hasStonesCategory, 
-  isNoPurityCategory, 
-  getStandardSizeMatrix, 
+import { backfillSearchTermsForAllItems } from '@/lib/services/inventory.service'
+import { COLLECTION_LIST, type Collection } from '@/lib/collections'
+import {
+  getStandardSizeMatrix,
   getCustomSizeMatrix,
   getSizeMatrix
 } from '@/lib/domain/inventory'
+import { usesStones, usesPurity, usesWeights } from '@/lib/collections'
 
 const STANDARD_SIZES = ['4cm', '7cm', '10cm', '12.5cm']
 const STANDARD_PURITIES = ['92.5', '80.0']
@@ -30,17 +31,16 @@ export default function AdminInventory() {
   const [isBackfilling, setIsBackfilling] = useState(false)
 
   const {
-    items, categories, loading, isFormOpen, editingId, deleteId,
+    items, loading, isFormOpen, editingId, deleteId,
     formData, customSizeInput, customPurityInput,
     variantSkuInputs, variantWeightInputs, variantImageInputs,
-    categoryOpen, categoryFocusedIndex, combos
+    combos
   } = state
 
   const {
     setIsFormOpen, setDeleteId, setFormData,
     setCustomSizeInput, setCustomPurityInput,
     setVariantSkuInputs, setVariantWeightInputs, setVariantImageInputs,
-    setCategoryOpen, setCategoryFocusedIndex,
     cleanupOrphanedInputs, executeDelete, handleEdit, handleCancel, handleSave,
     toggleSize, togglePurity, addCustomSize, removeCustomSize,
     addCustomPurity, removeCustomPurity, numericFilter
@@ -48,48 +48,7 @@ export default function AdminInventory() {
 
   const confirmDelete = (id: string) => setDeleteId(id)
 
-  const categoryRef = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
-      if (categoryRef.current && !categoryRef.current.contains(e.target as Node)) setCategoryOpen(false)
-    }
-    document.addEventListener('mousedown', handleClickOutside)
-    return () => document.removeEventListener('mousedown', handleClickOutside)
-  }, [setCategoryOpen])
-
-  useEffect(() => {
-    if (categoryOpen) {
-      const idx = categories.findIndex(c => c === formData.category)
-      setCategoryFocusedIndex(idx >= 0 ? idx : 0)
-    } else {
-      setCategoryFocusedIndex(-1)
-    }
-  }, [categoryOpen, formData.category, categories, setCategoryFocusedIndex])
-
-  const handleCategoryKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
-    if (!categoryOpen) {
-      if (e.key === 'ArrowDown' || e.key === 'ArrowUp' || e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault(); setCategoryOpen(true)
-      }
-      return
-    }
-    switch (e.key) {
-      case 'Escape': e.preventDefault(); setCategoryOpen(false); break
-      case 'ArrowDown': e.preventDefault(); setCategoryFocusedIndex(prev => prev < categories.length - 1 ? prev + 1 : prev); break
-      case 'ArrowUp': e.preventDefault(); setCategoryFocusedIndex(prev => prev > 0 ? prev - 1 : prev); break
-      case 'Enter':
-      case ' ': 
-        e.preventDefault()
-        if (categoryFocusedIndex >= 0 && categoryFocusedIndex < categories.length) { 
-          const newFormData = { ...formData, category: categories[categoryFocusedIndex] }
-          setFormData(newFormData)
-          cleanupOrphanedInputs(newFormData)
-          setCategoryOpen(false) 
-        }
-        break
-    }
-  }
+  const collectionOptions = COLLECTION_LIST.map(c => ({ value: c.slug, label: c.title }))
 
   return (
     <div>
@@ -152,18 +111,18 @@ export default function AdminInventory() {
                 />
               </div>
               <div>
-                <label className="admin-label required">SKU (Internal Code)</label>
+                <label className={`admin-label ${!formData.hasVariants ? 'required' : ''}`}>SKU (Internal Code)</label>
                 <input
-                  type="text" required
-                  value={formData.sku || ''}
+                  type="text" required={!formData.hasVariants} disabled={formData.hasVariants}
+                  value={formData.hasVariants ? 'Configured per variant' : (formData.sku || '')}
                   onChange={e => setFormData({ ...formData, sku: e.target.value })}
-                  className="admin-input"
+                  className="admin-input disabled:bg-band disabled:text-muted"
                   placeholder="e.g., Taraya-001"
                 />
               </div>
             </div>
 
-            {/* Row 2: Name + Category */}
+            {/* Row 2: Name + Collection */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label className="admin-label required">Product Name</label>
@@ -175,49 +134,15 @@ export default function AdminInventory() {
                   placeholder="e.g., Elegance Marble Vase"
                 />
               </div>
-              <div>
-                <label className="admin-label required mb-2">Category</label>
-                <div className="relative" ref={categoryRef} onKeyDown={handleCategoryKeyDown}>
-                  <button
-                    type="button"
-                    role="combobox"
-                    aria-haspopup="listbox"
-                    aria-expanded={categoryOpen}
-                    aria-controls="admin-category-listbox"
-                    onClick={() => setCategoryOpen(!categoryOpen)}
-                    className="admin-input flex items-center justify-between text-left"
-                  >
-                    <span className={formData.category ? 'text-ink' : 'text-muted'}>
-                      {formData.category || 'Select category'}
-                    </span>
-                    <ChevronDown size={16} className={`text-muted transition-transform ${categoryOpen ? 'rotate-180' : ''}`} />
-                  </button>
-                  {categoryOpen && (
-                    <div className="absolute z-10 mt-1 w-full bg-field border border-line rounded-lg shadow-lg overflow-hidden origin-top transition-[opacity,transform] duration-150 ease-[var(--ease-out)] opacity-100 scale-100 starting:opacity-0 starting:scale-[0.97]">
-                      <ul id="admin-category-listbox" role="listbox" className="m-0 p-0 list-none max-h-60 overflow-y-auto">
-                        {categories.map((cat, idx) => (
-                          <li key={cat} role="option" aria-selected={formData.category === cat}>
-                            <button
-                              type="button"
-                              tabIndex={-1}
-                              onClick={() => { 
-                                const newFormData = { ...formData, category: cat };
-                                setFormData(newFormData);
-                                cleanupOrphanedInputs(newFormData);
-                                setCategoryOpen(false);
-                              }}
-                              className={`w-full text-left px-4 py-2.5 text-sm transition-colors ${categoryFocusedIndex === idx ? 'bg-band' : ''
-                                } ${formData.category === cat ? 'bg-band text-ink font-semibold' : 'text-muted hover:bg-band'
-                                }`}
-                            >
-                              {cat}
-                            </button>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-                </div>
+              <div className="flex flex-col">
+                <label className="admin-label required mb-2">Collection</label>
+                <CustomSelect
+                  value={formData.collection ?? ''}
+                  onChange={v => setFormData({ ...formData, collection: v as Collection })}
+                  options={collectionOptions}
+                  placeholder="Select collection"
+                  className="py-2.5 px-4 text-[15px] font-medium"
+                />
               </div>
             </div>
 
@@ -246,15 +171,15 @@ export default function AdminInventory() {
               {formData.hasVariants && (
                 <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-8 bg-field">
                   {/* ── Size Column ── */}
-                  <div className={isNoPurityCategory(formData.category) ? 'md:col-span-2' : ''}>
+                  <div className={!usesPurity(formData.collection) ? 'md:col-span-2' : ''}>
                     <p className="text-[11px] font-semibold tracking-widest uppercase text-muted mb-4">
-                      {hasStonesCategory(formData.category) ? 'Available Stones' : formData.category?.includes('Bullion') ? 'Available Weights' : 'Available Sizes'}
+                      {usesStones(formData.collection) ? 'Available Stones' : usesWeights(formData.collection) ? 'Available Weights' : 'Available Sizes'}
                     </p>
                     <div className="flex flex-wrap gap-2 mb-6">
                       {Array.from(new Set([
-                        ...(hasStonesCategory(formData.category)
+                        ...(usesStones(formData.collection)
                           ? STANDARD_STONES
-                          : formData.category?.includes('Bullion')
+                          : usesWeights(formData.collection)
                             ? STANDARD_WEIGHTS
                             : STANDARD_SIZES),
                         ...getStandardSizeMatrix(formData)
@@ -282,17 +207,17 @@ export default function AdminInventory() {
                     )}
 
                     <p className="text-[11px] font-semibold tracking-widest uppercase text-muted mb-3">
-                      {hasStonesCategory(formData.category) ? 'Custom Stone' : formData.category?.includes('Bullion') ? 'Custom Weight' : 'Custom Size'}
+                      {usesStones(formData.collection) ? 'Custom Stone' : usesWeights(formData.collection) ? 'Custom Weight' : 'Custom Size'}
                     </p>
                     <div className="flex items-end gap-3 max-w-sm">
                       <div className="flex-1 relative">
                         <input
                           type="text"
                           value={customSizeInput}
-                          onChange={e => setCustomSizeInput(hasStonesCategory(formData.category) ? e.target.value : numericFilter(e.target.value))}
+                          onChange={e => setCustomSizeInput(usesStones(formData.collection) ? e.target.value : numericFilter(e.target.value))}
                           onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); addCustomSize() } }}
                           className="admin-input-underline"
-                          placeholder={hasStonesCategory(formData.category) ? "e.g., Rose Quartz" : formData.category?.includes('Bullion') ? "e.g., 100" : "e.g., 20"}
+                          placeholder={usesStones(formData.collection) ? "e.g., Rose Quartz" : usesWeights(formData.collection) ? "e.g., 100" : "e.g., 20"}
                         />
                       </div>
                       <button type="button" onClick={addCustomSize} className="admin-btn-outline">
@@ -302,7 +227,7 @@ export default function AdminInventory() {
                   </div>
 
                   {/* ── Purity Column ── */}
-                  {!isNoPurityCategory(formData.category) && (
+                  {usesPurity(formData.collection) && (
                     <div>
                       <p className="text-[11px] font-semibold tracking-widest uppercase text-muted mb-4">Available Purities</p>
                       <div className="flex flex-wrap gap-2 mb-6">
@@ -352,14 +277,14 @@ export default function AdminInventory() {
 
               {/* ── Per-Variant SKUs & Weights ── */}
               {formData.hasVariants && (() => {
-                const isBullion = !!formData.category?.includes('Bullion')
+                const isBullion = !!usesWeights(formData.collection)
 
                 if (combos.length === 0) {
                   return (
                     <div className="px-6 pb-6 bg-field">
                       <div className="pt-6 border-t border-gray-100">
                         <p className="text-sm text-muted italic">
-                          {hasStonesCategory(formData.category)
+                          {usesStones(formData.collection)
                             ? 'Select at least one stone to configure variant SKUs.'
                             : isBullion
                               ? 'Select at least one weight to configure variant SKUs.'
@@ -407,48 +332,48 @@ export default function AdminInventory() {
                             <div className="flex flex-col gap-2 pt-3 mt-3 border-t border-gray-100">
                               <div>
                                 <label className="text-[10px] font-semibold text-muted uppercase tracking-wider block">
-                                  {hasStonesCategory(formData.category) || isBullion ? 'Image Overrides (All)' : 'Image Override (Last Image)'}
+                                  {usesStones(formData.collection) || isBullion ? 'Image Overrides (All)' : 'Image Override (Last Image)'}
                                 </label>
                                 <p className="text-[10px] text-muted mt-0.5 mb-2 leading-tight">
-                                  {hasStonesCategory(formData.category) || isBullion 
-                                    ? 'These images will completely replace the default product gallery when this variant is selected.' 
+                                  {usesStones(formData.collection) || isBullion
+                                    ? 'These images will completely replace the default product gallery when this variant is selected.'
                                     : 'This image will replace ONLY the last slide of the product gallery when this variant is selected.'}
                                 </p>
                               </div>
                               <div className="grid grid-cols-2 gap-3">
                                 {(() => {
-                                  const isFullOverride = hasStonesCategory(formData.category) || isBullion
+                                  const isFullOverride = usesStones(formData.collection) || isBullion
                                   const currentImages = variantImageInputs[combo.key] || []
-                                  
+
                                   if (!isFullOverride) {
                                     return (
-                                      <ImageDropzone 
-                                        value={currentImages[0] || ''} 
-                                        onChange={url => setVariantImageInputs({ ...variantImageInputs, [combo.key]: url ? [url] : [] })} 
+                                      <ImageDropzone
+                                        value={currentImages[0] || ''}
+                                        onChange={url => setVariantImageInputs({ ...variantImageInputs, [combo.key]: url ? [url] : [] })}
                                       />
                                     )
                                   }
-                                  
+
                                   return (
                                     <>
                                       {currentImages.map((img, idx) => (
-                                        <ImageDropzone 
-                                          key={idx} 
-                                          value={img} 
+                                        <ImageDropzone
+                                          key={idx}
+                                          value={img}
                                           onChange={url => {
                                             const newImgs = [...currentImages]
                                             if (url) newImgs[idx] = url
                                             else newImgs.splice(idx, 1)
                                             setVariantImageInputs({ ...variantImageInputs, [combo.key]: newImgs })
-                                          }} 
+                                          }}
                                         />
                                       ))}
                                       {currentImages.length < 4 && (
-                                        <ImageDropzone 
-                                          value="" 
+                                        <ImageDropzone
+                                          value=""
                                           onChange={url => {
                                             if (url) setVariantImageInputs({ ...variantImageInputs, [combo.key]: [...currentImages, url] })
-                                          }} 
+                                          }}
                                         />
                                       )}
                                     </>
@@ -468,7 +393,7 @@ export default function AdminInventory() {
             {/* Row 3: Weight + Material + Display Order */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div>
-                <label className="admin-label required">Approx Weight</label>
+                <label className={`admin-label ${!formData.hasVariants ? 'required' : ''}`}>Approx Weight</label>
                 <input
                   type="text" required={!formData.hasVariants} disabled={formData.hasVariants}
                   value={formData.hasVariants ? 'Configured per variant' : (formData.weight || '')}
@@ -579,7 +504,7 @@ export default function AdminInventory() {
                   <tr className="bg-band border-b border-line">
                     <th className="px-6 py-4 text-sm font-semibold text-muted">Image</th>
                     <th className="px-6 py-4 text-sm font-semibold text-muted">Product / SKU</th>
-                    <th className="px-6 py-4 text-sm font-semibold text-muted whitespace-nowrap">Category</th>
+                    <th className="px-6 py-4 text-sm font-semibold text-muted whitespace-nowrap">Collection</th>
                     <th className="px-6 py-4 text-sm font-semibold text-muted">Variants</th>
                     <th className="px-6 py-4 text-sm font-semibold text-muted">Purities</th>
                     <th className="px-6 py-4 text-sm font-semibold text-muted">Weight</th>
@@ -606,7 +531,7 @@ export default function AdminInventory() {
                           <div className="text-xs text-muted mt-1">{item.sku} · /{item.id}</div>
                         </td>
                         <td className="px-6 py-4">
-                          <span className="text-xs bg-band text-muted px-2 py-1 rounded-lg whitespace-nowrap">{item.category}</span>
+                          <span className="text-xs bg-band text-muted px-2 py-1 rounded-lg whitespace-nowrap">{item.collection}</span>
                         </td>
                         <td className="px-6 py-4">
                           <div className="flex flex-wrap gap-1">

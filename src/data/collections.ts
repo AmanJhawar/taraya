@@ -21,6 +21,7 @@ export interface CollectionConfig {
   standfirst: string;
   gridType: 'sparse' | 'utilitarian';
   image: string;
+  darkGround: boolean;
 }
 
 /**
@@ -39,6 +40,7 @@ export const COLLECTIONS_CONFIG: Record<string, CollectionConfig> = {
     standfirst: 'A curated selection of silver idols, crafted with reverence and designed to be handed down through generations.',
     gridType: 'sparse',
     image: '/assets/silver-ganesha.png',
+    darkGround: true,
   },
   'auspicious-animals': {
     slug: 'auspicious-animals',
@@ -47,6 +49,7 @@ export const COLLECTIONS_CONFIG: Record<string, CollectionConfig> = {
     standfirst: 'Elephants, lions, and peacocks rendered in solid silver. Objects of significance for the home.',
     gridType: 'sparse',
     image: '/assets/silver-elephant.png',
+    darkGround: true,
   },
   'coins-and-bars': {
     slug: 'coins-and-bars',
@@ -55,6 +58,7 @@ export const COLLECTIONS_CONFIG: Record<string, CollectionConfig> = {
     standfirst: 'Pure silver bullion crafted to the highest assay standards. Available in classic and contemporary forms.',
     gridType: 'utilitarian',
     image: '/assets/logo.png',
+    darkGround: true,
   },
   'frames': {
     slug: 'frames',
@@ -63,6 +67,7 @@ export const COLLECTIONS_CONFIG: Record<string, CollectionConfig> = {
     standfirst: 'Semi-precious stone and marble frames, elevated by heavy silver mounts. A dignified setting for your memories.',
     gridType: 'sparse',
     image: '/assets/marble-photoframe.png',
+    darkGround: false,
   }
 };
 

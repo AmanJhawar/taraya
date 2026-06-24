@@ -1,94 +1,58 @@
-import { VariantDetail } from '@/lib/types'
+import { VariantDetail, Product } from '@/lib/types'
+import {
+  usesStones,
+  usesWeights,
+  usesPurity,
+} from '@/lib/collections'
 
-export interface InventoryItem {
-  id: string
-  sku: string
-  name: string
-  category: string
-  hasVariants: boolean
-  standardSizes?: string[]
-  customSizes?: string[]
-  standardPurities?: string[]
-  customPurities?: string[]
-  standardWeights?: string[]
-  customWeights?: string[]
-  standardStones?: string[]
-  customStones?: string[]
-  variantSkus?: Record<string, VariantDetail>
-  variantImages?: Record<string, string[]>
-  weight: string
-  material?: string
-  additionalImages?: string[]
-  description: string
-  imageFile: string
-  orderIndex?: number
-  searchTerms?: string[]
-}
 
-export const hasStonesCategory = (category?: string) => {
-  if (!category) return false
-  const c = category.toLowerCase()
-  return c.includes('marble') || c.includes('photoframe')
-}
 
-const isBullionCategory = (category?: string) => {
-  if (!category) return false
-  return category.toLowerCase().includes('bullion')
-}
 
-export const isNoPurityCategory = (category?: string) => {
-  return hasStonesCategory(category) || isBullionCategory(category)
-}
-
-export const getSizeMatrix = (item: Partial<InventoryItem>) => {
-  if (hasStonesCategory(item.category)) return [...(item.standardStones || []), ...(item.customStones || [])]
-  if (isBullionCategory(item.category)) return [...(item.standardWeights || []), ...(item.customWeights || [])]
+export const getSizeMatrix = (item: Partial<Product>) => {
+  if (usesStones(item.collection)) return [...(item.standardStones || []), ...(item.customStones || [])]
+  if (usesWeights(item.collection)) return [...(item.standardWeights || []), ...(item.customWeights || [])]
   return [...(item.standardSizes || []), ...(item.customSizes || [])]
 }
 
-export const getStandardSizeMatrix = (item: Partial<InventoryItem>) => {
-  if (hasStonesCategory(item.category)) return item.standardStones || []
-  if (isBullionCategory(item.category)) return item.standardWeights || []
+export const getStandardSizeMatrix = (item: Partial<Product>) => {
+  if (usesStones(item.collection)) return item.standardStones || []
+  if (usesWeights(item.collection)) return item.standardWeights || []
   return item.standardSizes || []
 }
 
-export const getCustomSizeMatrix = (item: Partial<InventoryItem>) => {
-  if (hasStonesCategory(item.category)) return item.customStones || []
-  if (isBullionCategory(item.category)) return item.customWeights || []
+export const getCustomSizeMatrix = (item: Partial<Product>) => {
+  if (usesStones(item.collection)) return item.customStones || []
+  if (usesWeights(item.collection)) return item.customWeights || []
   return item.customSizes || []
 }
 
 export type VariantCombo = { key: string; label: string; attrs: VariantDetail }
 
-export const buildVariantCombos = (item: Partial<InventoryItem>): VariantCombo[] => {
-  const stones = hasStonesCategory(item.category)
-  const bullion = isBullionCategory(item.category)
-  const noPurity = stones || bullion
-
-  if (stones) {
+export const buildVariantCombos = (item: Partial<Product>): VariantCombo[] => {
+  if (usesStones(item.collection)) {
     const all = [...(item.standardStones || []), ...(item.customStones || [])]
-    return all.map(s => ({ key: `stone:${s}`, label: s, attrs: { stone: s } }))
+    return all.map((s) => ({ key: `stone:${s}`, label: s, attrs: { stone: s } }))
   }
 
-  if (bullion) {
+  if (usesWeights(item.collection)) {
     const all = [...(item.standardWeights || []), ...(item.customWeights || [])]
-    return all.map(w => ({ key: `weight:${w}`, label: w, attrs: { weight: w } }))
+    return all.map((w) => ({ key: `weight:${w}`, label: w, attrs: { weight: w } }))
   }
 
   const sizes = [...(item.standardSizes || []), ...(item.customSizes || [])]
-  const purities = noPurity ? [] : [...(item.standardPurities || []), ...(item.customPurities || [])]
+  const purities = [...(item.standardPurities || []), ...(item.customPurities || [])]
   if (sizes.length === 0 || purities.length === 0) return []
 
   const combos: VariantCombo[] = []
-  sizes.forEach(s =>
-    purities.forEach(p =>
+  sizes.forEach((s) =>
+    purities.forEach((p) =>
       combos.push({ key: `size:${s}|purity:${p}`, label: `${s} | ${p}`, attrs: { size: s, purity: p } })
     )
   )
   return combos
 }
 
-export const buildSearchTerms = (item: Partial<InventoryItem>): string[] => {
+export const buildSearchTerms = (item: Partial<Product>): string[] => {
   const terms = new Set<string>()
 
   const addPrefixes = (str?: string) => {
@@ -99,37 +63,33 @@ export const buildSearchTerms = (item: Partial<InventoryItem>): string[] => {
     const generateForWordList = (wordList: string[], separator: string) => {
       for (let i = 0; i < wordList.length; i++) {
         const remainingString = wordList.slice(i).join(separator)
-        const maxLen = Math.min(remainingString.length, 30) // Cap prefix length to 30
+        const maxLen = Math.min(remainingString.length, 30)
         for (let len = 2; len <= maxLen; len++) {
           terms.add(remainingString.substring(0, len))
         }
       }
     }
 
-    // 1. Generate prefixes keeping original separators (e.g. "Silver Ganesha" -> "si", "sil", ..., "silver ganesha")
     generateForWordList(s.split(/\s+/), ' ')
-
-    // 2. Generate prefixes splitting by non-alphanumeric (e.g. "Taraya-001" -> "a9", "taraya", "00", "001")
     generateForWordList(s.split(/[^a-z0-9]+/).filter(Boolean), ' ')
   }
 
   addPrefixes(item.name)
   addPrefixes(item.sku)
   addPrefixes(item.id)
-  addPrefixes(item.category)
+  addPrefixes(item.collection)
   addPrefixes(item.material)
 
   const matrices = [
     ...(item.standardSizes || []), ...(item.customSizes || []),
     ...(item.standardPurities || []), ...(item.customPurities || []),
     ...(item.standardWeights || []), ...(item.customWeights || []),
-    ...(item.standardStones || []), ...(item.customStones || [])
+    ...(item.standardStones || []), ...(item.customStones || []),
   ]
-
-  matrices.forEach(m => addPrefixes(m))
+  matrices.forEach((m) => addPrefixes(m))
 
   if (item.variantSkus) {
-    Object.keys(item.variantSkus).forEach(sku => addPrefixes(sku))
+    Object.keys(item.variantSkus).forEach((sku) => addPrefixes(sku))
   }
 
   return Array.from(terms).slice(0, 500)
