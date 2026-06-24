@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation'
 import { getProductById } from '@/lib/services/inventory.service'
 import { getCollectionBySlug } from '@/lib/services/collections.service'
+// Product client component
 import { ProductClient } from '@/components/product-client'
 
 interface PageProps {
