@@ -1,5 +1,5 @@
-import Link from 'next/link'
 import { StaggerContainer, FadeInUp } from '@/components/motion-transitions'
+import { ButtonLink } from '@/components/ui'
 
 export default function NotFound() {
   return (
@@ -17,12 +17,10 @@ export default function NotFound() {
       >
         We couldn&apos;t find the page you&apos;re looking for. It might have been moved or doesn&apos;t exist.
       </FadeInUp>
-      <FadeInUp 
-        className="btn-primary inline-flex"
-      >
-        <Link href="/collections">
+      <FadeInUp>
+        <ButtonLink href="/collections">
           Return to Collections
-        </Link>
+        </ButtonLink>
       </FadeInUp>
     </StaggerContainer>
   )

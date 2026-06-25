@@ -1,13 +1,13 @@
 "use client"
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, type ChangeEvent } from 'react'
 
-import { Layers, Trash2, Edit2, Check, Plus, ChevronDown, ChevronUp } from 'lucide-react'
+import { Layers, Trash2, Edit2, Plus, ChevronDown, ChevronUp } from 'lucide-react'
 import { type CollectionConfig, type VariantModel, type Material } from '@/lib/domain/collections'
-import { ConfirmModal } from '@/components/confirm-modal'
-import CustomSelect from '@/components/custom-select'
+import { Dialog } from '@/components/ui'
 import { ImageDropzone } from '@/components/image-dropzone'
 import { setCollections as setCollectionsService, getCollections } from '@/lib/services/collections.service'
+import { TextField, Checkbox, Button, IconButton, SelectField } from '@/components/ui'
 import { hasProductsInCollection } from '@/lib/services/inventory.service'
 
 const VARIANT_MODELS: { value: VariantModel; label: string }[] = [
@@ -63,6 +63,18 @@ export default function AdminCollections() {
       }
     }
     load()
+  }, [])
+
+  useEffect(() => {
+    const handleNavClick = (e: Event) => {
+      const customEvent = e as CustomEvent<string>
+      if (customEvent.detail === '/admin/collections') {
+        setShowAddForm(false)
+        setEditingIndex(null)
+      }
+    }
+    window.addEventListener('admin-nav-click', handleNavClick)
+    return () => window.removeEventListener('admin-nav-click', handleNavClick)
   }, [])
 
   const persist = async (updated: CollectionConfig[]) => {
@@ -159,85 +171,89 @@ export default function AdminCollections() {
   }) => (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-5 bg-band/40 rounded-xl border border-line">
       <div>
-        <label className="admin-label required">Slug (URL key)</label>
-        <input 
-          className={`admin-input ${!isNew ? 'bg-band/50 cursor-not-allowed opacity-70' : ''}`} 
+        <TextField 
+          label="Slug (URL key)"
+          required
           value={form.slug} 
           placeholder="e.g., idols"
           disabled={!isNew}
-          onChange={e => onChange({ ...form, slug: e.target.value.toLowerCase().replace(/[^a-z0-9-]+/g, '-') })} 
+          className={!isNew ? 'bg-band/50 opacity-70 cursor-not-allowed' : ''}
+          onChange={(e: ChangeEvent<HTMLInputElement>) => onChange({ ...form, slug: e.target.value.toLowerCase().replace(/[^a-z0-9-]+/g, '-') })} 
         />
         {!isNew && <p className="text-[11px] text-muted mt-1.5">Slug cannot be changed after creation.</p>}
       </div>
       <div>
-        <label className="admin-label required">Title</label>
-        <input className="admin-input" value={form.title} placeholder="e.g., Forms of the Divine"
-          onChange={e => onChange({ ...form, title: e.target.value })} />
+        <TextField 
+          label="Title"
+          required
+          value={form.title} 
+          placeholder="e.g., Forms of the Divine"
+          onChange={(e: ChangeEvent<HTMLInputElement>) => onChange({ ...form, title: e.target.value })} 
+        />
       </div>
       <div>
-        <label className="admin-label">Eyebrow</label>
-        <input className="admin-input" value={form.eyebrow} placeholder="e.g., Divine Idols"
-          onChange={e => onChange({ ...form, eyebrow: e.target.value })} />
+        <TextField 
+          label="Eyebrow"
+          value={form.eyebrow} 
+          placeholder="e.g., Divine Idols"
+          onChange={(e: ChangeEvent<HTMLInputElement>) => onChange({ ...form, eyebrow: e.target.value })} 
+        />
       </div>
       <div>
-        <label className="admin-label">Cover image</label>
+        <label className="text-xs font-semibold text-muted uppercase tracking-[0.05em] mb-2 block">Cover image</label>
         <ImageDropzone value={form.image} onChange={url => onChange({ ...form, image: url })} />
       </div>
       <div className="md:col-span-2">
-        <label className="admin-label">Standfirst</label>
-        <input className="admin-input" value={form.standfirst} placeholder="One sentence describing this collection…"
-          onChange={e => onChange({ ...form, standfirst: e.target.value })} />
+        <TextField 
+          label="Standfirst"
+          value={form.standfirst} 
+          placeholder="One sentence describing this collection…"
+          onChange={(e: ChangeEvent<HTMLInputElement>) => onChange({ ...form, standfirst: e.target.value })} 
+        />
       </div>
-      <div className="flex flex-col">
-        <label className="admin-label mb-2">Variant model</label>
-        <CustomSelect
+      <div>
+        <SelectField
+          label="Variant model"
           value={form.variantModel}
-          onChange={v => onChange({ ...form, variantModel: v as VariantModel })}
+          onChange={(v) => onChange({ ...form, variantModel: v as VariantModel })}
           options={VARIANT_MODELS}
-          className="py-2.5 px-4 text-[15px] font-medium"
         />
       </div>
-      <div className="flex flex-col">
-        <label className="admin-label mb-2">Material</label>
-        <CustomSelect
+      <div>
+        <SelectField
+          label="Material"
           value={form.material}
-          onChange={v => onChange({ ...form, material: v as Material })}
+          onChange={(v) => onChange({ ...form, material: v as Material })}
           options={MATERIALS}
-          className="py-2.5 px-4 text-[15px] font-medium"
         />
       </div>
-      <div className="flex flex-col">
-        <label className="admin-label mb-2">Grid type</label>
-        <CustomSelect
+      <div>
+        <SelectField
+          label="Grid type"
           value={form.gridType}
-          onChange={v => onChange({ ...form, gridType: v as 'sparse' | 'utilitarian' })}
+          onChange={(v) => onChange({ ...form, gridType: v as 'sparse' | 'utilitarian' })}
           options={GRID_TYPES}
-          className="py-2.5 px-4 text-[15px] font-medium"
         />
       </div>
-      <div className="flex flex-col">
-        <label className="admin-label mb-2">Display limit (optional)</label>
-        <input 
+      <div>
+        <TextField 
+          label="Display limit (optional)"
           type="number" 
-          className="admin-input py-2.5 h-[42px]" 
           placeholder="e.g. 10"
           value={form.displayLimit || ''}
-          onChange={e => onChange({ ...form, displayLimit: e.target.value ? parseInt(e.target.value) : undefined })} 
+          onChange={(e: ChangeEvent<HTMLInputElement>) => onChange({ ...form, displayLimit: e.target.value ? parseInt(e.target.value) : undefined })} 
         />
       </div>
-      <div className="flex items-center gap-3 pt-5">
-        <label className="admin-checkbox cursor-pointer select-none">
-          <input type="checkbox" className="sr-only" checked={form.darkGround}
-            onChange={e => onChange({ ...form, darkGround: e.target.checked })} />
-          <span className={`inline-flex h-5 w-5 items-center justify-center border-2 transition-colors ${form.darkGround ? 'border-ink bg-ink' : 'border-muted bg-transparent'}`}>
-            {form.darkGround && <Check size={12} className="text-white" strokeWidth={3} />}
-          </span>
-          <span className="text-sm text-ink">Dark plate ground (#2B2723)</span>
-        </label>
+      <div className="pt-2">
+        <Checkbox
+          label="Dark plate ground (#2B2723)"
+          checked={form.darkGround}
+          onChange={(e: ChangeEvent<HTMLInputElement>) => onChange({ ...form, darkGround: e.target.checked })}
+        />
       </div>
-      <div className="md:col-span-2 flex justify-end gap-3 pt-2">
-        <button type="button" onClick={onCancel} className="admin-btn-outline">Cancel</button>
-        <button type="button" onClick={onSave} disabled={saving} className="admin-btn-primary disabled:opacity-50">{saveLabel}</button>
+      <div className="md:col-span-2 flex justify-end gap-3 mt-12 pt-6 border-t border-line">
+        <Button variant="secondary" onClick={onCancel} className="px-6">Cancel</Button>
+        <Button onClick={onSave} loading={saving}>{saveLabel}</Button>
       </div>
     </div>
   )
@@ -252,13 +268,13 @@ export default function AdminCollections() {
           </h1>
           <p className="text-muted">Manage the collections displayed on the storefront. Order controls display sequence.</p>
         </div>
-        <button
+        <Button
           onClick={() => { setShowAddForm(v => !v); setEditingIndex(null) }}
-          className="admin-btn-primary flex items-center gap-2 whitespace-nowrap"
+          className="whitespace-nowrap"
+          leftIcon={!showAddForm ? <Plus size={18} /> : undefined}
         >
-          <Plus size={18} />
           {showAddForm ? 'Cancel' : 'Add Collection'}
-        </button>
+        </Button>
       </div>
 
       {/* Add form */}
@@ -302,11 +318,11 @@ export default function AdminCollections() {
                     {/* Reorder */}
                     <div className="flex flex-col gap-0.5 shrink-0">
                       <button onClick={() => move(idx, -1)} disabled={idx === 0}
-                        className="text-muted hover:text-ink disabled:opacity-20 transition-[color,transform] active:scale-[0.97]" title="Move up">
+                        className="p-1 -mx-1 text-muted hover:text-ink disabled:opacity-20 transition-[color,transform] active:scale-[0.97]" title="Move up">
                         <ChevronUp size={16} />
                       </button>
                       <button onClick={() => move(idx, 1)} disabled={idx === collections.length - 1}
-                        className="text-muted hover:text-ink disabled:opacity-20 transition-[color,transform] active:scale-[0.97]" title="Move down">
+                        className="p-1 -mx-1 text-muted hover:text-ink disabled:opacity-20 transition-[color,transform] active:scale-[0.97]" title="Move down">
                         <ChevronDown size={16} />
                       </button>
                     </div>
@@ -333,14 +349,12 @@ export default function AdminCollections() {
 
                     {/* Actions */}
                     <div className="flex items-center gap-1 shrink-0">
-                      <button onClick={() => startEdit(idx)}
-                        className="text-muted hover:text-ink transition-[color,transform] active:scale-[0.97] p-2" title="Edit">
+                      <IconButton aria-label="Edit" onClick={() => startEdit(idx)} title="Edit">
                         <Edit2 size={18} />
-                      </button>
-                      <button onClick={() => requestDelete(col.slug)}
-                        className="text-muted hover:text-ink transition-[color,transform] active:scale-[0.97] p-2" title="Delete">
+                      </IconButton>
+                      <IconButton aria-label="Delete" onClick={() => requestDelete(col.slug)} title="Delete" className="hover:text-[#8B2E2E]">
                         <Trash2 size={18} />
-                      </button>
+                      </IconButton>
                     </div>
                   </div>
                 )}
@@ -353,13 +367,17 @@ export default function AdminCollections() {
         )}
       </div>
 
-      <ConfirmModal
-        isOpen={!!deleteSlug}
+      <Dialog
+        open={!!deleteSlug}
+        onClose={() => setDeleteSlug(null)}
         title="Delete Collection"
         description={`Remove "${deleteSlug}" from the storefront? Products assigned to it will remain in Firestore but won't appear in any collection page until reassigned.`}
-        confirmText="Delete"
-        onClose={() => setDeleteSlug(null)}
-        onConfirm={executeDelete}
+        footer={
+          <div className="flex flex-col-reverse sm:flex-row items-center justify-end gap-3">
+            <Button variant="secondary" onClick={() => setDeleteSlug(null)} className="w-full sm:w-auto">Cancel</Button>
+            <Button variant="danger" loading={saving} onClick={executeDelete} className="w-full sm:w-auto">Delete</Button>
+          </div>
+        }
       />
     </div>
   )

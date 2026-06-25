@@ -4,6 +4,7 @@ import { Suspense } from 'react'
 import CustomSelect from '@/components/custom-select'
 import { Controller } from 'react-hook-form'
 import { useInquiryForm } from '@/hooks/use-inquiry-form'
+import { Button } from '@/components/ui'
 
 function ContactForm() {
   const { form, success, error, onSubmit } = useInquiryForm()
@@ -166,13 +167,12 @@ function ContactForm() {
         </div>
       )}
 
-      <button 
+      <Button 
         type="submit" 
-        disabled={isSubmitting}
-        className={`btn-primary border-none ${isSubmitting ? 'opacity-50' : ''}`}
+        loading={isSubmitting}
       >
-        {isSubmitting ? 'Sending...' : 'Send Message'}
-      </button>
+        Send Message
+      </Button>
     </form>
   )
 }

@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
+import { Button } from '@/components/ui'
 
 const loginSchema = z.object({
   email: z.string().email('Please enter a valid email address'),
@@ -88,13 +89,13 @@ export default function AdminLogin() {
             {errors.password && <p className="text-muted font-medium text-sm mt-1">{errors.password.message}</p>}
           </div>
 
-          <button
+          <Button
             type="submit"
-            disabled={isSubmitting}
-            className="admin-btn-primary w-full disabled:opacity-70"
+            loading={isSubmitting}
+            fullWidth
           >
-            {isSubmitting ? <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white/30 border-t-white"></div> : 'Sign In'}
-          </button>
+            Sign In
+          </Button>
         </form>
       </div>
     </div>

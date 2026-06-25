@@ -1,8 +1,8 @@
 'use client'
 
 import { useEffect } from 'react'
-import Link from 'next/link'
 import { StaggerContainer, FadeInUp } from '@/components/motion-transitions'
+import { Button, ButtonLink } from '@/components/ui'
 
 export default function Error({
   error,
@@ -34,15 +34,12 @@ export default function Error({
       <FadeInUp 
         className="flex flex-col sm:flex-row items-center justify-center gap-4"
       >
-        <button 
-          onClick={() => reset()} 
-          className="btn-primary"
-        >
+        <Button onClick={() => reset()}>
           Try Again
-        </button>
-        <Link href="/collections" className="btn-secondary">
+        </Button>
+        <ButtonLink href="/collections" variant="secondary">
           Return to Collections
-        </Link>
+        </ButtonLink>
       </FadeInUp>
     </StaggerContainer>
   )

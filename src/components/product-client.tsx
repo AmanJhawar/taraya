@@ -9,6 +9,7 @@ import type { CollectionConfig } from '@/lib/domain/collections'
 import { ProtectedImage } from '@/components/protected-image'
 import { useCart } from '@/components/cart-provider'
 import { FadeInUp, EASE_OUT } from '@/components/motion-transitions'
+import { Button, Pill, ImagePlate } from '@/components/ui'
 
 interface ProductClientProps {
   product: Product
@@ -90,7 +91,7 @@ export function ProductClient({ product, config }: ProductClientProps) {
     <div className="max-w-[1400px] mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-24">
       {/* ── Gallery ── */}
       <div className="flex flex-col gap-4 relative">
-        <div className="aspect-[4/5] bg-band rounded-lg overflow-hidden relative border border-line">
+        <ImagePlate className="bg-band border border-line" darkGround={config?.darkGround}>
           <AnimatePresence mode="wait">
             {activeImage && (
               <motion.div
@@ -109,22 +110,24 @@ export function ProductClient({ product, config }: ProductClientProps) {
               </motion.div>
             )}
           </AnimatePresence>
-        </div>
+        </ImagePlate>
         {gallery.length > 1 && (
           <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-hide">
             {gallery.map((img, idx) => (
               <button
                 key={img}
                 onClick={() => setActiveImageIndex(idx)}
-                className={`relative flex-shrink-0 w-20 h-24 rounded-lg overflow-hidden border-2 transition-colors duration-200 active:scale-[0.97] ${
+                className={`relative flex-shrink-0 w-20 rounded-lg overflow-hidden border-2 transition-[border-color,transform] duration-200 active:scale-[0.97] focus:outline-none focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2 focus-visible:ring-offset-field ${
                   idx === activeImageIndex ? 'border-ink' : 'border-transparent hover:border-line'
                 }`}
               >
-                <ProtectedImage
-                  src={getOptimizedUrl(img, 400)}
-                  alt={`Thumbnail ${idx + 1}`}
-                  className="w-full h-full object-cover opacity-80 hover:opacity-100 transition-opacity"
-                />
+                <ImagePlate size="thumb" darkGround={config?.darkGround}>
+                  <ProtectedImage
+                    src={getOptimizedUrl(img, 400)}
+                    alt={`Thumbnail ${idx + 1}`}
+                    className="w-full h-full object-cover opacity-80 hover:opacity-100 transition-opacity"
+                  />
+                </ImagePlate>
               </button>
             ))}
           </div>
@@ -188,12 +191,14 @@ export function ProductClient({ product, config }: ProductClientProps) {
           </div>
         )}
 
-        <button
+        <Button
           onClick={handleAddToCart}
-          className="w-full py-4 px-6 bg-ink text-field text-[13px] tracking-[0.1em] font-medium uppercase transition-[transform,opacity] duration-200 hover:opacity-90 active:scale-[0.97] rounded-lg flex items-center justify-center gap-3"
+          variant="primary"
+          size="lg"
+          fullWidth
         >
           Add to Inquiry
-        </button>
+        </Button>
         
         {product.weight && (
           <p className="mt-8 text-[13px] font-medium small-caps tracking-[0.1em] text-muted text-center">
@@ -225,17 +230,13 @@ function VariantSelector({
         {options.map(opt => {
           const isActive = selected === opt
           return (
-            <button
+            <Pill
               key={opt}
               onClick={() => onSelect(opt)}
-              className={`min-w-[3rem] px-4 py-2.5 text-sm font-medium tracking-wide rounded-lg transition-[background-color,color,border-color,transform] duration-150 ease-[var(--ease-out)] active:scale-[0.97] ${
-                isActive 
-                  ? 'bg-ink text-field border border-ink' 
-                  : 'bg-transparent text-ink border border-line hover:border-ink/30'
-              }`}
+              active={isActive}
             >
               {opt}
-            </button>
+            </Pill>
           )
         })}
       </div>

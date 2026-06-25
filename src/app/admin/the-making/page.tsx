@@ -4,9 +4,9 @@ import { useState, useEffect } from 'react'
 import { getMakingStages, setMakingStages } from '@/lib/services/the-making.service'
 import { type MakingStage } from '@/lib/domain/the-making'
 import { BookOpen, Trash2, Edit2, Check, Plus, ChevronDown, ChevronUp } from 'lucide-react'
-import { ConfirmModal } from '@/components/confirm-modal'
 import { ImageDropzone } from '@/components/image-dropzone'
 import Image from 'next/image'
+import { TextField, TextareaField, Checkbox, Button, IconButton, Dialog } from '@/components/ui'
 
 function emptyForm(): MakingStage {
   return {
@@ -34,6 +34,18 @@ export default function AdminTheMaking() {
 
   useEffect(() => {
     getMakingStages().then(data => setStages(data)).finally(() => setLoading(false))
+  }, [])
+
+  useEffect(() => {
+    const handleNavClick = (e: Event) => {
+      const customEvent = e as CustomEvent<string>
+      if (customEvent.detail === '/admin/the-making') {
+        setShowAddForm(false)
+        setEditingIndex(null)
+      }
+    }
+    window.addEventListener('admin-nav-click', handleNavClick)
+    return () => window.removeEventListener('admin-nav-click', handleNavClick)
   }, [])
 
   const persist = async (list: MakingStage[]) => {
@@ -112,42 +124,44 @@ export default function AdminTheMaking() {
   }) => (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 p-5 bg-band/40 rounded-xl border border-line">
       <div className="flex flex-col gap-4">
-        <div>
-          <label className="admin-label">Number Label</label>
-          <input className="admin-input" value={form.numberLabel} placeholder="e.g., 01"
-            onChange={e => onChange({ ...form, numberLabel: e.target.value })} />
-        </div>
-        <div>
-          <label className="admin-label required">Title</label>
-          <input className="admin-input" value={form.title} placeholder="e.g., The Drawing"
-            onChange={e => onChange({ ...form, title: e.target.value })} />
-        </div>
-        <div>
-          <label className="admin-label">Description</label>
-          <textarea className="admin-input min-h-[100px] resize-y" value={form.description} placeholder="e.g., The deity set on a construction grid..."
-            onChange={e => onChange({ ...form, description: e.target.value })} />
-        </div>
+        <TextField 
+          label="Number Label"
+          value={form.numberLabel}
+          placeholder="e.g., 01"
+          onChange={e => onChange({ ...form, numberLabel: e.target.value })}
+        />
+        <TextField 
+          label="Title"
+          required
+          value={form.title}
+          placeholder="e.g., The Drawing"
+          onChange={e => onChange({ ...form, title: e.target.value })}
+        />
+        <TextareaField 
+          label="Description"
+          value={form.description}
+          placeholder="e.g., The deity set on a construction grid..."
+          onChange={e => onChange({ ...form, description: e.target.value })}
+          className="min-h-[100px] resize-y"
+        />
         
-        <div className="flex items-center gap-3 pt-2">
-          <label className="admin-checkbox cursor-pointer select-none">
-            <input type="checkbox" className="sr-only" checked={form.isDarkPlate}
-              onChange={e => onChange({ ...form, isDarkPlate: e.target.checked })} />
-            <span className={`inline-flex h-5 w-5 items-center justify-center border-2 transition-colors ${form.isDarkPlate ? 'border-ink bg-ink' : 'border-muted bg-transparent'}`}>
-              {form.isDarkPlate && <Check size={12} className="text-white" strokeWidth={3} />}
-            </span>
-            <span className="text-sm text-ink">Dark plate ground for image</span>
-          </label>
+        <div className="pt-2">
+          <Checkbox
+            label="Dark plate ground for image"
+            checked={form.isDarkPlate}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => onChange({ ...form, isDarkPlate: e.target.checked })}
+          />
         </div>
       </div>
       
       <div>
-        <label className="admin-label required mb-2">Stage Image</label>
+        <label className="text-xs font-semibold text-muted uppercase tracking-[0.05em] mb-2 block">Stage Image <span className="text-ink">*</span></label>
         <ImageDropzone value={form.imagePath} onChange={url => onChange({ ...form, imagePath: url })} />
       </div>
 
-      <div className="lg:col-span-2 flex justify-end gap-3 pt-4 border-t border-line/50">
-        <button type="button" onClick={onCancel} className="admin-btn-outline">Cancel</button>
-        <button type="button" onClick={onSave} disabled={saving} className="admin-btn-primary disabled:opacity-50">{saveLabel}</button>
+      <div className="lg:col-span-2 flex justify-end gap-3 mt-12 pt-6 border-t border-line">
+        <Button variant="secondary" onClick={onCancel} className="px-6">Cancel</Button>
+        <Button onClick={onSave} loading={saving}>{saveLabel}</Button>
       </div>
     </div>
   )
@@ -162,13 +176,13 @@ export default function AdminTheMaking() {
           </h1>
           <p className="text-muted">Manage the "From Sketch to Silver" narrative sequence.</p>
         </div>
-        <button
+        <Button
           onClick={() => { setShowAddForm(v => !v); setEditingIndex(null) }}
-          className="admin-btn-primary flex items-center gap-2 whitespace-nowrap"
+          className="whitespace-nowrap"
+          leftIcon={!showAddForm ? <Plus size={18} /> : undefined}
         >
-          <Plus size={18} />
           {showAddForm ? 'Cancel' : 'Add Stage'}
-        </button>
+        </Button>
       </div>
 
       {showAddForm && (
@@ -209,11 +223,11 @@ export default function AdminTheMaking() {
                     {/* Reorder */}
                     <div className="flex flex-col gap-0.5 shrink-0">
                       <button onClick={() => move(idx, -1)} disabled={idx === 0}
-                        className="text-muted hover:text-ink disabled:opacity-20 transition-[color,transform] active:scale-[0.97]" title="Move up">
+                        className="p-1 -mx-1 text-muted hover:text-ink disabled:opacity-20 transition-[color,transform] active:scale-[0.97]" title="Move up">
                         <ChevronUp size={16} />
                       </button>
                       <button onClick={() => move(idx, 1)} disabled={idx === stages.length - 1}
-                        className="text-muted hover:text-ink disabled:opacity-20 transition-[color,transform] active:scale-[0.97]" title="Move down">
+                        className="p-1 -mx-1 text-muted hover:text-ink disabled:opacity-20 transition-[color,transform] active:scale-[0.97]" title="Move down">
                         <ChevronDown size={16} />
                       </button>
                     </div>
@@ -240,14 +254,12 @@ export default function AdminTheMaking() {
 
                     {/* Actions */}
                     <div className="flex items-center gap-1 shrink-0">
-                      <button onClick={() => startEdit(idx)}
-                        className="text-muted hover:text-ink transition-[color,transform] active:scale-[0.97] p-2" title="Edit">
+                      <IconButton aria-label="Edit" onClick={() => startEdit(idx)} title="Edit">
                         <Edit2 size={18} />
-                      </button>
-                      <button onClick={() => setDeleteId(stage.id)}
-                        className="text-muted hover:text-ink transition-[color,transform] active:scale-[0.97] p-2" title="Delete">
+                      </IconButton>
+                      <IconButton aria-label="Delete" onClick={() => setDeleteId(stage.id)} title="Delete" className="hover:text-[#8B2E2E]">
                         <Trash2 size={18} />
-                      </button>
+                      </IconButton>
                     </div>
                   </div>
                 )}
@@ -263,13 +275,17 @@ export default function AdminTheMaking() {
         )}
       </div>
 
-      <ConfirmModal
-        isOpen={!!deleteId}
+      <Dialog
+        open={!!deleteId}
         onClose={() => setDeleteId(null)}
-        onConfirm={executeDelete}
         title="Delete Stage"
         description="Are you sure you want to delete this narrative stage? This cannot be undone."
-        confirmText="Delete Stage"
+        footer={
+          <div className="flex flex-col-reverse sm:flex-row items-center justify-end gap-3">
+            <Button variant="secondary" onClick={() => setDeleteId(null)} className="w-full sm:w-auto">Cancel</Button>
+            <Button variant="danger" onClick={executeDelete} className="w-full sm:w-auto">Delete Stage</Button>
+          </div>
+        }
       />
     </div>
   )

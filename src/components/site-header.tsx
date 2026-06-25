@@ -3,9 +3,10 @@
 import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
-import { motion, useScroll, useMotionValueEvent, AnimatePresence } from 'framer-motion'
-import { Search, User, ShoppingBag, X, ArrowRight } from 'lucide-react'
+import { motion, useScroll, useMotionValueEvent } from 'framer-motion'
+import { Search, User, ShoppingBag, ArrowRight } from 'lucide-react'
 import { useCart } from './cart-provider'
+import { IconButton, Drawer, Dialog } from '@/components/ui'
 
 const NAV_LINKS = [
   { label: 'Collections', href: '/collections' },
@@ -27,52 +28,7 @@ export default function SiteHeader() {
   const [isSearchOpen, setIsSearchOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
 
-  const overlayRef = useRef<HTMLDivElement>(null)
-  const prevActiveRef = useRef<HTMLElement | null>(null)
 
-  useEffect(() => {
-    const active = isMobileMenuOpen || isSearchOpen
-    if (!active) return
-
-    const originalStyle = window.getComputedStyle(document.body).overflow
-    document.body.style.overflow = 'hidden'
-    prevActiveRef.current = document.activeElement as HTMLElement
-
-    const timer = setTimeout(() => {
-      const focusable = overlayRef.current?.querySelectorAll(
-        'a[href], button:not([disabled]), input:not([disabled]), textarea:not([disabled]), select:not([disabled]), [tabindex="0"]'
-      ) as NodeListOf<HTMLElement>
-      if (focusable && focusable.length > 0) focusable[0].focus()
-    }, 50)
-
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        setIsMobileMenuOpen(false)
-        setIsSearchOpen(false)
-      }
-      if (e.key === 'Tab' && overlayRef.current) {
-        const list = overlayRef.current.querySelectorAll(
-          'a[href], button:not([disabled]), input:not([disabled]), textarea:not([disabled]), select:not([disabled]), [tabindex="0"]'
-        ) as NodeListOf<HTMLElement>
-        if (!list || list.length === 0) return
-        const first = list[0]
-        const last = list[list.length - 1]
-        if (e.shiftKey) {
-          if (document.activeElement === first) { last.focus(); e.preventDefault(); }
-        } else {
-          if (document.activeElement === last) { first.focus(); e.preventDefault(); }
-        }
-      }
-    }
-
-    window.addEventListener('keydown', handleKeyDown)
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown)
-      document.body.style.overflow = originalStyle
-      clearTimeout(timer)
-      if (prevActiveRef.current) prevActiveRef.current.focus()
-    }
-  }, [isMobileMenuOpen, isSearchOpen])
 
   
   const { scrollY } = useScroll()
@@ -101,15 +57,7 @@ export default function SiteHeader() {
     }
   })
 
-  // Lock body scroll when mobile menu or search is open
-  useEffect(() => {
-    if (isMobileMenuOpen || isSearchOpen) {
-      document.body.style.overflow = 'hidden'
-    } else {
-      document.body.style.overflow = ''
-    }
-    return () => { document.body.style.overflow = '' }
-  }, [isMobileMenuOpen, isSearchOpen])
+
 
   // Close menus on route change
   useEffect(() => {
@@ -160,8 +108,8 @@ export default function SiteHeader() {
             ))}
           </nav>
           
-          <button 
-            className="md:hidden p-2 -ml-2 text-current transition-[color,transform] active:scale-[0.97]"
+          <IconButton 
+            className="md:hidden -ml-2 text-current hover:bg-transparent hover:text-accent"
             onClick={() => setIsMobileMenuOpen(true)}
             aria-label="Open menu"
             aria-expanded={isMobileMenuOpen}
@@ -170,7 +118,7 @@ export default function SiteHeader() {
               <span className="h-[1px] w-full bg-current transition-transform duration-300" />
               <span className="h-[1px] w-full bg-current transition-transform duration-300" />
             </div>
-          </button>
+          </IconButton>
         </div>
 
         {/* Center Zone: Wordmark */}
@@ -182,134 +130,91 @@ export default function SiteHeader() {
 
         {/* Right Zone: Utilities */}
         <div className="flex-1 flex items-center justify-end gap-4 md:gap-6">
-          <button 
+          <IconButton 
             aria-label="Search" 
-            className="hover:text-accent transition-[color,transform] active:scale-[0.97]"
+            className="hover:text-accent hover:bg-transparent text-current"
             onClick={() => setIsSearchOpen(true)}
           >
             <Search size={18} strokeWidth={1.5} />
-          </button>
-          <button aria-label="Account" className="hidden md:block hover:text-accent transition-[color,transform] active:scale-[0.97]">
+          </IconButton>
+          <IconButton aria-label="Account" className="hidden md:flex hover:text-accent hover:bg-transparent text-current">
             <User size={18} strokeWidth={1.5} />
-          </button>
-          <button 
+          </IconButton>
+          <IconButton 
             aria-label="Cart" 
-            className="relative hover:text-accent transition-[color,transform] active:scale-[0.97] p-2 -mr-2 md:p-0 md:mr-0"
+            className="relative hover:text-accent hover:bg-transparent text-current -mr-2 md:mr-0"
             onClick={() => setIsCartOpen(true)}
           >
             <ShoppingBag size={18} strokeWidth={1.5} />
             {isInitialized && totalItems > 0 && (
-              <span className="absolute -top-1 -right-2 bg-ink text-field text-[10px] w-4 h-4 flex items-center justify-center rounded-full border border-field">
+              <span className="absolute top-1 right-1 bg-ink text-field text-[10px] w-4 h-4 flex items-center justify-center rounded-full border border-field">
                 {totalItems}
               </span>
             )}
-          </button>
+          </IconButton>
         </div>
       </motion.header>
 
-      {/* Mobile Full-Screen Overlay */}
-      <AnimatePresence>
-        {isMobileMenuOpen && (
-          <motion.div
-            ref={overlayRef}
-            className="fixed inset-0 z-[60] bg-field text-ink flex flex-col"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            role="dialog"
-            aria-modal="true"
-          >
-            <div className="flex items-center justify-between px-6 h-14 border-b border-line">
-              <button 
-                className="p-2 -ml-2 text-ink hover:text-accent transition-[color,transform] active:scale-[0.97]"
-                onClick={() => setIsMobileMenuOpen(false)}
-                aria-label="Close menu"
-              >
-                <X size={20} strokeWidth={1.5} />
-              </button>
-              <div className="font-serif font-medium text-lg tracking-widest uppercase text-ink">
-                TARAYA
-              </div>
-              <div className="w-10" /> {/* Spacer for centering */}
+      <Drawer
+        open={isMobileMenuOpen}
+        onClose={() => setIsMobileMenuOpen(false)}
+        title="Menu"
+        hideTitle
+      >
+        <div className="flex flex-col h-full -mx-6 -mt-5 pt-8">
+          <div className="flex items-center justify-center pb-12">
+            <div className="font-serif font-medium text-lg tracking-widest uppercase text-ink">
+              TARAYA
             </div>
+          </div>
 
-            <nav className="flex-1 flex flex-col items-center justify-center gap-10">
-              {NAV_LINKS.map((link) => (
-                <motion.div
-                  key={link.href}
-                  initial={{ transform: "translateY(20px)", opacity: 0 }}
-                  animate={{ transform: "translateY(0px)", opacity: 1 }}
-                  transition={{ delay: 0.1 }}
+          <nav className="flex-1 flex flex-col items-center justify-center gap-10">
+            {NAV_LINKS.map((link) => (
+              <div key={link.href}>
+                <Link
+                  href={link.href}
+                  className="font-serif text-4xl tracking-wide hover:text-accent transition-colors"
                 >
-                  <Link
-                    href={link.href}
-                    className="font-serif text-4xl tracking-wide hover:text-accent transition-colors"
-                  >
-                    {link.label}
-                  </Link>
-                </motion.div>
-              ))}
-            </nav>
-            
-            <div className="pb-12 text-center">
-              <p className="font-garamond text-muted text-sm" style={{ fontVariant: 'small-caps' }}>
-                Made to be handed down
-              </p>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* Global Search Overlay */}
-      <AnimatePresence>
-        {isSearchOpen && (
-          <motion.div
-            ref={overlayRef}
-            className="fixed inset-0 z-[60] bg-field/95 backdrop-blur-sm text-ink flex flex-col"
-            initial={{ opacity: 0, transform: "translateY(-20px)" }}
-            animate={{ opacity: 1, transform: "translateY(0px)" }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.3, ease: [0.23, 1, 0.32, 1] }}
-            role="dialog"
-            aria-modal="true"
-          >
-            <div className="flex items-center justify-between px-6 h-14 md:h-16">
-              <div className="w-10" /> {/* Spacer */}
-              <div className="font-serif font-medium text-lg tracking-widest uppercase text-ink invisible">
-                SEARCH
+                  {link.label}
+                </Link>
               </div>
-              <button 
-                className="p-2 -mr-2 text-ink hover:text-accent transition-colors"
-                onClick={() => setIsSearchOpen(false)}
-                aria-label="Close search"
-              >
-                <X size={20} strokeWidth={1.5} />
-              </button>
-            </div>
+            ))}
+          </nav>
+          
+          <div className="pb-8 text-center">
+            <p className="font-garamond text-muted text-sm" style={{ fontVariant: 'small-caps' }}>
+              Made to be handed down
+            </p>
+          </div>
+        </div>
+      </Drawer>
 
-            <div className="flex-1 flex flex-col items-center justify-center px-6 pb-20">
-              <form onSubmit={handleSearchSubmit} className="w-full max-w-2xl relative group">
-                <input
-                  type="text"
-                  autoFocus
-                  placeholder="Search the collection..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full bg-transparent border-b border-line pb-4 text-3xl md:text-5xl font-serif text-ink placeholder:text-muted/50 focus:outline-none focus:border-ink transition-colors rounded-none"
-                />
-                <button 
-                  type="submit"
-                  aria-label="Submit search"
-                  className="absolute right-0 bottom-4 text-muted hover:text-ink transition-colors"
-                >
-                  <ArrowRight size={28} strokeWidth={1} />
-                </button>
-              </form>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <Dialog
+        open={isSearchOpen}
+        onClose={() => setIsSearchOpen(false)}
+        title="Search"
+        hideTitle
+      >
+        <div className="py-8">
+          <form onSubmit={handleSearchSubmit} className="w-full relative group">
+            <input
+              type="text"
+              autoFocus
+              placeholder="Search the collection..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full bg-transparent border-b border-line pb-4 text-3xl md:text-5xl font-serif text-ink placeholder:text-muted/50 focus:outline-none focus:border-ink transition-colors rounded-none"
+            />
+            <IconButton 
+              type="submit"
+              aria-label="Submit search"
+              className="absolute right-0 bottom-2 text-muted hover:text-ink hover:bg-transparent"
+            >
+              <ArrowRight size={28} strokeWidth={1} />
+            </IconButton>
+          </form>
+        </div>
+      </Dialog>
     </>
   )
 }

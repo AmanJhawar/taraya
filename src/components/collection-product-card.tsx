@@ -2,6 +2,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { CollectionItem } from '@/lib/services/collections.service'
 import { FadeInUp } from './motion-transitions'
+import { ImagePlate } from '@/components/ui'
 
 export function CollectionProductCard({ item, index }: { item: CollectionItem; index: number }) {
   const isDarkGround = item.darkGround
@@ -14,10 +15,7 @@ export function CollectionProductCard({ item, index }: { item: CollectionItem; i
         href={`/product/${item.id}`}
         className="block focus:outline-none focus-visible:ring-1 focus-visible:ring-ink"
       >
-        <div
-          className="relative w-full overflow-hidden aspect-[4/5] flex items-center justify-center rounded-lg"
-          style={{ backgroundColor: isDarkGround ? '#2B2723' : 'transparent' }}
-        >
+        <ImagePlate darkGround={isDarkGround}>
           {/* drop-shadow-2xl removed: the contact shadow is baked into the product photo
               (see the compositing pipeline). A CSS drop shadow fought the flush look. */}
           <div
@@ -48,7 +46,7 @@ export function CollectionProductCard({ item, index }: { item: CollectionItem; i
               />
             </div>
           ) : null}
-        </div>
+        </ImagePlate>
 
         {/* Label and name only. No price on the collection page. */}
         <div className="mt-6 flex flex-col items-center text-center">

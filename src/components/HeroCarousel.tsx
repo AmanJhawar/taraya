@@ -2,9 +2,9 @@
 
 import React, { useState, useEffect } from 'react'
 import Image from 'next/image'
-import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
 import { EASE_OUT } from '@/components/motion-transitions'
+import { ButtonLink } from '@/components/ui'
 
 const images = [
   '/assets/marble-photoframe.png',
@@ -82,12 +82,13 @@ export default function HeroCarousel() {
           animate={{ opacity: 1, transform: "translateY(0px)" }}
           transition={{ duration: 0.6, ease: EASE_OUT, delay: 0.6 }}
         >
-          <Link
+          <ButtonLink
             href="/collections"
-            className="btn-secondary shadow-sm bg-white/10 backdrop-blur-md text-white border-white/20 hover:bg-white/20"
+            variant="secondary"
+            className="shadow-sm bg-white/10 backdrop-blur-md text-white border-white/20 hover:bg-white/20"
           >
             Explore Collections
-          </Link>
+          </ButtonLink>
         </motion.div>
 
       </div>

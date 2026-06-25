@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { Trash2, MessageSquare, ChevronDown } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ConfirmModal } from '@/components/confirm-modal'
+import { Dialog, Button } from '@/components/ui'
 import { getInquiriesPage, deleteInquiry, updateInquiryStatus } from '@/lib/services/inquiry.service'
 import { Inquiry } from '@/lib/domain/types'
 
@@ -77,6 +77,7 @@ export default function AdminInquiries() {
   const [inquiries, setInquiries] = useState<Inquiry[]>([])
   const [loading, setLoading] = useState(true)
   const [loadingMore, setLoadingMore] = useState(false)
+  const [isDeleting, setIsDeleting] = useState(false)
   const [nextCursor, setNextCursor] = useState<string | null>(null)
   const [hasMore, setHasMore] = useState(true)
   const [deleteId, setDeleteId] = useState<string | null>(null)
@@ -118,12 +119,14 @@ export default function AdminInquiries() {
 
   const executeDelete = async () => {
     if (!deleteId) return
+    setIsDeleting(true)
     try {
       await deleteInquiry(deleteId)
       setInquiries(inquiries.filter(i => i.id !== deleteId))
     } catch (err) {
       console.error("Error deleting", err)
     } finally {
+      setIsDeleting(false)
       setDeleteId(null)
     }
   }
@@ -252,13 +255,17 @@ export default function AdminInquiries() {
         </div>
       )}
 
-      <ConfirmModal
-        isOpen={!!deleteId}
-        title="Delete Inquiry"
-        description="Are you sure you want to delete this inquiry? This action cannot be undone."
-        confirmText="Delete"
+      <Dialog
+        open={!!deleteId}
         onClose={() => setDeleteId(null)}
-        onConfirm={executeDelete}
+        title="Delete Inquiry"
+        description="Are you sure you want to delete this inquiry? This cannot be undone."
+        footer={
+          <div className="flex flex-col-reverse sm:flex-row items-center justify-end gap-3">
+            <Button variant="secondary" onClick={() => setDeleteId(null)} className="w-full sm:w-auto">Cancel</Button>
+            <Button variant="danger" loading={isDeleting} onClick={executeDelete} className="w-full sm:w-auto">Delete</Button>
+          </div>
+        }
       />
     </div>
   )

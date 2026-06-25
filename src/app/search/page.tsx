@@ -4,6 +4,7 @@ import { getCollections, toCard } from '@/lib/services/collections.service'
 import { CollectionClient } from '@/components/collection-client'
 import { FadeInUp, StaggerContainer } from '@/components/motion-transitions'
 import { Metadata } from 'next'
+import { EmptyState, ButtonLink } from '@/components/ui'
 
 export const metadata: Metadata = {
   title: 'Search Results | Taraya',
@@ -34,15 +35,21 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
           </FadeInUp>
           <FadeInUp className="font-garamond text-lg md:text-xl text-ink/80 leading-relaxed max-w-2xl mx-auto">
             {items.length === 0 
-              ? (query ? 'No matching pieces found in our collection.' : 'Enter a search term to find pieces.') 
+              ? (query ? null : 'Enter a search term to find pieces.') 
               : `${items.length} ${items.length === 1 ? 'result' : 'results'} found`}
           </FadeInUp>
         </StaggerContainer>
       </div>
 
-      {items.length > 0 && (
+      {items.length > 0 ? (
         <CollectionClient initialItems={items} initialCursor={null} slug="" config={{ gridType: 'utilitarian' }} />
-      )}
+      ) : query ? (
+        <EmptyState 
+          title="Nothing found" 
+          description={`No pieces match “${query}”.`} 
+          action={<ButtonLink href="/collections" variant="secondary">Browse collections</ButtonLink>} 
+        />
+      ) : null}
     </div>
   )
 }

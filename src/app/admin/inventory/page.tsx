@@ -1,13 +1,13 @@
 "use client"
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import { Trash2, Plus, Box, Edit2, X, RefreshCw } from 'lucide-react'
 import { ImageDropzone } from '@/components/image-dropzone'
-import CustomSelect from '@/components/custom-select'
+import { TextField, TextareaField, Button, IconButton, SelectField, Toggle } from '@/components/ui'
 
 import { getOptimizedUrl } from '@/lib/utils'
-import { ConfirmModal } from '@/components/confirm-modal'
+import { Dialog } from '@/components/ui'
 import { useInventoryForm } from '@/hooks/use-inventory-form'
 import { type CollectionConfig } from '@/lib/domain/collections'
 import {
@@ -46,6 +46,17 @@ export default function AdminInventory() {
 
   const confirmDelete = (id: string) => setDeleteId(id)
 
+  useEffect(() => {
+    const handleNavClick = (e: Event) => {
+      const customEvent = e as CustomEvent<string>
+      if (customEvent.detail === '/admin/inventory') {
+        handleCancel()
+      }
+    }
+    window.addEventListener('admin-nav-click', handleNavClick)
+    return () => window.removeEventListener('admin-nav-click', handleNavClick)
+  }, [handleCancel])
+
   const activeConfig = collections.find(c => c.slug === formData.collection)
   const isStones = usesStones(activeConfig)
   const isWeights = usesWeights(activeConfig)
@@ -67,13 +78,13 @@ export default function AdminInventory() {
           </div>
           <div className="flex flex-wrap items-center gap-4 w-full sm:w-auto">
 
-            <button
+            <Button
               onClick={() => setIsFormOpen(true)}
-              className="admin-btn-primary flex items-center gap-2 whitespace-nowrap"
+              className="whitespace-nowrap"
+              leftIcon={<Plus size={18} />}
             >
-              <Plus size={18} className="transition-transform" />
               Add Product
-            </button>
+            </Button>
           </div>
         </div>
       )}
@@ -85,22 +96,24 @@ export default function AdminInventory() {
             {/* Row 1: Slug + SKU */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label className="admin-label required">URL Key (ID)</label>
-                <input
-                  type="text" required disabled={!!editingId}
+                <TextField 
+                  label="URL Key (ID)"
+                  required
+                  disabled={!!editingId}
                   value={formData.id || ''}
                   onChange={e => setFormData({ ...formData, id: e.target.value.toLowerCase().replace(/[^a-z0-9-]+/g, '') })}
-                  className="admin-input disabled:bg-band disabled:text-muted"
+                  className={!!editingId ? 'bg-band text-muted cursor-not-allowed' : ''}
                   placeholder="e.g., modern-chair"
                 />
               </div>
               <div>
-                <label className={`admin-label ${!formData.hasVariants ? 'required' : ''}`}>SKU (Internal Code)</label>
-                <input
-                  type="text" required={!formData.hasVariants} disabled={formData.hasVariants}
+                <TextField 
+                  label="SKU (Internal Code)"
+                  required={!formData.hasVariants}
+                  disabled={formData.hasVariants}
                   value={formData.hasVariants ? 'Configured per variant' : (formData.sku || '')}
                   onChange={e => setFormData({ ...formData, sku: e.target.value })}
-                  className="admin-input disabled:bg-band disabled:text-muted"
+                  className={formData.hasVariants ? 'bg-band text-muted cursor-not-allowed' : ''}
                   placeholder="e.g., Taraya-001"
                 />
               </div>
@@ -109,23 +122,23 @@ export default function AdminInventory() {
             {/* Row 2: Name + Collection */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label className="admin-label required">Product Name</label>
-                <input
-                  type="text" required
+                <TextField 
+                  label="Product Name"
+                  required
                   value={formData.name}
                   onChange={e => setFormData({ ...formData, name: e.target.value })}
-                  className="admin-input"
                   placeholder="e.g., Elegance Marble Vase"
                 />
               </div>
               <div className="flex flex-col">
-                <label className="admin-label required mb-2">Collection</label>
-                <CustomSelect
+                <SelectField
+                  label="Collection"
                   value={formData.collection ?? ''}
-                  onChange={v => setFormData({ ...formData, collection: v as string })}
-                  options={collectionOptions}
-                  placeholder="Select collection"
-                  className="py-2.5 px-4 text-[15px] font-medium"
+                  onChange={(v) => setFormData({ ...formData, collection: v })}
+                  options={[
+                    { value: '', label: 'Select collection', disabled: true },
+                    ...collectionOptions
+                  ]}
                   disabled={!!editingId}
                 />
                 {!!editingId && <p className="text-[11px] text-muted mt-1.5">Collection cannot be changed after creation.</p>}
@@ -139,19 +152,15 @@ export default function AdminInventory() {
                   <h3 className="text-sm font-semibold text-ink">Inventory Variants</h3>
                   <p className="text-xs text-muted mt-0.5">Configure sizes, purities, or specific stones/weights.</p>
                 </div>
-                <button
-                  type="button"
-                  role="switch"
-                  aria-checked={formData.hasVariants}
-                  onClick={() => {
-                    const newFormData = { ...formData, hasVariants: !formData.hasVariants }
+                <Toggle
+                  checked={!!formData.hasVariants}
+                  onChange={(checked: boolean) => {
+                    const newFormData = { ...formData, hasVariants: checked }
                     setFormData(newFormData)
                     if (!newFormData.hasVariants) cleanupOrphanedInputs(newFormData)
                   }}
-                  className={`relative inline-flex h-[22px] w-[42px] shrink-0 cursor-pointer items-center rounded-full transition-colors duration-[160ms] ease-[var(--ease-out)] ${formData.hasVariants ? 'bg-ink' : 'bg-line'}`}
-                >
-                  <span className={`pointer-events-none inline-block h-[18px] w-[18px] transform rounded-full bg-field shadow-sm ring-0 transition-transform duration-[160ms] ease-[var(--ease-in-out)] ${formData.hasVariants ? 'translate-x-[22px]' : 'translate-x-[2px]'}`} />
-                </button>
+                  label="Toggle variants"
+                />
               </div>
 
               {formData.hasVariants && (
@@ -196,19 +205,18 @@ export default function AdminInventory() {
                       {isStones ? 'Custom Stone' : isWeights ? 'Custom Weight' : 'Custom Size'}
                     </p>
                     <div className="flex items-end gap-3 max-w-sm">
-                      <div className="flex-1 relative">
-                        <input
-                          type="text"
+                      <div className="flex-1">
+                        <TextField
+                          className="border-t-0 border-x-0 rounded-none border-b focus:ring-0 px-0 h-10"
                           value={customSizeInput}
                           onChange={e => setCustomSizeInput(isStones ? e.target.value : numericFilter(e.target.value))}
                           onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); addCustomSize() } }}
-                          className="admin-input-underline"
                           placeholder={isStones ? "e.g., Rose Quartz" : isWeights ? "e.g., 100" : "e.g., 20"}
                         />
                       </div>
-                      <button type="button" onClick={addCustomSize} className="admin-btn-outline">
+                      <Button variant="secondary" onClick={addCustomSize}>
                         ADD
-                      </button>
+                      </Button>
                     </div>
                   </div>
 
@@ -242,19 +250,18 @@ export default function AdminInventory() {
 
                       <p className="text-[11px] font-semibold tracking-widest uppercase text-muted mb-3">Custom Purity</p>
                       <div className="flex items-end gap-3">
-                        <div className="flex-1 relative">
-                          <input
-                            type="text"
+                        <div className="flex-1">
+                          <TextField
+                            className="border-t-0 border-x-0 rounded-none border-b focus:ring-0 px-0 h-10"
                             value={customPurityInput}
                             onChange={e => setCustomPurityInput(numericFilter(e.target.value))}
                             onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); addCustomPurity() } }}
-                            className="admin-input-underline"
                             placeholder="e.g., 99.9"
                           />
                         </div>
-                        <button type="button" onClick={addCustomPurity} className="admin-btn-outline">
+                        <Button variant="secondary" onClick={addCustomPurity}>
                           ADD
-                        </button>
+                        </Button>
                       </div>
                     </div>
                   )}
@@ -292,24 +299,20 @@ export default function AdminInventory() {
                           <div key={combo.key} className="p-4 bg-field rounded-xl border border-line space-y-3">
                             <span className="text-[11px] font-semibold text-ink uppercase tracking-widest block">{combo.label}</span>
                             <div className={isBullion ? '' : 'grid grid-cols-2 gap-3'}>
-                              <div className="flex flex-col gap-1">
-                                <label className="text-[10px] font-semibold text-muted uppercase tracking-wider">SKU</label>
-                                <input
-                                  type="text"
+                              <div>
+                                <TextField
+                                  label="SKU"
                                   value={variantSkuInputs[combo.key] || ''}
                                   onChange={e => setVariantSkuInputs({ ...variantSkuInputs, [combo.key]: e.target.value })}
-                                  className="admin-input text-sm py-2"
                                   placeholder="e.g., Taraya-001-S"
                                 />
                               </div>
                               {!isBullion && (
-                                <div className="flex flex-col gap-1">
-                                  <label className="text-[10px] font-semibold text-muted uppercase tracking-wider">Approx Weight</label>
-                                  <input
-                                    type="text"
+                                <div>
+                                  <TextField
+                                    label="Approx Weight"
                                     value={variantWeightInputs[combo.key] || ''}
                                     onChange={e => setVariantWeightInputs({ ...variantWeightInputs, [combo.key]: numericFilter(e.target.value) })}
-                                    className="admin-input text-sm py-2"
                                     placeholder="e.g., 50"
                                   />
                                 </div>
@@ -379,32 +382,30 @@ export default function AdminInventory() {
             {/* Row 3: Weight + Material + Display Order */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div>
-                <label className={`admin-label ${!formData.hasVariants ? 'required' : ''}`}>Approx Weight</label>
-                <input
-                  type="text" required={!formData.hasVariants} disabled={formData.hasVariants}
+                <TextField 
+                  label="Approx Weight"
+                  required={!formData.hasVariants}
+                  disabled={formData.hasVariants}
                   value={formData.hasVariants ? 'Configured per variant' : (formData.weight || '')}
                   onChange={e => setFormData({ ...formData, weight: e.target.value })}
-                  className="admin-input disabled:bg-band disabled:text-muted"
+                  className={formData.hasVariants ? 'bg-band text-muted cursor-not-allowed' : ''}
                   placeholder="e.g., 2.5 kg"
                 />
               </div>
               <div>
-                <label className="admin-label">Material (Optional)</label>
-                <input
-                  type="text"
+                <TextField 
+                  label="Material (Optional)"
                   value={formData.material || ''}
                   onChange={e => setFormData({ ...formData, material: e.target.value })}
-                  className="admin-input"
                   placeholder="e.g., 999 Pure Silver"
                 />
               </div>
               <div>
-                <label className="admin-label">Display Order (Optional)</label>
-                <input
+                <TextField 
+                  label="Display Order (Optional)"
                   type="number"
                   value={formData.orderIndex ?? ''}
                   onChange={e => setFormData({ ...formData, orderIndex: e.target.value ? parseInt(e.target.value, 10) : undefined })}
-                  className="admin-input"
                   placeholder="Lowest numbers first"
                 />
               </div>
@@ -412,12 +413,13 @@ export default function AdminInventory() {
 
             {/* Row 4: Description */}
             <div>
-              <label className="admin-label required">Description</label>
-              <textarea
-                required rows={4}
+              <TextareaField 
+                label="Description"
+                required
+                rows={4}
                 value={formData.description}
                 onChange={e => setFormData({ ...formData, description: e.target.value })}
-                className="admin-input resize-none"
+                className="resize-none"
                 placeholder="Enter detailed product description, materials used, and care instructions..."
               />
             </div>
@@ -425,7 +427,7 @@ export default function AdminInventory() {
             {/* Images */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label className="admin-label required">Thumbnail Image (3:4 Portrait)</label>
+                <label className="text-xs font-semibold text-muted uppercase tracking-[0.05em] mb-2 block">Thumbnail Image (3:4 Portrait) <span className="text-ink">*</span></label>
                 <ImageDropzone
                   value={formData.imageFile || ''}
                   onChange={(url) => setFormData({ ...formData, imageFile: url })}
@@ -433,7 +435,7 @@ export default function AdminInventory() {
               </div>
 
               <div>
-                <label className="admin-label">Product Images (4:3 Landscape)</label>
+                <label className="text-xs font-semibold text-muted uppercase tracking-[0.05em] mb-2 block">Product Images (4:3 Landscape)</label>
                 <div className="grid grid-cols-1 gap-6">
                   {(formData.additionalImages || []).map((img, idx) => (
                     <ImageDropzone
@@ -464,13 +466,13 @@ export default function AdminInventory() {
               </div>
             </div>
 
-            <div className="flex justify-end gap-4 mt-12">
-              <button type="button" onClick={handleCancel} className="admin-btn-outline px-6">
+            <div className="flex justify-end gap-3 mt-12 pt-6 border-t border-line">
+              <Button variant="secondary" onClick={handleCancel} className="px-6">
                 Cancel
-              </button>
-              <button type="submit" className="admin-btn-primary">
+              </Button>
+              <Button type="submit">
                 {editingId ? 'Update Product' : 'Save Product'}
-              </button>
+              </Button>
             </div>
           </form>
         </div>
@@ -539,12 +541,12 @@ export default function AdminInventory() {
                         </td>
                         <td className="px-6 py-4">
                           <div className="flex items-center justify-end gap-2">
-                            <button onClick={() => handleEdit(item)} className="text-muted hover:text-ink transition-[color,transform] active:scale-[0.97] p-2 flex items-center justify-center" title="Edit">
+                            <IconButton aria-label="Edit" onClick={() => handleEdit(item)} title="Edit">
                               <Edit2 size={18} />
-                            </button>
-                            <button onClick={() => confirmDelete(item.id)} className="text-muted hover:text-ink transition-[color,transform] active:scale-[0.97] p-2 flex items-center justify-center" title="Delete">
+                            </IconButton>
+                            <IconButton aria-label="Delete" onClick={() => confirmDelete(item.id)} title="Delete" className="hover:text-[#8B2E2E]">
                               <Trash2 size={18} />
-                            </button>
+                            </IconButton>
                           </div>
                         </td>
                       </tr>
@@ -561,26 +563,31 @@ export default function AdminInventory() {
             
             {nextCursor && (
               <div className="mt-8 flex justify-center">
-                <button
+                <Button
+                  variant="secondary"
                   onClick={loadMore}
                   disabled={isFetchingMore}
-                  className="px-6 py-2.5 border border-line rounded-lg bg-field text-ink hover:bg-band transition-[background-color,transform] active:scale-[0.97] disabled:opacity-50 flex items-center justify-center min-w-[140px]"
+                  className="min-w-[140px]"
                 >
                   {isFetchingMore ? <div className="w-5 h-5 border-2 border-muted border-t-ink rounded-full animate-spin" /> : 'Load More'}
-                </button>
+                </Button>
               </div>
             )}
           </div>
         )
       )}
 
-      <ConfirmModal
-        isOpen={!!deleteId}
+      <Dialog
+        open={!!deleteId}
+        onClose={() => setDeleteId(null)}
         title="Delete Product"
         description="Are you sure you want to delete this product? The live site might take a moment to reflect the change as caches clear."
-        confirmText="Delete"
-        onClose={() => setDeleteId(null)}
-        onConfirm={executeDelete}
+        footer={
+          <div className="flex flex-col-reverse sm:flex-row items-center justify-end gap-3">
+            <Button variant="secondary" onClick={() => setDeleteId(null)} className="w-full sm:w-auto">Cancel</Button>
+            <Button variant="danger" onClick={executeDelete} className="w-full sm:w-auto">Delete</Button>
+          </div>
+        }
       />
     </div>
   )

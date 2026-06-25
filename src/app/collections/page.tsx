@@ -3,6 +3,7 @@ import { getCollections } from '@/lib/services/collections.service'
 import Link from 'next/link'
 import Image from 'next/image'
 import { FadeInUp, StaggerContainer } from '@/components/motion-transitions'
+import { ImagePlate } from '@/components/ui'
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
@@ -37,9 +38,9 @@ export default async function CollectionsIndexPage() {
             <FadeInUp key={config.slug} className="group relative flex flex-col">
               <Link href={`/collections/${config.slug}`} className="block focus:outline-none focus-visible:ring-1 focus-visible:ring-ink">
                 {/* Image Plate */}
-                <div 
-                  className="relative w-full overflow-hidden aspect-[4/5] flex items-center justify-center rounded-lg transition-transform duration-700 ease-[var(--ease-out)]"
-                  style={{ backgroundColor: config.darkGround ? '#2B2723' : 'transparent' }}
+                <ImagePlate 
+                  darkGround={config.darkGround}
+                  className="transition-transform duration-700 ease-[var(--ease-out)]"
                 >
                   <div className="absolute inset-0 transition-transform duration-1000 ease-out group-hover:scale-[1.02]">
                     {Boolean(config.image) && config.image.trim() !== '' ? (
@@ -52,7 +53,7 @@ export default async function CollectionsIndexPage() {
                       />
                     ) : null}
                   </div>
-                </div>
+                </ImagePlate>
 
                 {/* Metadata */}
                 <div className="mt-8 flex flex-col items-center text-center">

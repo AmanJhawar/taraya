@@ -5,6 +5,7 @@ import { CollectionItem, getCollectionItems } from '@/lib/services/collections.s
 
 import { CollectionProductCard } from './collection-product-card'
 import { StaggerContainer } from './motion-transitions'
+import { Button } from '@/components/ui'
 
 /**
  * Filter / Sort controls were removed deliberately:
@@ -58,13 +59,14 @@ export function CollectionClient({ initialItems, initialCursor, slug, config }: 
 
       {nextCursor ? (
         <div className="mt-24 flex justify-center">
-          <button
+          <Button
             onClick={loadMore}
-            disabled={isFetchingMore}
-            className="px-8 py-3 border border-line rounded-lg bg-field text-ink font-medium tracking-wide hover:bg-band transition-[background-color,transform] active:scale-[0.97] disabled:opacity-50 flex items-center justify-center min-w-[160px]"
+            loading={isFetchingMore}
+            variant="secondary"
+            className="min-w-[160px]"
           >
-            {isFetchingMore ? <div className="w-5 h-5 border-2 border-muted border-t-ink rounded-full animate-spin" /> : 'Load More'}
-          </button>
+            Load More
+          </Button>
         </div>
       ) : (
         <div className="mt-32 flex items-center justify-center">
