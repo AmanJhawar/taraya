@@ -1,10 +1,9 @@
 'use client'
 
 import { Suspense } from 'react'
-import CustomSelect from '@/components/custom-select'
 import { Controller } from 'react-hook-form'
 import { useInquiryForm } from '@/hooks/use-inquiry-form'
-import { Button } from '@/components/ui'
+import { Button, SelectField } from '@/components/ui'
 
 function ContactForm() {
   const { form, success, error, onSubmit } = useInquiryForm()
@@ -13,16 +12,17 @@ function ContactForm() {
   return (
     <form className="flex flex-col gap-6" onSubmit={handleSubmit(onSubmit)}>
       <div className="flex flex-col">
-        <label htmlFor="inquiryType" className="text-sm font-medium text-ink mb-2">Inquiry Type</label>
         <Controller
           name="inquiryType"
           control={control}
           render={({ field }) => (
-            <CustomSelect
+            <SelectField
               id="inquiryType"
               name="inquiryType"
+              label="Inquiry Type"
               value={field.value}
               onChange={field.onChange}
+              error={errors.inquiryType?.message}
               options={[
                 { value: "general", label: "General Inquiry" },
                 { value: "support", label: "Order Support" },
@@ -33,7 +33,6 @@ function ContactForm() {
             />
           )}
         />
-        {errors.inquiryType && <p className="text-muted font-medium text-sm mt-1">{errors.inquiryType.message}</p>}
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
