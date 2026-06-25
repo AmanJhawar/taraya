@@ -233,7 +233,7 @@ export default function AdminTheMaking() {
                     </div>
 
                     {/* Image Preview */}
-                    <div className={`w-16 h-16 shrink-0 rounded overflow-hidden relative border border-line/50 ${stage.isDarkPlate ? 'bg-[#2B2723]' : 'bg-[#ECE6DC]'}`}>
+                    <div className={`w-16 h-16 shrink-0 rounded overflow-hidden relative border border-line/50 ${stage.isDarkPlate ? 'bg-vault' : 'bg-field'}`}>
                       {stage.imagePath ? (
                         <Image src={stage.imagePath} alt="" fill className="object-contain" sizes="64px" unoptimized />
                       ) : (
@@ -257,7 +257,7 @@ export default function AdminTheMaking() {
                       <IconButton aria-label="Edit" onClick={() => startEdit(idx)} title="Edit">
                         <Edit2 size={18} />
                       </IconButton>
-                      <IconButton aria-label="Delete" onClick={() => setDeleteId(stage.id)} title="Delete" className="hover:text-[#8B2E2E]">
+                      <IconButton aria-label="Delete" onClick={() => setDeleteId(stage.id)} title="Delete" className="hover:text-danger">
                         <Trash2 size={18} />
                       </IconButton>
                     </div>

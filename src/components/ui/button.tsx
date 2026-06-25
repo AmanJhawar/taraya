@@ -9,7 +9,7 @@ export type ButtonSize = 'sm' | 'md' | 'lg'
 const base = cn(
   'inline-flex items-center justify-center gap-2 select-none whitespace-nowrap',
   'font-garamond tracking-[0.12em] [font-variant:small-caps] rounded-lg',
-  'transition-[background-color,color,border-color,opacity] duration-200',
+  'transition-[background-color,color,border-color,opacity,transform] duration-[160ms] ease-[var(--ease-out)] active:scale-[0.97]',
   'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2 focus-visible:ring-offset-field',
   'disabled:opacity-50 disabled:pointer-events-none',
 )
@@ -18,7 +18,7 @@ const variantClasses: Record<ButtonVariant, string> = {
   primary: 'bg-ink text-field border border-ink hover:bg-ink/90',
   secondary: 'bg-transparent text-ink border border-line hover:border-ink hover:bg-ink/[0.04]',
   ghost: 'bg-transparent text-ink border border-transparent hover:bg-ink/[0.06]',
-  danger: 'bg-transparent text-[#8B2E2E] border border-[#8B2E2E]/40 hover:border-[#8B2E2E] hover:bg-[#8B2E2E]/[0.06]',
+  danger: 'bg-transparent text-danger border border-danger/40 hover:border-danger hover:bg-danger/[0.06]',
 }
 
 const sizeClasses: Record<ButtonSize, string> = {

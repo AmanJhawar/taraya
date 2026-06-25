@@ -30,8 +30,8 @@ export default function AdminDashboard() {
               href={card.href}
               className="bg-field p-6 rounded-xl border border-line shadow-sm hover:shadow-md transition-[transform,box-shadow] duration-200 hover:-translate-y-0.5 group"
             >
-              <div className="w-12 h-12 bg-band rounded-xl flex items-center justify-center mb-4 group-hover:bg-ink group-hover:text-white transition-colors duration-200">
-                <Icon size={24} className="text-muted group-hover:text-white transition-colors duration-200" strokeWidth={1.5} />
+              <div className="w-12 h-12 bg-band rounded-xl flex items-center justify-center mb-4 group-hover:bg-ink group-hover:text-field transition-colors duration-200">
+                <Icon size={24} className="text-muted group-hover:text-field transition-colors duration-200" strokeWidth={1.5} />
               </div>
               <h2 className="text-xl font-semibold text-ink mb-2">{card.name}</h2>
               <p className="text-muted text-sm leading-relaxed">

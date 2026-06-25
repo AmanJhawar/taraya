@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useId, useRef, useState, type KeyboardEvent, type ReactNode } from 'react'
 import { useFloating, autoUpdate, offset, flip, shift, size, FloatingPortal } from '@floating-ui/react'
+import { AnimatePresence, motion } from 'framer-motion'
 import { cn } from './cn'
 import { Label } from './field'
 
@@ -46,7 +47,7 @@ export function Select({
   // Floating UI handles placement: flip up when there is no room below, shift to
   // stay on-screen, match the trigger width, cap the height to the space left,
   // and reposition on scroll/resize. The portal escapes any overflow ancestor.
-  const { refs, floatingStyles } = useFloating({
+  const { refs, floatingStyles, placement } = useFloating({
     open,
     onOpenChange: setOpen,
     placement: 'bottom-start',
@@ -191,7 +192,7 @@ export function Select({
           'flex h-11 w-full items-center justify-between gap-2 rounded-lg border border-line bg-field px-3.5 text-left',
           'font-garamond text-[15px] text-ink transition-colors',
           'focus:outline-none focus:border-ink focus-visible:ring-1 focus-visible:ring-ink',
-          'aria-invalid:border-[#8B2E2E] disabled:opacity-50 disabled:cursor-not-allowed',
+          'aria-invalid:border-danger disabled:opacity-50 disabled:cursor-not-allowed',
           open && 'border-ink',
         )}
       >
@@ -201,16 +202,24 @@ export function Select({
         </svg>
       </button>
 
-      {open ? (
-        <FloatingPortal>
-          <ul
-            ref={refs.setFloating}
-            id={listId}
-            role="listbox"
-            aria-labelledby={ariaLabelledby}
-            style={floatingStyles}
-            className="z-[200] overflow-auto rounded-lg border border-line bg-field py-1 shadow-[0_8px_40px_rgba(35,31,29,0.18)]"
-          >
+      <FloatingPortal>
+        <AnimatePresence>
+          {open ? (
+            <motion.ul
+              ref={refs.setFloating}
+              initial={{ opacity: 0, scale: 0.96 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.96 }}
+              transition={{ duration: 0.16, ease: [0.23, 1, 0.32, 1] }}
+              id={listId}
+              role="listbox"
+              aria-labelledby={ariaLabelledby}
+              style={{
+                ...floatingStyles,
+                transformOrigin: placement.startsWith('top') ? 'bottom center' : 'top center',
+              }}
+              className="z-[200] overflow-auto rounded-lg border border-line bg-field py-1 shadow-[0_8px_40px_rgba(35,31,29,0.18)]"
+            >
             {options.map((opt, index) => {
               const isSelected = opt.value === value
               const isActive = index === activeIndex
@@ -240,9 +249,10 @@ export function Select({
                 </li>
               )
             })}
-          </ul>
-        </FloatingPortal>
-      ) : null}
+            </motion.ul>
+          ) : null}
+        </AnimatePresence>
+      </FloatingPortal>
 
       {name ? <input type="hidden" name={name} value={value ?? ''} /> : null}
     </div>
@@ -269,7 +279,7 @@ export function SelectField({ label, hint, error, required, id, ...props }: Sele
       {label ? (
         <Label id={labelId} htmlFor={fieldId}>
           {label}
-          {required ? <span aria-hidden="true" className="text-[#8B2E2E]"> *</span> : null}
+          {required ? <span aria-hidden="true" className="text-danger"> *</span> : null}
         </Label>
       ) : null}
 
@@ -282,7 +292,7 @@ export function SelectField({ label, hint, error, required, id, ...props }: Sele
       />
 
       {hint && !error ? <p id={hintId} className="font-garamond text-[13px] text-muted">{hint}</p> : null}
-      {error ? <p id={errorId} className="font-garamond text-[13px] text-[#8B2E2E]">{error}</p> : null}
+      {error ? <p id={errorId} className="font-garamond text-[13px] text-danger">{error}</p> : null}
     </div>
   )
 }

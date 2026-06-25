@@ -3,7 +3,7 @@
 import { Suspense } from 'react'
 import { Controller } from 'react-hook-form'
 import { useInquiryForm } from '@/hooks/use-inquiry-form'
-import { Button, SelectField } from '@/components/ui'
+import { Button, SelectField, TextField, TextareaField } from '@/components/ui'
 
 function ContactForm() {
   const { form, success, error, onSubmit } = useInquiryForm()
@@ -36,125 +36,104 @@ function ContactForm() {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-        <div className="flex flex-col">
-          <label htmlFor="firstName" className="text-sm font-medium text-ink mb-2">First Name *</label>
-          <input
-            type="text"
-            id="firstName"
-            placeholder="e.g., Jane"
-            {...register('firstName')}
-            className={`px-4 py-3 border rounded-lg text-base bg-field transition-colors duration-150 ease-[var(--ease-out)] focus:border-ink focus:ring-4 focus:ring-black/10 ${errors.firstName ? 'border-ink' : 'border-line'}`}
-          />
-          {errors.firstName && <p className="text-muted font-medium text-sm mt-1">{errors.firstName.message}</p>}
-        </div>
+        <TextField
+          id="firstName"
+          label="First Name"
+          required
+          placeholder="e.g., Jane"
+          error={errors.firstName?.message}
+          {...register('firstName')}
+        />
 
-        <div className="flex flex-col">
-          <label htmlFor="middleName" className="text-sm font-medium text-ink mb-2">Middle Name</label>
-          <input
-            type="text"
-            id="middleName"
-            placeholder="e.g., A."
-            {...register('middleName')}
-            className="px-4 py-3 border border-line rounded-lg text-base bg-field transition-colors duration-150 ease-[var(--ease-out)] focus:border-ink focus:ring-4 focus:ring-black/10"
-          />
-        </div>
+        <TextField
+          id="middleName"
+          label="Middle Name"
+          placeholder="e.g., A."
+          error={errors.middleName?.message}
+          {...register('middleName')}
+        />
 
-        <div className="flex flex-col">
-          <label htmlFor="lastName" className="text-sm font-medium text-ink mb-2">Last Name *</label>
-          <input
-            type="text"
-            id="lastName"
-            placeholder="e.g., Doe"
-            {...register('lastName')}
-            className={`px-4 py-3 border rounded-lg text-base bg-field transition-colors duration-150 ease-[var(--ease-out)] focus:border-ink focus:ring-4 focus:ring-black/10 ${errors.lastName ? 'border-ink' : 'border-line'}`}
-          />
-          {errors.lastName && <p className="text-muted font-medium text-sm mt-1">{errors.lastName.message}</p>}
-        </div>
+        <TextField
+          id="lastName"
+          label="Last Name"
+          required
+          placeholder="e.g., Doe"
+          error={errors.lastName?.message}
+          {...register('lastName')}
+        />
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-        <div className="flex flex-col">
-          <label htmlFor="mobile" className="text-sm font-medium text-ink mb-2">Phone Number *</label>
-          <div className="flex gap-2 relative items-center">
-            <span className="absolute left-4 text-muted font-medium pointer-events-none">+</span>
-            <input
-              type="tel"
+        <div className="flex gap-4">
+          <div className="w-24 shrink-0">
+            <TextField
               id="countryCode"
-              placeholder="91"
+              label="Code"
+              required
+              type="tel"
+              placeholder="+91"
+              error={errors.countryCode?.message}
               {...register('countryCode', {
                 onChange: (e) => {
-                  e.target.value = e.target.value.replace(/\D/g, '').slice(0, 4);
+                  e.target.value = e.target.value.replace(/[^\d+]/g, '').slice(0, 5);
                 }
               })}
-              className={`w-20 min-w-0 pl-8 pr-3 py-3 border rounded-lg text-base bg-field transition-colors duration-150 ease-[var(--ease-out)] focus:border-ink focus:ring-4 focus:ring-black/10 ${errors.countryCode ? 'border-ink' : 'border-line'}`}
             />
-              <input
-              type="tel"
+          </div>
+          <div className="flex-1">
+            <TextField
               id="mobile"
+              label="Phone Number"
+              required
+              type="tel"
+              placeholder="e.g., 9876543210"
+              error={errors.mobile?.message}
               {...register('mobile', {
                 onChange: (e) => {
                   e.target.value = e.target.value.replace(/\D/g, '').slice(0, 15);
                 }
               })}
-              placeholder="e.g., 9876543210"
-              className={`flex-1 min-w-0 px-4 py-3 border rounded-lg text-base bg-field transition-colors duration-150 ease-[var(--ease-out)] focus:border-ink focus:ring-4 focus:ring-black/10 ${errors.mobile ? 'border-ink' : 'border-line'}`}
             />
           </div>
-          {(errors.countryCode || errors.mobile) && (
-            <p className="text-muted font-medium text-sm mt-1">
-              {errors.countryCode?.message || errors.mobile?.message}
-            </p>
-          )}
         </div>
 
-        <div className="flex flex-col">
-          <label htmlFor="email" className="text-sm font-medium text-ink mb-2">Email Address</label>
-          <input
-            type="email"
-            id="email"
-            placeholder="e.g., jane@example.com"
-            {...register('email')}
-            className={`px-4 py-3 border rounded-lg text-base bg-field transition-colors duration-150 ease-[var(--ease-out)] focus:border-ink focus:ring-4 focus:ring-black/10 ${errors.email ? 'border-ink' : 'border-line'}`}
-          />
-          {errors.email && <p className="text-muted font-medium text-sm mt-1">{errors.email.message}</p>}
-        </div>
+        <TextField
+          id="email"
+          label="Email Address"
+          type="email"
+          placeholder="e.g., jane@example.com"
+          error={errors.email?.message}
+          {...register('email')}
+        />
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-        <div className="flex flex-col">
-          <label htmlFor="company" className="text-sm font-medium text-ink mb-2">Company Name</label>
-          <input
-            type="text"
-            id="company"
-            placeholder="e.g., Acme Corp"
-            {...register('company')}
-            className="px-4 py-3 border border-line rounded-lg text-base bg-field transition-colors duration-150 ease-[var(--ease-out)] focus:border-ink focus:ring-4 focus:ring-black/10"
-          />
-        </div>
+        <TextField
+          id="company"
+          label="Company Name"
+          placeholder="e.g., Acme Corp"
+          error={errors.company?.message}
+          {...register('company')}
+        />
 
-        <div className="flex flex-col">
-          <label htmlFor="gstinPan" className="text-sm font-medium text-ink mb-2">GSTIN / PAN</label>
-          <input
-            type="text"
-            id="gstinPan"
-            {...register('gstinPan')}
-            className="px-4 py-3 border border-line rounded-lg text-base bg-field transition-colors duration-150 ease-[var(--ease-out)] focus:border-ink focus:ring-4 focus:ring-black/10 uppercase"
-            placeholder="e.g., ABCDE1234F"
-          />
-        </div>
+        <TextField
+          id="gstinPan"
+          label="GSTIN / PAN"
+          placeholder="e.g., ABCDE1234F"
+          error={errors.gstinPan?.message}
+          {...register('gstinPan')}
+          className="uppercase"
+        />
       </div>
 
-      <div className="flex flex-col">
-        <label htmlFor="message" className="text-sm font-medium text-ink mb-2">Message *</label>
-        <textarea
-          id="message"
-          placeholder="How can we help you?"
-          {...register('message')}
-          className={`px-4 py-3 border rounded-lg text-base bg-field transition-colors duration-150 ease-[var(--ease-out)] focus:border-ink focus:ring-4 focus:ring-black/10 resize-y min-h-[160px] ${errors.message ? 'border-ink' : 'border-line'}`}
-          rows={8}
-        ></textarea>
-        {errors.message && <p className="text-muted font-medium text-sm mt-1">{errors.message.message}</p>}
-      </div>
+      <TextareaField
+        id="message"
+        label="Message"
+        required
+        placeholder="How can we help you?"
+        error={errors.message?.message}
+        {...register('message')}
+      />
 
       {error && <p className="text-ink text-sm font-semibold bg-band border border-line p-4 rounded-lg">{error}</p>}
       {success && (

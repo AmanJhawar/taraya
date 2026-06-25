@@ -25,7 +25,7 @@ export default function HeroCarousel() {
   }, [])
 
   return (
-    <section className="relative w-full h-screen min-h-[600px] overflow-hidden bg-neutral-950 -mt-20 flex flex-col justify-center items-center">
+    <section className="relative w-full h-screen min-h-[600px] overflow-hidden bg-ink -mt-20 flex flex-col justify-center items-center">
       
       {/* Background Carousel */}
       <div className="absolute inset-0 z-0">
@@ -49,14 +49,14 @@ export default function HeroCarousel() {
         </AnimatePresence>
       </div>
 
-      <div className="absolute inset-0 z-0 bg-gradient-to-t from-neutral-950 via-neutral-950/20 to-transparent pointer-events-none" />
+      <div className="absolute inset-0 z-0 bg-gradient-to-t from-ink via-ink/20 to-transparent pointer-events-none" />
 
       {/* Overlay Content */}
       <div className="relative z-10 flex flex-col items-center justify-center pointer-events-none text-center px-6 max-w-5xl mx-auto pt-10">
         
         {/* Main Title */}
         <motion.h1
-          className="text-3xl md:text-4xl lg:text-5xl font-medium leading-snug text-white mb-16 font-serif drop-shadow-md tracking-wide"
+          className="text-3xl md:text-4xl lg:text-5xl font-medium leading-snug text-field mb-16 font-serif drop-shadow-md tracking-wide"
           initial={{ clipPath: 'inset(0 0 100% 0)' }}
           animate={{ clipPath: 'inset(0 0 0% 0)' }}
           transition={{ duration: 0.8, ease: EASE_OUT }}
@@ -85,7 +85,7 @@ export default function HeroCarousel() {
           <ButtonLink
             href="/collections"
             variant="secondary"
-            className="shadow-sm bg-white/10 backdrop-blur-md text-white border-white/20 hover:bg-white/20"
+            className="shadow-sm bg-field/10 backdrop-blur-md text-field border-field/20 hover:bg-field/20"
           >
             Explore Collections
           </ButtonLink>

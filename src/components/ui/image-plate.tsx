@@ -4,7 +4,7 @@ import { cn } from './cn'
 export type ImagePlateSize = 'default' | 'thumb'
 
 export interface ImagePlateProps extends ComponentProps<'div'> {
-  /** Uses the #2B2723 dark ground if true, otherwise transparent */
+  /** Uses the dark vault ground if true, otherwise transparent */
   darkGround?: boolean
   /** Thumbnails have a smaller aspect ratio and different borders */
   size?: ImagePlateSize
@@ -23,7 +23,7 @@ export function ImagePlate({ darkGround, size = 'default', className, children, 
         className
       )}
       style={{ 
-        backgroundColor: darkGround ? '#2B2723' : 'transparent',
+        backgroundColor: darkGround ? 'var(--color-vault)' : 'transparent',
         ...props.style 
       }}
       {...props}

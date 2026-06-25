@@ -15,7 +15,7 @@ const controlBase = cn(
   'w-full rounded-lg border border-line bg-field text-ink font-garamond text-[15px] px-3.5',
   'transition-colors placeholder:text-muted/60',
   'focus:outline-none focus:border-ink focus-visible:ring-1 focus-visible:ring-ink',
-  'aria-invalid:border-[#8B2E2E] aria-invalid:focus:border-[#8B2E2E]',
+  'aria-invalid:border-danger aria-invalid:focus:border-danger',
   'disabled:opacity-50 disabled:cursor-not-allowed',
 )
 
@@ -53,7 +53,7 @@ function FieldShell({ id, label, hint, error, required, children }: FieldShellPr
       {label ? (
         <Label htmlFor={id}>
           {label}
-          {required ? <span aria-hidden="true" className="text-[#8B2E2E]"> *</span> : null}
+          {required ? <span aria-hidden="true" className="text-danger"> *</span> : null}
         </Label>
       ) : null}
 
@@ -68,7 +68,7 @@ function FieldShell({ id, label, hint, error, required, children }: FieldShellPr
         <p id={hintId} className="font-garamond text-[13px] text-muted">{hint}</p>
       ) : null}
       {error ? (
-        <p id={errorId} className="font-garamond text-[13px] text-[#8B2E2E]">{error}</p>
+        <p id={errorId} className="font-garamond text-[13px] text-danger">{error}</p>
       ) : null}
     </div>
   )

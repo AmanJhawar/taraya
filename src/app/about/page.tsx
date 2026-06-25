@@ -28,7 +28,7 @@ function StarDivider() {
 
 export default function About() {
   return (
-    <div className="pt-16 pb-24 min-h-screen bg-field selection:bg-ink selection:text-white">
+    <div className="pt-16 pb-24 min-h-screen bg-field selection:bg-ink selection:text-field">
       <div className="max-w-4xl mx-auto px-6">
 
         <StaggerContainer className="flex flex-col items-center justify-center space-y-16 md:space-y-20">

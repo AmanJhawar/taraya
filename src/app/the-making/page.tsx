@@ -69,7 +69,7 @@ export default async function TheMakingPage() {
                     <FadeInUp duration={0.6} yOffset={40} className="w-full">
                       <div 
                         className={`relative w-full aspect-[4/5] md:aspect-[3/4] lg:aspect-[4/5] overflow-hidden rounded-lg flex items-center justify-center ${
-                          stage.isDarkPlate ? 'bg-[#2B2723]' : 'bg-field'
+                          stage.isDarkPlate ? 'bg-vault' : 'bg-field'
                         }`}
                       >
                         <Image
@@ -90,7 +90,7 @@ export default async function TheMakingPage() {
         </div>
 
         {/* Final Reveal */}
-        <section className="w-full bg-[#2B2723] py-40 px-6 text-center">
+        <section className="w-full bg-vault py-40 px-6 text-center">
           <FadeInUp>
             <h2 className="text-4xl md:text-5xl lg:text-6xl font-serif text-field tracking-wide">
               Made to be handed down.

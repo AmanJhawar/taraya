@@ -9,8 +9,8 @@ export interface BadgeProps extends ComponentProps<'span'> {
 
 const variantClasses: Record<BadgeVariant, string> = {
   default: 'bg-line/50 text-ink',
-  success: 'bg-[#E1EFE6] text-[#2C5234]', // Using a muted green that fits the palette
-  danger: 'bg-[#8B2E2E]/10 text-[#8B2E2E]', // Using the oxblood literal
+  success: 'bg-accent/10 text-accent', // distinct from danger, fits the palette
+  danger: 'bg-danger/10 text-danger', // Using the danger token
 }
 
 /** 

@@ -99,10 +99,10 @@ export function ImageDropzone({ value, onChange }: ImageDropzoneProps) {
       <div className="relative group border border-line rounded-lg overflow-hidden bg-band h-48 flex items-center justify-center">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={imgSrc} alt="Uploaded preview" className="max-h-full object-contain transition-transform duration-[250ms] ease-[var(--ease-out)] group-hover:scale-[1.02] will-change-transform" />
-        <button
-          type="button"
-          onClick={() => onChange('')}
-          className="absolute top-2 right-2 bg-field/90 backdrop-blur-sm text-muted p-2 rounded-full shadow-sm hover:bg-band hover:text-ink transition-colors opacity-0 group-hover:opacity-100 duration-150 active:scale-[0.97]"
+        <button 
+          type="button" 
+          onClick={() => onChange('')} 
+          className="absolute top-2 right-2 bg-field/90 backdrop-blur-sm text-muted p-2 rounded-full shadow-sm hover:bg-band hover:text-ink transition-[color,background-color,transform,opacity] duration-[160ms] ease-[var(--ease-out)] opacity-0 group-hover:opacity-100 active:scale-[0.97]"
         >
           <X size={16} />
         </button>
@@ -129,7 +129,7 @@ export function ImageDropzone({ value, onChange }: ImageDropzoneProps) {
         className="hidden" 
       />
       
-      <div className={`w-10 h-10 rounded-full flex items-center justify-center transition-colors duration-[160ms] ${isDragging ? 'bg-ink text-white' : 'bg-band text-muted'}`}>
+      <div className={`w-10 h-10 rounded-full flex items-center justify-center transition-colors duration-[160ms] ${isDragging ? 'bg-ink text-field' : 'bg-band text-muted'}`}>
         {isUploading ? (
           <Loader2 size={20} className="animate-spin text-muted" />
         ) : isDragging ? (

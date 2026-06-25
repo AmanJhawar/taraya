@@ -544,7 +544,7 @@ export default function AdminInventory() {
                             <IconButton aria-label="Edit" onClick={() => handleEdit(item)} title="Edit">
                               <Edit2 size={18} />
                             </IconButton>
-                            <IconButton aria-label="Delete" onClick={() => confirmDelete(item.id)} title="Delete" className="hover:text-[#8B2E2E]">
+                            <IconButton aria-label="Delete" onClick={() => confirmDelete(item.id)} title="Delete" className="hover:text-danger">
                               <Trash2 size={18} />
                             </IconButton>
                           </div>

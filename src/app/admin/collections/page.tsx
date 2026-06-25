@@ -246,7 +246,7 @@ export default function AdminCollections() {
       </div>
       <div className="pt-2">
         <Checkbox
-          label="Dark plate ground (#2B2723)"
+          label="Dark plate ground (vault)"
           checked={form.darkGround}
           onChange={(e: ChangeEvent<HTMLInputElement>) => onChange({ ...form, darkGround: e.target.checked })}
         />
@@ -330,7 +330,7 @@ export default function AdminCollections() {
                     {/* Dark ground swatch */}
                     <div
                       className="w-8 h-8 rounded border border-line shrink-0"
-                      style={{ backgroundColor: col.darkGround ? '#2B2723' : '#ECE6DC' }}
+                      style={{ backgroundColor: col.darkGround ? 'var(--color-vault)' : 'var(--color-field)' }}
                       title={col.darkGround ? 'Dark ground' : 'Light ground'}
                     />
 
@@ -352,7 +352,7 @@ export default function AdminCollections() {
                       <IconButton aria-label="Edit" onClick={() => startEdit(idx)} title="Edit">
                         <Edit2 size={18} />
                       </IconButton>
-                      <IconButton aria-label="Delete" onClick={() => requestDelete(col.slug)} title="Delete" className="hover:text-[#8B2E2E]">
+                      <IconButton aria-label="Delete" onClick={() => requestDelete(col.slug)} title="Delete" className="hover:text-danger">
                         <Trash2 size={18} />
                       </IconButton>
                     </div>

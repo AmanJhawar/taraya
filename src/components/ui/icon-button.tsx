@@ -12,7 +12,7 @@ export function IconButton({ className, type = 'button', disabled, ...props }: I
       type={type}
       disabled={disabled}
       className={cn(
-        'inline-flex items-center justify-center p-2 text-ink rounded-full transition-transform duration-150 ease-[var(--ease-out)] active:scale-[0.97] focus:outline-none focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2 focus-visible:ring-offset-field disabled:opacity-50 disabled:pointer-events-none hover:bg-ink/[0.04]',
+        'inline-flex items-center justify-center p-2 text-ink rounded-full transition-[transform,background-color,color] duration-[160ms] ease-[var(--ease-out)] active:scale-[0.97] focus:outline-none focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2 focus-visible:ring-offset-field disabled:opacity-50 disabled:pointer-events-none hover:bg-ink/[0.04]',
         className
       )}
       {...props}

@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 
 import './globals.css'
 import SiteHeader from '@/components/site-header'
@@ -29,7 +29,7 @@ export const metadata: Metadata = {
   title: 'Taraya',
   description: 'Silver idols, auspicious animals, coins and bars, with stone-set frames. Made to be handed down.',
   icons: {
-    icon: '/assets/favicon.svg',
+    icon: '/favicon.svg',
   },
 
   openGraph: {
@@ -42,6 +42,13 @@ export const metadata: Metadata = {
     title: 'Taraya',
     description: 'Silver idols, auspicious animals, coins and bars, with stone-set frames. Made to be handed down.',
   }
+}
+
+export const viewport: Viewport = {
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#ECE6DC' },
+    { media: '(prefers-color-scheme: dark)', color: '#2B2723' }
+  ]
 }
 
 export default function RootLayout({

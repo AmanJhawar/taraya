@@ -83,7 +83,7 @@ export function CartDrawer() {
                         const newQty = parseInt(e.target.value, 10);
                         updateQuantity(item.cartId, newQty - item.quantity);
                       }}
-                      className="appearance-none bg-field border border-line hover:border-line rounded-lg py-1 pl-3 pr-8 text-[13px] font-medium text-ink focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent cursor-pointer transition-colors"
+                      className="appearance-none bg-field border border-line hover:border-line rounded-lg py-1 pl-3 pr-8 text-[13px] font-medium text-ink focus:outline-none focus:ring-2 focus:ring-ink focus:border-transparent cursor-pointer transition-colors"
                     >
                       {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((num) => (
                         <option key={num} value={num}>{num}</option>
@@ -98,7 +98,7 @@ export function CartDrawer() {
 
                   <button
                     onClick={() => removeFromCart(item.cartId)}
-                    className="text-[13px] text-muted hover:text-ink hover:underline underline-offset-4 transition-colors active:scale-[0.97]"
+                    className="text-[13px] text-muted hover:text-ink hover:underline underline-offset-4 transition-[color,transform] duration-[160ms] ease-[var(--ease-out)] active:scale-[0.97]"
                   >
                     Remove
                   </button>
