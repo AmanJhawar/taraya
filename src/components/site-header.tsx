@@ -6,7 +6,7 @@ import { usePathname, useRouter } from 'next/navigation'
 import { motion, useScroll, useMotionValueEvent } from 'framer-motion'
 import { Search, User, ShoppingBag, ArrowRight } from 'lucide-react'
 import { useCart } from './cart-provider'
-import { IconButton, Drawer, Dialog } from '@/components/ui'
+import { IconButton, Drawer, Dialog, cn } from '@/components/ui'
 
 const NAV_LINKS = [
   { label: 'Collections', href: '/collections' },
@@ -33,9 +33,12 @@ export default function SiteHeader() {
   
   const { scrollY } = useScroll()
 
+  const [mounted, setMounted] = useState(false)
+  useEffect(() => setMounted(true), [])
+
   const isDarkHero = DARK_HERO_ROUTES.includes(pathname)
-  // If we have an open menu or search, the header must be solid so it matches the background.
-  const isSolid = !isDarkHero || isScrolled || isMobileMenuOpen || isSearchOpen
+  // To prevent hydration mismatch, only use stateful triggers (scroll, menu) after mounting.
+  const isSolid = !isDarkHero || (mounted && (isScrolled || isMobileMenuOpen || isSearchOpen))
 
   const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0)
 
@@ -96,7 +99,10 @@ export default function SiteHeader() {
               <Link
                 key={link.href}
                 href={link.href}
-                className="font-garamond text-[15px] font-medium tracking-[0.1em] transition-[color] duration-200 hover:text-accent relative group"
+                className={cn(
+                  "font-garamond text-[15px] font-medium tracking-[0.1em] transition-[color] duration-200 relative group",
+                  !isSolid ? 'hover:text-accent-on-dark' : 'hover:text-accent'
+                )}
                 style={{ fontVariant: 'small-caps' }}
                 aria-current={pathname.startsWith(link.href) ? "page" : undefined}
               >
@@ -109,7 +115,10 @@ export default function SiteHeader() {
           </nav>
           
           <IconButton 
-            className="md:hidden -ml-2 text-current hover:bg-transparent hover:text-accent"
+            className={cn(
+              "md:hidden -ml-2 text-current hover:bg-transparent",
+              !isSolid ? 'hover:text-accent-on-dark' : 'hover:text-accent'
+            )}
             onClick={() => setIsMobileMenuOpen(true)}
             aria-label="Open menu"
             aria-expanded={isMobileMenuOpen}
@@ -132,17 +141,23 @@ export default function SiteHeader() {
         <div className="flex-1 flex items-center justify-end gap-4 md:gap-6">
           <IconButton 
             aria-label="Search" 
-            className="hover:text-accent hover:bg-transparent text-current"
+            className={cn(
+              "hover:bg-transparent text-current",
+              !isSolid ? 'hover:text-accent-on-dark' : 'hover:text-accent'
+            )}
             onClick={() => setIsSearchOpen(true)}
           >
             <Search size={18} strokeWidth={1.5} />
           </IconButton>
-          <IconButton aria-label="Account" className="hidden md:flex hover:text-accent hover:bg-transparent text-current">
+          <IconButton aria-label="Account" className={cn("hidden md:flex hover:bg-transparent text-current", !isSolid ? 'hover:text-accent-on-dark' : 'hover:text-accent')}>
             <User size={18} strokeWidth={1.5} />
           </IconButton>
           <IconButton 
             aria-label="Cart" 
-            className="relative hover:text-accent hover:bg-transparent text-current -mr-2 md:mr-0"
+            className={cn(
+              "relative hover:bg-transparent text-current -mr-2 md:mr-0",
+              !isSolid ? 'hover:text-accent-on-dark' : 'hover:text-accent'
+            )}
             onClick={() => setIsCartOpen(true)}
           >
             <ShoppingBag size={18} strokeWidth={1.5} />

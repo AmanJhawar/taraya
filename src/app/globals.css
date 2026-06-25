@@ -6,7 +6,8 @@
   --color-line:   #DAD3C7;  /* hairlines, borders */
   --color-ink:    #231F1D;  /* primary text */
   --color-muted:  #847C74;  /* eyebrows, captions */
-  --color-accent: #6495ED;  /* cornflower, sparing */
+  --color-accent: #3F4F5B; /* oxidised silver — links, active, hairline accents on light grounds, sparing */
+  --color-accent-on-dark: #9DACB6; /* same accent, lifted for the dark vault */
 
   /* Overriding Tailwind's default easings with our custom curves */
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
